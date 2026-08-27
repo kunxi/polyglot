@@ -12,7 +12,10 @@ d = {'t': 1, 'f': 0}
 ```
 
 #### size
-`len(d)`
+
+```python
+len(d)
+```
 
 #### lookup
 

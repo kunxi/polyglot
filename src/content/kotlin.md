@@ -14,7 +14,9 @@ val d = mapOf('t' to 1, 'f' to 0)
 
 #### size
 
-`d.size`
+```kotlin
+d.size
+```
 
 #### lookup
 

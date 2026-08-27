@@ -1,6 +1,9 @@
 ---
 import fs from 'node:fs';
 
+// ponytail: import.meta.glob registers content files as Vite dependencies
+const _contentModules = import.meta.glob('/src/content/*.md', { eager: true, query: '?raw' });
+
 export function getStaticPaths() {
   const contentDir = 'src/content';
   const files = fs.readdirSync(contentDir).filter((f: string) => f.endsWith('.md'));
@@ -165,8 +168,8 @@ function flatten(node: Section, lookup2: Map<string, Section>): Block[] {
   return blocks;
 }
 
-const raw1 = fs.readFileSync(`src/content/${lang1}.md`, 'utf-8');
-const raw2 = fs.readFileSync(`src/content/${lang2}.md`, 'utf-8');
+const raw1 = (_contentModules[`/src/content/${lang1}.md`] as any)?.default ?? '';
+const raw2 = (_contentModules[`/src/content/${lang2}.md`] as any)?.default ?? '';
 const tree1 = parseSections(raw1);
 const tree2 = parseSections(raw2);
 const lookup2 = buildLookup(tree2);
@@ -178,6 +181,11 @@ const blocks = flatten(tree1, lookup2);
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width" />
   <title>{lang1} vs {lang2} — Polyglot</title>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.11.1/styles/github.min.css" />
+  <script is:inline src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.11.1/highlight.min.js"></script>
+  <script is:inline src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.11.1/languages/python.min.js"></script>
+  <script is:inline src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.11.1/languages/kotlin.min.js"></script>
+  <script is:inline src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.11.1/languages/rust.min.js"></script>
   <style>
     body {
       font-family: system-ui, -apple-system, sans-serif;
@@ -193,6 +201,7 @@ const blocks = flatten(tree1, lookup2);
     h3 { font-size: 1.1rem; margin: 2rem 0 0.75rem; }
     table {
       width: 100%;
+      table-layout: fixed;
       border-collapse: collapse;
       font-size: 0.9rem;
       margin-bottom: 1.5rem;
@@ -224,10 +233,10 @@ const blocks = flatten(tree1, lookup2);
     td pre {
       margin: 0;
       font-size: 0.8rem;
-      background: #f8f8f8;
       padding: 0.4rem 0.5rem;
       border-radius: 3px;
       overflow-x: auto;
+      max-width: 100%;
     }
     td code {
       font-size: 0.84rem;
@@ -270,4 +279,5 @@ const blocks = flatten(tree1, lookup2);
     );
   })}
 </body>
+<script is:inline>hljs.highlightAll();</script>
 </html>
