@@ -351,13 +351,13 @@ describe('flatten', () => {
   });
 
   it('leaves content2 blank when lang2 has no matching heading', () => {
-    // kotlin content: all items exist. test with a modified tree.
     const tree1 = parseSections(PYTHON_MD);
     const tree2 = parseSections(KOTLIN_MD);
-    // Remove "invert" from lookup2
-    const lookup2 = buildLookup(tree2);
-    lookup2.delete('invert');
+    // Remove "invert" from kotlin's Dictionary h4 children
+    const ktDict = tree2.children[0]!.children[0]!.children[0]!;
+    ktDict.children = ktDict.children.filter(c => c.heading !== 'invert');
 
+    const lookup2 = buildLookup(tree2);
     const blocks = flatten(tree1, lookup2);
     const items = blocks[2].items!;
     const inv = items.find(i => i.label === 'invert')!;

@@ -88,7 +88,7 @@ export function buildLookup(node: Section): Map<string, Section> {
 
 // -- flatten into display blocks --
 
-export function collectItems(node: Section, lookup2: Map<string, Section>, lookIn2: Section | null): ItemRow[] {
+export function collectItems(node: Section, lookIn2: Section | null): ItemRow[] {
   const items: ItemRow[] = [];
 
   // h3 direct content from either side as first row with empty label
@@ -101,17 +101,22 @@ export function collectItems(node: Section, lookup2: Map<string, Section>, lookI
   const hasH4 = node.children.some((c: Section) => c.level >= 4);
   const matchHasH4 = lookIn2?.children.some((c: Section) => c.level >= 4);
 
+  // ponytail: scoped lookup within the matched h3, not global, to avoid
+  // collisions when both Dictionary and List have headings like "literal"
+  const matchKids = buildLookup(lookIn2 ?? { level: 0, heading: '', content: '', children: [] });
+
   if (hasH4) {
     for (const gc of node.children) {
       if (gc.level >= 4) {
-        const gm = lookup2.get(normalize(gc.heading));
+        const gm = matchKids.get(normalize(gc.heading));
         items.push({ label: gc.heading, content1: gc.content, content2: gm?.content ?? '' });
       }
     }
   } else if (matchHasH4 && lookIn2) {
     for (const gc of lookIn2.children) {
       if (gc.level >= 4) {
-        const gm = lookup2.get(normalize(gc.heading));
+        // lang2 leads, so look in lang1's h3 for matching h4
+        const gm = buildLookup(node).get(normalize(gc.heading));
         items.push({ label: gc.heading, content1: gm?.content ?? '', content2: gc.content });
       }
     }
@@ -130,7 +135,7 @@ export function flatten(node: Section, lookup2: Map<string, Section>): Block[] {
       } else if (child.level === 3) {
         const match = lookup2.get(normalize(child.heading));
         blocks.push({ type: 'h3', heading: child.heading });
-        blocks.push({ type: 'table', items: collectItems(child, lookup2, match) });
+        blocks.push({ type: 'table', items: collectItems(child, match) });
         walk(child);
       } else {
         walk(child);
