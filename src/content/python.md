@@ -3,6 +3,81 @@
 
 ## Collections
 
+### List
+
+#### literal
+
+```python
+a = [1, 2, 3]
+```
+
+#### size
+
+```python
+len(a)
+```
+
+#### lookup
+
+```python
+a[0]  # first element
+a[-1] # last element
+```
+
+#### update
+
+```python
+a[0] = 10
+a.append(4)
+```
+
+#### is element present
+
+```python
+3 in a
+```
+
+#### delete
+
+```python
+del a[0]        # by index
+a.pop()         # last element
+a.remove(3)     # by value, raises ValueError if absent
+```
+
+#### merge
+
+```python
+a + [4, 5]
+a.extend([4, 5])
+```
+
+#### slice
+
+```python
+a[1:3]          # exclusive, elements at index 1 and 2
+a[::2]          # every other element
+```
+
+#### reversed
+
+```python
+a[::-1]         # reversed slice
+list(reversed(a))
+```
+
+#### map
+
+```python
+[x * 2 for x in a]
+```
+
+#### filter
+
+```python
+[x for x in a if x > 0]
+```
+
 ### Dictionary
 
 #### literal
