@@ -1,0 +1,273 @@
+---
+import fs from 'node:fs';
+
+export function getStaticPaths() {
+  const contentDir = 'src/content';
+  const files = fs.readdirSync(contentDir).filter((f: string) => f.endsWith('.md'));
+  const langs = files.map((f: string) => f.replace('.md', ''));
+  const paths: { params: { lang1: string; lang2: string } }[] = [];
+  for (const l1 of langs) {
+    for (const l2 of langs) {
+      if (l1 !== l2) paths.push({ params: { lang1: l1, lang2: l2 } });
+    }
+  }
+  return paths;
+}
+
+const { lang1, lang2 } = Astro.params;
+
+// -- types --
+
+interface Section {
+  level: number;
+  heading: string;
+  content: string;
+  children: Section[];
+}
+
+interface ItemRow {
+  label: string;
+  content1: string;
+  content2: string;
+}
+
+interface Block {
+  type: 'h2' | 'h3' | 'table';
+  heading?: string;
+  items?: ItemRow[];
+}
+
+// -- parse markdown into section tree --
+
+function parseSections(text: string): Section {
+  const lines = text.split('\n');
+  const root: Section = { level: 0, heading: '', content: '', children: [] };
+  const stack = [root];
+  for (const line of lines) {
+    const m = line.match(/^(#{1,6})\s+(.+)/);
+    if (m) {
+      const level = m[1].length;
+      const heading = m[2].trim();
+      const node: Section = { level, heading, content: '', children: [] };
+      while (stack[stack.length - 1].level >= level) stack.pop();
+      stack[stack.length - 1].children.push(node);
+      stack.push(node);
+    } else if (stack.length > 0) {
+      stack[stack.length - 1].content += line + '\n';
+    }
+  }
+  return root;
+}
+
+// -- markdown to HTML --
+
+function esc(s: string) {
+  return s.replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;');
+}
+
+const BLOCK_PLACEHOLDER = '%%BLOCK%%';
+
+function renderMD(s: string): string {
+  let out = s.trim();
+  if (!out) return '';
+
+  const blocks: string[] = [];
+  out = out.replace(/```(\w*)\n([\s\S]*?)```/g,
+    (_: string, lang: string, code: string) => {
+      blocks.push(`<pre><code class="language-${lang}">${esc(code.trim())}</code></pre>`);
+      return BLOCK_PLACEHOLDER + (blocks.length - 1) + BLOCK_PLACEHOLDER;
+    }
+  );
+
+  out = esc(out);
+  out = out.replace(/`([^`]+)`/g, '<code>$1</code>');
+
+  const parts = out.split(/\n\n+/);
+  return parts.map((p: string) => {
+    p = p.trim();
+    if (!p) return '';
+    p = p.replace(new RegExp(BLOCK_PLACEHOLDER + '(\\d+)' + BLOCK_PLACEHOLDER, 'g'), (_: string, i: string) => blocks[+i]);
+    if (p.startsWith('<pre>')) return p;
+    return `<p>${p.replace(/\n/g, '<br>')}</p>`;
+  }).filter(Boolean).join('\n');
+}
+
+// -- helpers --
+
+function normalize(s: string) {
+  return s.toLowerCase().replace(/\s+/g, ' ').trim();
+}
+
+function buildLookup(node: Section): Map<string, Section> {
+  const map = new Map<string, Section>();
+  function walk(n: Section) {
+    if (n.heading) map.set(normalize(n.heading), n);
+    for (const c of n.children) walk(c);
+  }
+  walk(node);
+  return map;
+}
+
+// -- flatten into display blocks --
+// h2 -> h2 block. h3 -> h3 block + table block with its content rows.
+
+function collectItems(node: Section, lookup2: Map<string, Section>, lookIn2: Section | null): ItemRow[] {
+  const items: ItemRow[] = [];
+
+  // h3 direct content from either side as first row with empty label
+  const c1 = node.content.trim();
+  const c2 = (lookIn2?.content ?? '').trim();
+  if (c1 || c2) {
+    items.push({ label: '', content1: node.content, content2: lookIn2?.content ?? '' });
+  }
+
+  const hasH4 = node.children.some((c: Section) => c.level >= 4);
+  const matchHasH4 = lookIn2?.children.some((c: Section) => c.level >= 4);
+
+  if (hasH4) {
+    for (const gc of node.children) {
+      if (gc.level >= 4) {
+        const gm = lookup2.get(normalize(gc.heading));
+        items.push({ label: gc.heading, content1: gc.content, content2: gm?.content ?? '' });
+      }
+    }
+  } else if (matchHasH4 && lookIn2) {
+    for (const gc of lookIn2.children) {
+      if (gc.level >= 4) {
+        const gm = lookup2.get(normalize(gc.heading));
+        items.push({ label: gc.heading, content1: gm?.content ?? '', content2: gc.content });
+      }
+    }
+  }
+  return items;
+}
+
+function flatten(node: Section, lookup2: Map<string, Section>): Block[] {
+  const blocks: Block[] = [];
+
+  function walk(n: Section) {
+    for (const child of n.children) {
+      if (child.level === 2) {
+        blocks.push({ type: 'h2', heading: child.heading });
+        walk(child);
+      } else if (child.level === 3) {
+        const match = lookup2.get(normalize(child.heading));
+        blocks.push({ type: 'h3', heading: child.heading });
+        blocks.push({ type: 'table', items: collectItems(child, lookup2, match) });
+        walk(child);
+      } else {
+        walk(child);
+      }
+    }
+  }
+
+  walk(node);
+  return blocks;
+}
+
+const raw1 = fs.readFileSync(`src/content/${lang1}.md`, 'utf-8');
+const raw2 = fs.readFileSync(`src/content/${lang2}.md`, 'utf-8');
+const tree1 = parseSections(raw1);
+const tree2 = parseSections(raw2);
+const lookup2 = buildLookup(tree2);
+const blocks = flatten(tree1, lookup2);
+---
+
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width" />
+  <title>{lang1} vs {lang2} — Polyglot</title>
+  <style>
+    body {
+      font-family: system-ui, -apple-system, sans-serif;
+      max-width: 1020px;
+      margin: 0 auto;
+      padding: 2rem 1rem;
+      color: #1a1a1a;
+      line-height: 1.6;
+    }
+    h1 { font-size: 1.75rem; margin-bottom: 0.25rem; }
+    .subtitle { color: #666; margin-bottom: 2rem; }
+    h2 { font-size: 1.3rem; margin: 2.5rem 0 1rem; padding-bottom: 0.25rem; border-bottom: 2px solid #e5e5e5; }
+    h3 { font-size: 1.1rem; margin: 2rem 0 0.75rem; }
+    table {
+      width: 100%;
+      border-collapse: collapse;
+      font-size: 0.9rem;
+      margin-bottom: 1.5rem;
+    }
+    th, td {
+      padding: 0.5rem 0.75rem;
+      border: 1px solid #e0e0e0;
+      vertical-align: top;
+    }
+    th {
+      background: #f5f5f5;
+      font-weight: 600;
+      text-align: left;
+      font-size: 0.8rem;
+      color: #666;
+      text-transform: uppercase;
+      letter-spacing: 0.04em;
+    }
+    th:first-child { width: 16%; }
+    .col-label {
+      font-weight: 500;
+      white-space: nowrap;
+      font-size: 0.85rem;
+      color: #444;
+    }
+    .col-label:empty {
+      background: #fafafa;
+    }
+    td pre {
+      margin: 0;
+      font-size: 0.8rem;
+      background: #f8f8f8;
+      padding: 0.4rem 0.5rem;
+      border-radius: 3px;
+      overflow-x: auto;
+    }
+    td code {
+      font-size: 0.84rem;
+      background: #f0f0f0;
+      padding: 0.1em 0.3em;
+      border-radius: 2px;
+    }
+    td p { margin: 0.25rem 0; }
+    td p:first-child { margin-top: 0; }
+    td p:last-child { margin-bottom: 0; }
+  </style>
+</head>
+<body>
+  <h1>{lang1} vs {lang2}</h1>
+  <p class="subtitle">Side-by-side language comparison</p>
+
+  {blocks.map((block) => {
+    if (block.type === 'h2') {
+      return <h2>{block.heading}</h2>;
+    }
+    if (block.type === 'h3') {
+      return <h3>{block.heading}</h3>;
+    }
+    // table
+    return (
+      <table>
+        <thead>
+          <tr><th></th><th>{lang1}</th><th>{lang2}</th></tr>
+        </thead>
+        <tbody>
+          {block.items!.map((item) => (
+            <tr>
+              <td class="col-label">{item.label}</td>
+              <td set:html={item.content1.trim() ? renderMD(item.content1) : ''} />
+              <td set:html={item.content2.trim() ? renderMD(item.content2) : ''} />
+            </tr>
+          ))}
+        </tbody>
+      </table>
+    );
+  })}
+</body>
+</html>
