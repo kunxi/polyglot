@@ -153,3 +153,54 @@ in Python 3 and lists in Python 2
 list(d.keys())
 list(d.values())
 ```
+
+### Set
+
+#### literal
+
+```python
+s = {1, 2, 3}
+```
+
+#### size
+
+```python
+len(s)
+```
+
+#### add
+
+```python
+s.add(4)
+```
+
+#### is element present
+
+```python
+3 in s
+```
+
+#### delete
+
+```python
+s.remove(3)     # raises KeyError if absent
+s.discard(3)    # no error if absent
+s.pop()         # removes and returns arbitrary element
+```
+
+#### from array
+
+```python
+a = [1, 2, 3, 2]
+s = set(a)      # {1, 2, 3}
+```
+
+#### merge
+
+```python
+s | {4, 5}           # union
+s & {2, 3}           # intersection
+s - {2}              # difference
+s ^ {2, 3, 4}        # symmetric difference
+s.update({4, 5})     # in-place union
+```

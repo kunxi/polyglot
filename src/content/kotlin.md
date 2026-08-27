@@ -146,3 +146,53 @@ d.map { it.value to it.key }.toMap()
 #### keys and values as arrays
 
 `keys` and `values` returns the set of keys and values respectively.
+
+### Set
+
+#### literal
+
+```kotlin
+val s = setOf(1, 2, 3)
+```
+
+#### size
+
+```kotlin
+s.size
+```
+
+#### add
+
+```kotlin
+val s = mutableSetOf(1, 2, 3)
+s.add(4)
+```
+
+#### is element present
+
+```kotlin
+3 in s
+s.contains(3)
+```
+
+#### delete
+
+```kotlin
+s.remove(3)     // returns false if absent
+```
+
+#### from array
+
+```kotlin
+val a = listOf(1, 2, 3, 2)
+val s = a.toSet()     // {1, 2, 3}
+```
+
+#### merge
+
+```kotlin
+s + setOf(4, 5)            // union
+s.intersect(setOf(2, 3))   // intersection
+s - setOf(2)               // difference
+s.addAll(listOf(4, 5))     // in-place union
+```
