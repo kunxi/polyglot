@@ -23,7 +23,17 @@ export function parseSections(text: string): Section {
   const lines = text.split('\n');
   const root: Section = { level: 0, heading: '', content: '', children: [] };
   const stack = [root];
+  let inCodeBlock = false;
   for (const line of lines) {
+    if (line.trimStart().startsWith('```')) {
+      inCodeBlock = !inCodeBlock;
+      if (stack.length > 0) stack[stack.length - 1].content += line + '\n';
+      continue;
+    }
+    if (inCodeBlock) {
+      if (stack.length > 0) stack[stack.length - 1].content += line + '\n';
+      continue;
+    }
     const m = line.match(/^(#{1,6})\s+(.+)/);
     if (m) {
       const node: Section = { level: m[1].length, heading: m[2].trim(), content: '', children: [] };
