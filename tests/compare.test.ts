@@ -196,6 +196,15 @@ describe('parseSections', () => {
     // Kotlin has h3 content (the Map description)
     expect(h3?.content).toContain('Map');
   });
+
+  it('ignores # lines inside fenced code blocks', () => {
+    const md = `# Title\n\n## Section\n\n### Sub\n\n#### item1\n\n\`\`\`python\n# this is a comment, not a heading\n# neither is this\n\`\`\`\n\n#### item2\ntext\n`;
+    const tree = parseSections(md);
+    const h3 = tree.children[0]?.children[0]?.children[0];
+    expect(h3?.heading).toBe('Sub');
+    expect(h3?.children.map(c => c.heading)).toEqual(['item1', 'item2']);
+    expect(h3?.children[0].content).toContain('# this is a comment');
+  });
 });
 
 // -- renderMD --
