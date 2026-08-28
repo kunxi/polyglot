@@ -62,3 +62,34 @@ pre code.hljs,
   padding: 0.5em 0 !important;
   line-height: 1.25;
 }
+
+/* TOC */
+.toc-section h2 {
+  margin-bottom: 0.25rem;
+  padding-bottom: 0;
+  border-bottom: none;
+}
+.toc-section h2 a {
+  text-decoration: none;
+  color: inherit;
+}
+.toc-h2s {
+  color: #888;
+  font-size: 0.85rem;
+  margin: 0 0 0.25rem 0;
+}
+.toc-section ul {
+  margin: 0.25rem 0 1.5rem 0;
+  padding-left: 1.25rem;
+  font-size: 0.9rem;
+}
+.toc-section li a {
+  text-decoration: none;
+  color: inherit;
+}
+.toc-section li a:hover {
+  text-decoration: underline;
+}
+.toc-section li {
+  margin-bottom: 0.15rem;
+}
