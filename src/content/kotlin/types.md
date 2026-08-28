@@ -77,6 +77,22 @@ abs(-42)
 (4 downTo 0).reversed()  // 0, 1, 2, 3, 4
 ```
 
+#### complex
+
+```kotlin
+// Kotlin has no built-in complex numbers.
+// Use a library like koma or define a data class:
+
+data class Complex(val re: Double, val im: Double) {
+    operator fun plus(other: Complex) =
+        Complex(re + other.re, im + other.im)
+    operator fun times(other: Complex) =
+        Complex(re * other.re - im * other.im,
+                re * other.im + im * other.re)
+}
+val z = Complex(1.0, 2.0)
+```
+
 #### random
 
 ```kotlin
@@ -175,4 +191,144 @@ s.replaceFirst("old", "new")  // first occurrence only
 s.padStart(10)        // right justify
 s.padEnd(10)          // left justify
 "%10s".format(s)       // right justify
+```
+
+### Boolean
+
+#### literal
+
+```kotlin
+val t = true
+val f = false
+```
+
+#### negation
+
+```kotlin
+!true           // false
+```
+
+#### logical and
+
+```kotlin
+true && false   // false
+```
+
+#### logical or
+
+```kotlin
+true || false   // true
+```
+
+#### truthy and falsy values
+
+```kotlin
+// Kotlin has no implicit truthiness convention.
+// Only Boolean can be used in conditions.
+1 != 0                      // explicit check for integer
+"".isEmpty()                // explicit check for string
+listOf<Int>().isEmpty()     // explicit check for list
+```
+
+#### conversion
+
+```kotlin
+1 != 0              // to Boolean
+true.toString()     // "true"
+```
+
+### None / null
+
+Kotlin enforces null safety at compile time: `String` and `String?`
+are different types.
+
+#### literal
+
+```kotlin
+val x: String? = null
+```
+
+#### null check
+
+```kotlin
+if (x != null) {
+    ...
+}
+```
+
+#### optional access
+
+```kotlin
+x?.length           // safe call, returns null if x is null
+x?.length ?: 0      // elvis: provide default when null
+x!!.length          // force unwrap, throws if null
+x?.let { ... }      // execute block only if non-null
+```
+
+### type hints
+
+Kotlin type hints are part of the language and enforced at compile time.
+
+#### variable
+
+```kotlin
+val name: String = "Alice"
+var age: Int = 30
+val scores: List<Int> = listOf(1, 2, 3)
+```
+
+#### nullable
+
+```kotlin
+val name: String? = null
+```
+
+#### function
+
+```kotlin
+fun greet(name: String): String {
+    return "Hello, $name"
+}
+
+fun divide(a: Int, b: Int): Double? {
+    if (b == 0) return null
+    return a.toDouble() / b
+}
+```
+
+#### list of elements
+
+```kotlin
+val names: List<String> = listOf("Alice", "Bob")
+val scores: List<Int> = listOf(1, 2, 3)
+val matrix: List<List<Int>> = listOf(listOf(1, 2), listOf(3, 4))
+```
+
+#### dict
+
+```kotlin
+val ages: Map<String, Int> = mapOf("Alice" to 30, "Bob" to 25)
+```
+
+#### type alias
+
+```kotlin
+typealias Vector = List<Double>
+fun scale(scalar: Double, v: Vector): Vector {
+    return v.map { scalar * it }
+}
+```
+
+#### protocol / interface
+
+```kotlin
+interface Speaker {
+    fun speak(): String
+}
+
+class Dog : Speaker {
+    override fun speak() = "Woof!"
+}
+
+fun makeSound(s: Speaker): String = s.speak()
 ```
