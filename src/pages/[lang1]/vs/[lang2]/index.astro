@@ -20,39 +20,21 @@ export function getStaticPaths() {
     .readdirSync(contentDir, { withFileTypes: true })
     .filter((d: fs.Dirent) => d.isDirectory())
     .map((d: fs.Dirent) => d.name);
-  const paths: { params: { lang1: string; lang2: string; slug?: string } }[] =
-    [];
+
+  const paths: { params: { lang1: string; lang2: string } }[] = [];
 
   for (const l1 of langDirs) {
-    const l1Topics = fs
-      .readdirSync(`${contentDir}/${l1}`)
-      .filter((f: string) => f.endsWith(".md"))
-      .map((f: string) => f.replace(".md", ""));
     for (const l2 of langDirs) {
       if (l1 === l2) continue;
-      const l2Topics = fs
-        .readdirSync(`${contentDir}/${l2}`)
-        .filter((f: string) => f.endsWith(".md"))
-        .map((f: string) => f.replace(".md", ""));
-
       // TOC page (no slug)
       paths.push({ params: { lang1: l1, lang2: l2 } });
-
-      // topic comparison pages
-      for (const topic of l1Topics) {
-        if (l2Topics.includes(topic)) {
-          paths.push({
-            params: { lang1: l1, lang2: l2, slug: topic },
-          });
-        }
-      }
     }
   }
   return paths;
 }
 
-const { lang1, lang2, slug } = Astro.params;
-const isTopic = slug !== undefined;
+const { lang1, lang2 } = Astro.params;
+const isTopic = false;
 
 // --- TOC data ---
 interface TocEntry {
@@ -125,78 +107,12 @@ if (isTopic) {
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width" />
     <title>{lang1} vs {lang2}{isTopic ? `: ${slug}` : ""} — Polyglot</title>
-    {
-      isTopic && (
-        <>
-          <link
-            rel="stylesheet"
-            href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.11.1/styles/github.min.css"
-          />
-          <script
-            is:inline
-            src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.11.1/highlight.min.js"
-          />
-          <script
-            is:inline
-            src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.11.1/languages/python.min.js"
-          />
-          <script
-            is:inline
-            src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.11.1/languages/kotlin.min.js"
-          />
-          <script
-            is:inline
-            src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.11.1/languages/rust.min.js"
-          />
-        </>
-      )
-    }
     <link rel="stylesheet" href="/index.css" />
   </head>
   <body>
     <h1>{lang1} vs {lang2}{isTopic ? `: ${slug}` : ""}</h1>
     {
-      isTopic ? (
-        <>
-          <p class="subtitle">Side-by-side language comparison</p>
-          {blocks.map((block: any) => {
-            if (block.type === "h2") {
-              return <h2>{block.heading}</h2>;
-            }
-            if (block.type === "h3") {
-              return <h3 id={slugify(block.heading)}>{block.heading}</h3>;
-            }
-            return (
-              <table>
-                <thead>
-                  <tr>
-                    <th />
-                    <th>{lang1}</th>
-                    <th>{lang2}</th>
-                  </tr>
-                </thead>
-                <tbody>
-                  {block.items!.map((item: any) => (
-                    <tr>
-                      <td class="col-label">{item.label}</td>
-                      <td
-                        set:html={
-                          item.content1.trim() ? renderMD(item.content1) : ""
-                        }
-                      />
-                      <td
-                        set:html={
-                          item.content2.trim() ? renderMD(item.content2) : ""
-                        }
-                      />
-                    </tr>
-                  ))}
-                </tbody>
-              </table>
-            );
-          })}
-        </>
-      ) : (
+      (
         <>
           <p class="subtitle">Topic overview</p>
           {toc.map((entry) => (
@@ -226,5 +142,4 @@ if (isTopic) {
       )
     }
   </body>
-  {isTopic && <script is:inline>hljs.highlightAll();</script>}
 </html>

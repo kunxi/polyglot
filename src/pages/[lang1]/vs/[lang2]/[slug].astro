@@ -1,0 +1,227 @@
+---
+import fs from "node:fs";
+import {
+  parseSections,
+  renderMD,
+  buildLookup,
+  flatten,
+} from "../../../../lib/compare";
+
+function slugify(s: string) {
+  return s
+    .toLowerCase()
+    .replace(/[^a-z0-9]+/g, "-")
+    .replace(/^-|-$/g, "");
+}
+
+export function getStaticPaths() {
+  const contentDir = "src/content";
+  const langDirs = fs
+    .readdirSync(contentDir, { withFileTypes: true })
+    .filter((d: fs.Dirent) => d.isDirectory())
+    .map((d: fs.Dirent) => d.name);
+  const paths: { params: { lang1: string; lang2: string; slug: string } }[] =
+    [];
+
+  for (const l1 of langDirs) {
+    const l1Topics = fs
+      .readdirSync(`${contentDir}/${l1}`)
+      .filter((f: string) => f.endsWith(".md"))
+      .map((f: string) => f.replace(".md", ""));
+    for (const l2 of langDirs) {
+      if (l1 === l2) continue;
+      const l2Topics = fs
+        .readdirSync(`${contentDir}/${l2}`)
+        .filter((f: string) => f.endsWith(".md"))
+        .map((f: string) => f.replace(".md", ""));
+
+      // topic comparison pages
+      for (const topic of l1Topics) {
+        if (l2Topics.includes(topic)) {
+          paths.push({
+            params: { lang1: l1, lang2: l2, slug: topic },
+          });
+        }
+      }
+    }
+  }
+  return paths;
+}
+
+const { lang1, lang2, slug } = Astro.params;
+const isTopic = true;
+
+// --- TOC data ---
+interface TocEntry {
+  topic: string;
+  title: string;
+  h2s: string[];
+  h3s: string[];
+}
+
+let toc: TocEntry[] = [];
+if (!isTopic) {
+  const contentDir = "src/content";
+  const l1Topics = fs
+    .readdirSync(`${contentDir}/${lang1}`)
+    .filter((f: string) => f.endsWith(".md"))
+    .map((f: string) => f.replace(".md", ""));
+  const l2Topics = fs
+    .readdirSync(`${contentDir}/${lang2}`)
+    .filter((f: string) => f.endsWith(".md"))
+    .map((f: string) => f.replace(".md", ""));
+
+  // scheduled order
+  const order = ["types", "control-flow", "function", "class", "collection"];
+  for (const topic of order) {
+    if (l1Topics.includes(topic) && l2Topics.includes(topic)) {
+      const raw = fs.readFileSync(
+        `${contentDir}/${lang1}/${topic}.md`,
+        "utf-8",
+      );
+      const tree = parseSections(raw);
+      const h2s: string[] = [];
+      const h3s: string[] = [];
+      // top-level is root, then h1, then h2s
+      const h1 = tree.children[0];
+      if (h1) {
+        for (const h2 of h1.children) {
+          if (h2.level === 2) {
+            h2s.push(h2.heading);
+            for (const h3 of h2.children) {
+              if (h3.level === 3) h3s.push(h3.heading);
+            }
+          }
+        }
+      }
+      toc.push({ topic, title: h2s[0] || topic, h2s: h2s.slice(1), h3s });
+    }
+  }
+}
+
+// --- Topic data ---
+let blocks: any[] = [];
+if (isTopic) {
+  const _contentModules = import.meta.glob("/src/content/*/*.md", {
+    eager: true,
+    query: "?raw",
+  });
+  const raw1 =
+    (_contentModules[`/src/content/${lang1}/${slug}.md`] as any)?.default ?? "";
+  const raw2 =
+    (_contentModules[`/src/content/${lang2}/${slug}.md`] as any)?.default ?? "";
+  const tree1 = parseSections(raw1);
+  const tree2 = parseSections(raw2);
+  const lookup2 = buildLookup(tree2);
+  blocks = flatten(tree1, lookup2);
+}
+---
+
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width" />
+    <title>{lang1} vs {lang2}{isTopic ? `: ${slug}` : ""} — Polyglot</title>
+    {
+      isTopic && (
+        <>
+          <link
+            rel="stylesheet"
+            href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.11.1/styles/github.min.css"
+          />
+          <script
+            is:inline
+            src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.11.1/highlight.min.js"
+          />
+          <script
+            is:inline
+            src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.11.1/languages/python.min.js"
+          />
+          <script
+            is:inline
+            src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.11.1/languages/kotlin.min.js"
+          />
+          <script
+            is:inline
+            src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.11.1/languages/rust.min.js"
+          />
+        </>
+      )
+    }
+    <link rel="stylesheet" href="/index.css" />
+  </head>
+  <body>
+    <h1>{lang1} vs {lang2}{isTopic ? `: ${slug}` : ""}</h1>
+    {
+      isTopic ? (
+        <>
+          <p class="subtitle">Side-by-side language comparison</p>
+          {blocks.map((block: any) => {
+            if (block.type === "h2") {
+              return <h2>{block.heading}</h2>;
+            }
+            if (block.type === "h3") {
+              return <h3 id={slugify(block.heading)}>{block.heading}</h3>;
+            }
+            return (
+              <table>
+                <thead>
+                  <tr>
+                    <th />
+                    <th>{lang1}</th>
+                    <th>{lang2}</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  {block.items!.map((item: any) => (
+                    <tr>
+                      <td class="col-label">{item.label}</td>
+                      <td
+                        set:html={
+                          item.content1.trim() ? renderMD(item.content1) : ""
+                        }
+                      />
+                      <td
+                        set:html={
+                          item.content2.trim() ? renderMD(item.content2) : ""
+                        }
+                      />
+                    </tr>
+                  ))}
+                </tbody>
+              </table>
+            );
+          })}
+        </>
+      ) : (
+        <>
+          <p class="subtitle">Topic overview</p>
+          {toc.map((entry) => (
+            <div class="toc-section">
+              <h2>
+                <a href={`/${lang1}/vs/${lang2}/${entry.topic}`}>
+                  {entry.title}
+                </a>
+              </h2>
+              {entry.h2s.length > 0 && (
+                <p class="toc-h2s">{entry.h2s.join(" · ")}</p>
+              )}
+              <ol>
+                {entry.h3s.map((h3) => (
+                  <li>
+                    <a
+                      href={`/${lang1}/vs/${lang2}/${entry.topic}#${slugify(h3)}`}
+                    >
+                      {h3}
+                    </a>
+                  </li>
+                ))}
+              </ol>
+            </div>
+          ))}
+        </>
+      )
+    }
+  </body>
+  {isTopic && <script is:inline>hljs.highlightAll();</script>}
+</html>
