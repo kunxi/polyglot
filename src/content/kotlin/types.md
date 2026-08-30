@@ -1,10 +1,8 @@
-# Kotlin
+# Types
 
-## Types
+## Number
 
-### Number
-
-#### integer
+### integer
 
 ```kotlin
 val a = 42
@@ -12,7 +10,7 @@ val b = -7
 val c = "42".toInt()
 ```
 
-#### float
+### float
 
 ```kotlin
 val x = 3.14
@@ -20,7 +18,7 @@ val y = 1.5e-3
 val z = "3.14".toDouble()
 ```
 
-#### arithmetic
+### arithmetic
 
 ```kotlin
 a + b      // addition
@@ -32,7 +30,7 @@ a / b.toDouble()   // force float division
 a % b      // modulo
 ```
 
-#### divmod
+### divmod
 
 ```kotlin
 // Kotlin doesn't have divmod, use explicit pair
@@ -42,7 +40,7 @@ val r = a % b
 fun divmod(a: Int, b: Int) = Pair(a / b, a % b)
 ```
 
-#### rounding
+### rounding
 
 ```kotlin
 3.14.roundToInt()    // 3
@@ -50,7 +48,7 @@ fun divmod(a: Int, b: Int) = Pair(a / b, a % b)
 "%.1f".format(3.14)   // "3.1"
 ```
 
-#### min max abs
+### min max abs
 
 ```kotlin
 minOf(a, b)
@@ -58,7 +56,7 @@ maxOf(a, b)
 abs(-42)
 ```
 
-#### range
+### range
 
 ```kotlin
 0..4                 // 0, 1, 2, 3, 4 (inclusive)
@@ -69,7 +67,7 @@ abs(-42)
 (0..2).toList()      // [0, 1, 2]
 ```
 
-#### descending range
+### descending range
 
 ```kotlin
 4 downTo 0           // 4, 3, 2, 1, 0 (inclusive)
@@ -77,7 +75,7 @@ abs(-42)
 (4 downTo 0).reversed()  // 0, 1, 2, 3, 4
 ```
 
-#### complex
+### complex
 
 ```kotlin
 // Kotlin has no built-in complex numbers.
@@ -93,16 +91,16 @@ data class Complex(val re: Double, val im: Double) {
 val z = Complex(1.0, 2.0)
 ```
 
-#### random
+### random
 
 ```kotlin
 (1..6).random()
 (0.0..1.0).random()
 ```
 
-### String
+## String
 
-#### literal
+### literal
 
 ```kotlin
 val s = "hello"
@@ -112,41 +110,41 @@ val s = """
 """.trimIndent()
 ```
 
-#### length
+### length
 
 ```kotlin
 s.length
 ```
 
-#### access
+### access
 
 ```kotlin
 s[0]        // first char
 s.last()    // last char
 ```
 
-#### slice
+### slice
 
 ```kotlin
 s.substring(1, 3)    // exclusive end
 s.slice(0..2 step 2)
 ```
 
-#### concatenation
+### concatenation
 
 ```kotlin
 s + " world"
 listOf("hello", "world").joinToString(" ")
 ```
 
-#### interpolation
+### interpolation
 
 ```kotlin
 "Hello, $name"
 "Hello, ${name.length}"
 ```
 
-#### search
+### search
 
 ```kotlin
 "hello" in s
@@ -155,14 +153,14 @@ s.startsWith("he")
 s.endsWith("lo")
 ```
 
-#### split and join
+### split and join
 
 ```kotlin
 s.split(",")
 listOf("a", "b", "c").joinToString("-")
 ```
 
-#### trim
+### trim
 
 ```kotlin
 s.trim()
@@ -170,7 +168,7 @@ s.trimStart()
 s.trimEnd()
 ```
 
-#### case
+### case
 
 ```kotlin
 s.uppercase()
@@ -178,14 +176,14 @@ s.lowercase()
 s.replaceFirstChar { it.uppercase() }
 ```
 
-#### replace
+### replace
 
 ```kotlin
 s.replace("old", "new")
 s.replaceFirst("old", "new")  // first occurrence only
 ```
 
-#### justify
+### justify
 
 ```kotlin
 s.padStart(10)        // right justify
@@ -193,34 +191,34 @@ s.padEnd(10)          // left justify
 "%10s".format(s)       // right justify
 ```
 
-### Boolean
+## Boolean
 
-#### literal
+### literal
 
 ```kotlin
 val t = true
 val f = false
 ```
 
-#### negation
+### negation
 
 ```kotlin
 !true           // false
 ```
 
-#### logical and
+### logical and
 
 ```kotlin
 true && false   // false
 ```
 
-#### logical or
+### logical or
 
 ```kotlin
 true || false   // true
 ```
 
-#### truthy and falsy values
+### truthy and falsy values
 
 ```kotlin
 // Kotlin has no implicit truthiness convention.
@@ -230,25 +228,25 @@ true || false   // true
 listOf<Int>().isEmpty()     // explicit check for list
 ```
 
-#### conversion
+### conversion
 
 ```kotlin
 1 != 0              // to Boolean
 true.toString()     // "true"
 ```
 
-### None / null
+## None / null
 
 Kotlin enforces null safety at compile time: `String` and `String?`
 are different types.
 
-#### literal
+### literal
 
 ```kotlin
 val x: String? = null
 ```
 
-#### null check
+### null check
 
 ```kotlin
 if (x != null) {
@@ -256,7 +254,7 @@ if (x != null) {
 }
 ```
 
-#### optional access
+### optional access
 
 ```kotlin
 x?.length           // safe call, returns null if x is null
@@ -265,11 +263,11 @@ x!!.length          // force unwrap, throws if null
 x?.let { ... }      // execute block only if non-null
 ```
 
-### type hints
+## type hints
 
 Kotlin type hints are part of the language and enforced at compile time.
 
-#### variable
+### variable
 
 ```kotlin
 val name: String = "Alice"
@@ -277,13 +275,13 @@ var age: Int = 30
 val scores: List<Int> = listOf(1, 2, 3)
 ```
 
-#### nullable
+### nullable
 
 ```kotlin
 val name: String? = null
 ```
 
-#### function
+### function
 
 ```kotlin
 fun greet(name: String): String {
@@ -296,7 +294,7 @@ fun divide(a: Int, b: Int): Double? {
 }
 ```
 
-#### list of elements
+### list of elements
 
 ```kotlin
 val names: List<String> = listOf("Alice", "Bob")
@@ -304,13 +302,13 @@ val scores: List<Int> = listOf(1, 2, 3)
 val matrix: List<List<Int>> = listOf(listOf(1, 2), listOf(3, 4))
 ```
 
-#### dict
+### dict
 
 ```kotlin
 val ages: Map<String, Int> = mapOf("Alice" to 30, "Bob" to 25)
 ```
 
-#### type alias
+### type alias
 
 ```kotlin
 typealias Vector = List<Double>
@@ -319,7 +317,7 @@ fun scale(scalar: Double, v: Vector): Vector {
 }
 ```
 
-#### protocol / interface
+### protocol / interface
 
 ```kotlin
 interface Speaker {

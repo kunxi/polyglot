@@ -1,16 +1,14 @@
-# Kotlin
+# Classes
 
-## Classes
+## Class
 
-### Class
-
-#### definition
+### definition
 
 ```kotlin
 class Dog(val name: String)
 ```
 
-#### constructor
+### constructor
 
 ```kotlin
 class Dog(val name: String)      // primary constructor
@@ -23,13 +21,13 @@ class Dog {
 }
 ```
 
-#### instantiation
+### instantiation
 
 ```kotlin
 val dog = Dog("Fido")
 ```
 
-#### attributes
+### attributes
 
 ```kotlin
 class Dog(val name: String) {     // val: read-only property
@@ -37,7 +35,7 @@ class Dog(val name: String) {     // val: read-only property
 }
 ```
 
-#### method
+### method
 
 ```kotlin
 fun bark(): String {
@@ -45,7 +43,7 @@ fun bark(): String {
 }
 ```
 
-#### inheritance
+### inheritance
 
 ```kotlin
 open class Animal
@@ -53,7 +51,7 @@ open class Animal
 class Dog : Animal()
 ```
 
-#### override
+### override
 
 ```kotlin
 open class Animal {
@@ -65,7 +63,7 @@ class Dog : Animal() {
 }
 ```
 
-#### super
+### super
 
 ```kotlin
 class Dog(name: String) : Animal(name) {
@@ -75,7 +73,7 @@ class Dog(name: String) : Animal(name) {
 }
 ```
 
-#### class method
+### class method
 
 ```kotlin
 class Dog(val name: String) {
@@ -86,7 +84,7 @@ class Dog(val name: String) {
 }
 ```
 
-#### static method
+### static method
 
 ```kotlin
 class Dog(val name: String) {
@@ -98,7 +96,7 @@ class Dog(val name: String) {
 }
 ```
 
-#### abstract
+### abstract
 
 ```kotlin
 abstract class Animal {
@@ -106,7 +104,7 @@ abstract class Animal {
 }
 ```
 
-#### interface
+### interface
 
 ```kotlin
 interface Speakable {
@@ -118,13 +116,13 @@ class Dog : Speakable {
 }
 ```
 
-#### data class
+### data class
 
 ```kotlin
 data class Dog(val name: String, val age: Int)
 ```
 
-#### equality
+### equality
 
 ```kotlin
 // data class provides equals() automatically
@@ -135,7 +133,7 @@ class Dog(val name: String) {
 }
 ```
 
-#### string representation
+### string representation
 
 ```kotlin
 // data class provides toString() automatically
@@ -145,7 +143,7 @@ class Dog(val name: String) {
 }
 ```
 
-#### sealed class
+### sealed class
 
 ```kotlin
 sealed class Result
@@ -160,7 +158,7 @@ fun handle(r: Result) = when (r) {
 }
 ```
 
-#### private
+### private
 
 ```kotlin
 class Dog {
@@ -169,7 +167,7 @@ class Dog {
 }
 ```
 
-#### protected
+### protected
 
 ```kotlin
 open class Animal {
@@ -182,7 +180,7 @@ class Dog : Animal() {
 }
 ```
 
-#### public
+### public
 
 ```kotlin
 class Dog {
@@ -190,9 +188,9 @@ class Dog {
 }
 ```
 
-### Enum
+## Enum
 
-#### definition
+### definition
 
 ```kotlin
 enum class Color {
@@ -200,14 +198,14 @@ enum class Color {
 }
 ```
 
-#### auto value
+### auto value
 
 ```kotlin
 // enum entries are values by default, no auto() needed
 enum class Color { RED, GREEN, AMBER }
 ```
 
-#### access
+### access
 
 ```kotlin
 Color.RED           // enum entry
@@ -215,20 +213,20 @@ Color.RED.name      // "RED"
 Color.RED.ordinal   // 0
 ```
 
-#### iteration
+### iteration
 
 ```kotlin
 Color.entries.toList()   // [RED, GREEN, AMBER]
 ```
 
-#### lookup
+### lookup
 
 ```kotlin
 Color.valueOf("RED")     // Color.RED, throws if absent
 enumValues<Color>().find { it.name == "RED" }
 ```
 
-#### match
+### match
 
 ```kotlin
 when (color) {
@@ -238,7 +236,7 @@ when (color) {
 }
 ```
 
-#### enum with data
+### enum with data
 
 ```kotlin
 enum class Planet(val mass: Double, val radius: Double) {

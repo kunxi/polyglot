@@ -12,7 +12,7 @@ export interface ItemRow {
 }
 
 export interface Block {
-  type: 'h2' | 'h3' | 'table';
+  type: 'h1' | 'h2' | 'table';
   heading?: string;
   items?: ItemRow[];
 }
@@ -101,31 +101,29 @@ export function buildLookup(node: Section): Map<string, Section> {
 export function collectItems(node: Section, lookIn2: Section | null): ItemRow[] {
   const items: ItemRow[] = [];
 
-  // h3 direct content from either side as first row with empty label
+  // h2 direct content from either side as first row with empty label
   const c1 = node.content.trim();
   const c2 = (lookIn2?.content ?? '').trim();
   if (c1 || c2) {
     items.push({ label: '', content1: node.content, content2: lookIn2?.content ?? '' });
   }
 
-  const hasH4 = node.children.some((c: Section) => c.level >= 4);
-  const matchHasH4 = lookIn2?.children.some((c: Section) => c.level >= 4);
+  const hasH3 = node.children.some((c: Section) => c.level >= 3);
+  const matchHasH3 = lookIn2?.children.some((c: Section) => c.level >= 3);
 
-  // ponytail: scoped lookup within the matched h3, not global, to avoid
-  // collisions when both Dictionary and List have headings like "literal"
+  // scoped lookup within the matched h2, not global
   const matchKids = buildLookup(lookIn2 ?? { level: 0, heading: '', content: '', children: [] });
 
-  if (hasH4) {
+  if (hasH3) {
     for (const gc of node.children) {
-      if (gc.level >= 4) {
+      if (gc.level >= 3) {
         const gm = matchKids.get(normalize(gc.heading));
         items.push({ label: gc.heading, content1: gc.content, content2: gm?.content ?? '' });
       }
     }
-  } else if (matchHasH4 && lookIn2) {
+  } else if (matchHasH3 && lookIn2) {
     for (const gc of lookIn2.children) {
-      if (gc.level >= 4) {
-        // lang2 leads, so look in lang1's h3 for matching h4
+      if (gc.level >= 3) {
         const gm = buildLookup(node).get(normalize(gc.heading));
         items.push({ label: gc.heading, content1: gm?.content ?? '', content2: gc.content });
       }
@@ -139,12 +137,12 @@ export function flatten(node: Section, lookup2: Map<string, Section>): Block[] {
 
   function walk(n: Section) {
     for (const child of n.children) {
-      if (child.level === 2) {
-        blocks.push({ type: 'h2', heading: child.heading });
+      if (child.level === 1) {
+        blocks.push({ type: 'h1', heading: child.heading });
         walk(child);
-      } else if (child.level === 3) {
+      } else if (child.level === 2) {
         const match = lookup2.get(normalize(child.heading));
-        blocks.push({ type: 'h3', heading: child.heading });
+        blocks.push({ type: 'h2', heading: child.heading });
         blocks.push({ type: 'table', items: collectItems(child, match) });
         walk(child);
       } else {

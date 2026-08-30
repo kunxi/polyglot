@@ -94,15 +94,13 @@ blocks = flatten(tree1, lookup2);
     <link rel="stylesheet" href="/index.css" />
   </head>
   <body>
-    <h1>{lang1} vs {lang2} : {slug}</h1>
-    <p class="subtitle">Side-by-side language comparison</p>
     {
       blocks.map((block: any) => {
-        if (block.type === "h2") {
-          return <h2>{block.heading}</h2>;
+        if (block.type === "h1") {
+          return <h1>{block.heading}</h1>;
         }
-        if (block.type === "h3") {
-          return <h3 id={slugify(block.heading)}>{block.heading}</h3>;
+        if (block.type === "h2") {
+          return <h2 id={slugify(block.heading)}>{block.heading}</h2>;
         }
         return (
           <table>

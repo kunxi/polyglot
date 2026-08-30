@@ -41,7 +41,6 @@ interface TocEntry {
   topic: string;
   title: string;
   h2s: string[];
-  h3s: string[];
 }
 
 let toc: TocEntry[] = [];
@@ -62,20 +61,13 @@ for (const topic of order) {
     const raw = fs.readFileSync(`${contentDir}/${lang1}/${topic}.md`, "utf-8");
     const tree = parseSections(raw);
     const h2s: string[] = [];
-    const h3s: string[] = [];
-    // top-level is root, then h1, then h2s
     const h1 = tree.children[0];
     if (h1) {
       for (const h2 of h1.children) {
-        if (h2.level === 2) {
-          h2s.push(h2.heading);
-          for (const h3 of h2.children) {
-            if (h3.level === 3) h3s.push(h3.heading);
-          }
-        }
+        if (h2.level === 2) h2s.push(h2.heading);
       }
     }
-    toc.push({ topic, title: h2s[0] || topic, h2s: h2s.slice(1), h3s });
+    toc.push({ topic, title: tree.children[0]?.heading || topic, h2s });
   }
 }
 
@@ -100,14 +92,11 @@ let blocks: any[] = [];
           <h2>
             <a href={`/${lang1}/vs/${lang2}/${entry.topic}`}>{entry.title}</a>
           </h2>
-          {entry.h2s.length > 0 && (
-            <p class="toc-h2s">{entry.h2s.join(" · ")}</p>
-          )}
           <ol>
-            {entry.h3s.map((h3) => (
+            {entry.h2s.map((h2) => (
               <li>
-                <a href={`/${lang1}/vs/${lang2}/${entry.topic}#${slugify(h3)}`}>
-                  {h3}
+                <a href={`/${lang1}/vs/${lang2}/${entry.topic}#${slugify(h2)}`}>
+                  {h2}
                 </a>
               </li>
             ))}

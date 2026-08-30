@@ -1,10 +1,8 @@
-# Python
+# Control Flow
 
-## Control Flow
+## if
 
-### if
-
-#### basic
+### basic
 
 ```python
 if x > 0:
@@ -15,13 +13,13 @@ else:
     print("zero")
 ```
 
-#### ternary
+### ternary
 
 ```python
 s = "positive" if x > 0 else "not positive"
 ```
 
-#### as expression
+### as expression
 
 ```python
 # Python has no if-expression block —
@@ -29,9 +27,9 @@ s = "positive" if x > 0 else "not positive"
 n = 1 if ok else 0
 ```
 
-### match / when
+## match / when
 
-#### basic
+### basic
 
 ```python
 match x:
@@ -43,7 +41,7 @@ match x:
         return "other"
 ```
 
-#### guard
+### guard
 
 ```python
 match point:
@@ -53,7 +51,7 @@ match point:
         return f"({x}, {y})"
 ```
 
-#### destructuring
+### destructuring
 
 ```python
 match cmd:
@@ -63,37 +61,37 @@ match cmd:
         return "stop"
 ```
 
-#### exhaustiveness
+### exhaustiveness
 
 ```python
 # Python does not enforce exhaustiveness.
 # The wildcard _ case is the safest fallback.
 ```
 
-### for
+## for
 
-#### basic
+### basic
 
 ```python
 for item in items:
     print(item)
 ```
 
-#### with index
+### with index
 
 ```python
 for i, item in enumerate(items):
     print(i, item)
 ```
 
-#### range loop
+### range loop
 
 ```python
 for i in range(10):
     print(i)
 ```
 
-#### break & continue
+### break & continue
 
 ```python
 for x in items:
@@ -104,7 +102,7 @@ for x in items:
     print(x)
 ```
 
-#### for else
+### for else
 
 ```python
 for item in items:
@@ -115,9 +113,9 @@ else:
     print("not found")
 ```
 
-### while
+## while
 
-#### basic
+### basic
 
 ```python
 while x > 0:
@@ -125,7 +123,7 @@ while x > 0:
     x -= 1
 ```
 
-#### break & continue
+### break & continue
 
 ```python
 while True:
@@ -137,7 +135,7 @@ while True:
     print(x)
 ```
 
-#### do while
+### do while
 
 ```python
 # Python has no do-while. Simulate with while True + break:
@@ -147,9 +145,9 @@ while True:
         break
 ```
 
-### Exception
+## Exception
 
-#### try / except
+### try / except
 
 ```python
 try:
@@ -160,7 +158,7 @@ except (TypeError, ValueError) as e:
     print(f"error: {e}")
 ```
 
-#### finally
+### finally
 
 ```python
 try:
@@ -170,7 +168,7 @@ finally:
     f.close()
 ```
 
-#### else
+### else
 
 ```python
 try:
@@ -181,14 +179,14 @@ else:
     print(f"result is {result}")
 ```
 
-#### raise
+### raise
 
 ```python
 raise ValueError("invalid value")
 raise  # re-raise current exception
 ```
 
-#### custom exception
+### custom exception
 
 ```python
 class MyError(Exception):
@@ -197,7 +195,7 @@ class MyError(Exception):
 raise MyError("something went wrong")
 ```
 
-#### context manager
+### context manager
 
 ```python
 with open("file.txt") as f:

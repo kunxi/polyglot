@@ -1,29 +1,27 @@
-# Kotlin
+# Collections
 
-## Collections
+## List
 
-### List
-
-#### literal
+### literal
 
 ```kotlin
 val a = listOf(1, 2, 3)
 ```
 
-#### size
+### size
 
 ```kotlin
 a.size
 ```
 
-#### lookup
+### lookup
 
 ```kotlin
 a[0]       // first element
 a.last()   // last element
 ```
 
-#### update
+### update
 
 ```kotlin
 val a = mutableListOf(1, 2, 3)
@@ -31,28 +29,28 @@ a[0] = 10
 a.add(4)
 ```
 
-#### is element present
+### is element present
 
 ```kotlin
 3 in a
 a.contains(3)
 ```
 
-#### delete
+### delete
 
 ```kotlin
 a.removeAt(0)   // by index
 a.remove(3)     // by value, returns false if absent
 ```
 
-#### merge
+### merge
 
 ```kotlin
 a + listOf(4, 5)
 a.addAll(listOf(4, 5))
 ```
 
-#### slice
+### slice
 
 ```kotlin
 a.slice(1..2)   // inclusive: elements at index 1 and 2
@@ -60,49 +58,49 @@ a.slice(1..<3)   // exlusive: elements at index 1 and 2
 a.slice(0..a.lastIndex step 2)
 ```
 
-#### reversed
+### reversed
 
 ```kotlin
 a.reversed()
 a.asReversed()  // view, no copy
 ```
 
-#### map
+### map
 
 ```kotlin
 a.map { it * 2 }
 ```
 
-#### filter
+### filter
 
 ```kotlin
 a.filter { it > 0 }
 ```
 
-### Dictionary
+## Dictionary
 
 `Map<K, V>` is not an inheritor of the Collection interface; however, it's a Kotlin collection type as well
 
-#### literal
+### literal
 
 ```kotlin
 val d = mapOf('t' to 1, 'f' to 0)
 ```
 
-#### size
+### size
 
 ```kotlin
 d.size
 ```
 
-#### lookup
+### lookup
 
 ```kotlin
 d['t']  // may return null
 d.get('t')  // may return null
 ```
 
-#### update
+### update
 ```kotlin
 val d = mutalbleMapOf('t' to 1, 'f' to 0)
 
@@ -110,20 +108,20 @@ d['u'] = -1
 d.put('u', -1)
 ``` 
 
-#### is key present
+### is key present
 
 ```kotlin
 'c' in d
 d.contains('c')
 ```
 
-#### delete
+### delete
 
 ```kotlin
 v = d.remove('t')  // return None if t is absent
 ```
 
-#### from array of pairs
+### from array of pairs
 
 ```kotlin
 val keys = listOf('t', 'f')
@@ -131,64 +129,64 @@ val values = listOf(1, 0)
 val d = (keys zip values).map { it.first to it.second }.toMap()
 ```
 
-#### merge
+### merge
 
 ```kotlin
 d.putAll(mapOf('u' to -1))
 ```
 
-#### invert
+### invert
 
 ```kotlin
 d.map { it.value to it.key }.toMap()
 ```
 
-#### keys and values as arrays
+### keys and values as arrays
 
 `keys` and `values` returns the set of keys and values respectively.
 
-### Set
+## Set
 
-#### literal
+### literal
 
 ```kotlin
 val s = setOf(1, 2, 3)
 ```
 
-#### size
+### size
 
 ```kotlin
 s.size
 ```
 
-#### add
+### add
 
 ```kotlin
 val s = mutableSetOf(1, 2, 3)
 s.add(4)
 ```
 
-#### is element present
+### is element present
 
 ```kotlin
 3 in s
 s.contains(3)
 ```
 
-#### delete
+### delete
 
 ```kotlin
 s.remove(3)     // returns false if absent
 ```
 
-#### from array
+### from array
 
 ```kotlin
 val a = listOf(1, 2, 3, 2)
 val s = a.toSet()     // {1, 2, 3}
 ```
 
-#### merge
+### merge
 
 ```kotlin
 s + setOf(4, 5)            // union
