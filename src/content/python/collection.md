@@ -1,4 +1,4 @@
-# Collections
+# Collections and Iterators
 
 ## List
 
@@ -200,4 +200,87 @@ s & {2, 3}           # intersection
 s - {2}              # difference
 s ^ {2, 3, 4}        # symmetric difference
 s.update({4, 5})     # in-place union
+```
+
+## Iterator
+
+### chain
+
+```python
+from itertools import chain
+list(chain('abc', 'de'))   # ['a', 'b', 'c', 'd', 'e']
+```
+
+### take / drop
+
+```python
+from itertools import islice
+list(islice(range(1, 10), 4))       # [1, 2, 3, 4]
+list(islice(range(1, 10), 2, 5))    # [3, 4, 5]
+```
+
+
+### takewhile
+
+```python
+from itertools import takewhile
+list(takewhile(lambda x: x < 3, [1, 2, 3, 1, 2]))  # [1, 2]
+```
+
+### dropwhile
+
+```python
+from itertools import dropwhile
+list(dropwhile(lambda x: x < 3, [1, 2, 3, 1, 2]))  # [3, 1, 2]
+```
+
+### zip
+
+```python
+list(zip('abc', '123'))
+# [('a', '1'), ('b', '2'), ('c', '3')]
+
+from itertools import zip_longest
+list(zip_longest('ab', '123', fillvalue='-'))
+# [('a', '1'), ('b', '2'), ('-', '3')]
+```
+
+### enumerate
+
+```python
+for i, item in enumerate(['a', 'b', 'c'], start=1):
+    print(i, item)                # 1 a, 2 b, 3 c
+```
+
+### flatten
+
+```python
+from itertools import chain
+def flatten(nested):
+    return chain.from_iterable(nested)
+list(flatten([[1, 2], [3, 4]]))   # [1, 2, 3, 4]
+```
+
+### count
+
+```python
+from itertools import count
+next(count(10))        # 10
+next(count(10, 2))     # 10, then 12, 14, ...
+```
+
+### cycle
+
+```python
+from itertools import cycle
+colors = cycle(['red', 'green', 'blue'])
+[next(colors) for _ in range(5)]   # ['red', 'green', 'blue', 'red', 'green']
+```
+
+### chunked
+
+```python
+# Python 3.12+ has itertools.batched
+from itertools import batched
+list(batched('ABCDEFG', 3))        # [('A', 'B', 'C'), ('D', 'E', 'F'), ('G',)]
 ```
