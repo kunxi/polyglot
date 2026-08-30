@@ -1,26 +1,24 @@
-# Python
+# Functions
 
-## Functions
-
-### Function
+## Function
 
 Python does not support function overloading by signature — only the last definition wins. Use default parameters, `*args`, or `@singledispatch` instead.
 
-#### definition
+### definition
 
 ```python
 def greet(name):
     return f"Hello, {name}"
 ```
 
-#### default parameters
+### default parameters
 
 ```python
 def greet(name, greeting="Hello"):
     return f"{greeting}, {name}"
 ```
 
-#### overloading
+### overloading
 
 ```python
 # No true overloading — use singledispatch
@@ -39,7 +37,7 @@ def _(arg: str) -> str:
     return f"str: {arg}"
 ```
 
-#### varargs
+### varargs
 
 ```python
 def sum_all(*args):
@@ -50,7 +48,7 @@ def print_kwargs(**kwargs):
         print(f"{k}={v}")
 ```
 
-#### keyword arguments
+### keyword arguments
 
 ```python
 def configure(host="localhost", port=8080, debug=False):
@@ -59,7 +57,7 @@ def configure(host="localhost", port=8080, debug=False):
 configure(port=3000, debug=True)
 ```
 
-#### return
+### return
 
 ```python
 def divide(a, b):
@@ -68,23 +66,23 @@ def divide(a, b):
     return a / b
 ```
 
-#### callable check
+### callable check
 
 ```python
 callable(greet)      # True
 callable(42)         # False
 ```
 
-### Lambda
+## Lambda
 
-#### basic
+### basic
 
 ```python
 square = lambda x: x * x
 add = lambda a, b: a + b
 ```
 
-#### as argument
+### as argument
 
 ```python
 # lambdas should be pure — avoid side effects
@@ -94,7 +92,7 @@ list(map(lambda x: x * 2, nums))
 list(filter(lambda x: x > 2, nums))
 ```
 
-#### receiver
+### receiver
 
 ```python
 # Python has no lambda receiver concept.

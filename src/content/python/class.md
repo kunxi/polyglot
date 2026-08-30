@@ -1,10 +1,8 @@
-# Python
+# Classes
 
-## Classes
+## Class
 
-### Class
-
-#### definition
+### definition
 
 ```python
 class Dog:
@@ -12,34 +10,34 @@ class Dog:
         self.name = name
 ```
 
-#### constructor
+### constructor
 
 ```python
 def __init__(self, name):
     self.name = name
 ```
 
-#### instantiation
+### instantiation
 
 ```python
 dog = Dog('Fido')
 ```
 
-#### attributes
+### attributes
 
 ```python
 self.name = name      # instance attribute
 Dog.species = 'canine'  # class attribute
 ```
 
-#### method
+### method
 
 ```python
 def bark(self):
     return 'Woof!'
 ```
 
-#### inheritance
+### inheritance
 
 ```python
 class Animal:
@@ -49,7 +47,7 @@ class Dog(Animal):
     pass
 ```
 
-#### override
+### override
 
 ```python
 class Dog(Animal):
@@ -57,7 +55,7 @@ class Dog(Animal):
         return 'Woof!'
 ```
 
-#### super
+### super
 
 ```python
 class Dog(Animal):
@@ -65,7 +63,7 @@ class Dog(Animal):
         super().__init__(name)
 ```
 
-#### class method
+### class method
 
 ```python
 @classmethod
@@ -73,7 +71,7 @@ def from_birthyear(cls, birthyear):
     return cls(2025 - birthyear)
 ```
 
-#### static method
+### static method
 
 ```python
 @staticmethod
@@ -81,7 +79,7 @@ def is_canine(name):
     return name in ('dog', 'wolf')
 ```
 
-#### abstract
+### abstract
 
 ```python
 from abc import ABC, abstractmethod
@@ -92,14 +90,14 @@ class Animal(ABC):
         pass
 ```
 
-#### interface
+### interface
 
 ```python
 # Python uses duck typing — no formal interface.
 # ABCs with abstract methods are the closest equivalent.
 ```
 
-#### data class
+### data class
 
 ```python
 from dataclasses import dataclass
@@ -110,14 +108,14 @@ class Dog:
     age: int
 ```
 
-#### equality
+### equality
 
 ```python
 def __eq__(self, other):
     return self.name == other.name
 ```
 
-#### string representation
+### string representation
 
 ```python
 def __str__(self):
@@ -127,7 +125,7 @@ def __repr__(self):
     return f'Dog({self.name!r})'
 ```
 
-#### sealed class
+### sealed class
 
 ```python
 # Python 3.12+ has a typing.sealed decorator
@@ -140,7 +138,7 @@ class Success(Result): ...
 class Failure(Result): ...
 ```
 
-#### private
+### private
 
 ```python
 class Dog:
@@ -149,7 +147,7 @@ class Dog:
         self.__mangled = 1  # name-mangled to _Dog__mangled
 ```
 
-#### protected
+### protected
 
 ```python
 class Animal:
@@ -161,16 +159,16 @@ class Dog(Animal):
         return self._name
 ```
 
-#### public
+### public
 
 ```python
 class Dog:
     name = "Fido"   # everything is public by default
 ```
 
-### Enum
+## Enum
 
-#### definition
+### definition
 
 ```python
 from enum import Enum
@@ -181,7 +179,7 @@ class Color(Enum):
     AMBER = 3
 ```
 
-#### auto value
+### auto value
 
 ```python
 from enum import Enum, auto
@@ -192,7 +190,7 @@ class Color(Enum):
     AMBER = auto()
 ```
 
-#### access
+### access
 
 ```python
 Color.RED           # <Color.RED: 1>
@@ -200,20 +198,20 @@ Color.RED.name      # 'RED'
 Color.RED.value     # 1
 ```
 
-#### iteration
+### iteration
 
 ```python
 list(Color)         # [<Color.RED: 1>, ...]
 ```
 
-#### lookup
+### lookup
 
 ```python
 Color['RED']        # <Color.RED: 1>
 Color(1)            # <Color.RED: 1>
 ```
 
-#### match
+### match
 
 ```python
 match color:
@@ -225,7 +223,7 @@ match color:
         return 'caution'
 ```
 
-#### enum with data
+### enum with data
 
 ```python
 class Planet(Enum):

@@ -1,0 +1,108 @@
+---
+import fs from "node:fs";
+import {
+  parseSections,
+  renderMD,
+  buildLookup,
+  flatten,
+} from "../../../../lib/compare";
+
+function slugify(s: string) {
+  return s
+    .toLowerCase()
+    .replace(/[^a-z0-9]+/g, "-")
+    .replace(/^-|-$/g, "");
+}
+
+export function getStaticPaths() {
+  const contentDir = "src/content";
+  const langDirs = fs
+    .readdirSync(contentDir, { withFileTypes: true })
+    .filter((d: fs.Dirent) => d.isDirectory())
+    .map((d: fs.Dirent) => d.name);
+
+  const paths: { params: { lang1: string; lang2: string } }[] = [];
+
+  for (const l1 of langDirs) {
+    for (const l2 of langDirs) {
+      if (l1 === l2) continue;
+      // TOC page (no slug)
+      paths.push({ params: { lang1: l1, lang2: l2 } });
+    }
+  }
+  return paths;
+}
+
+const { lang1, lang2 } = Astro.params;
+const isTopic = false;
+
+// --- TOC data ---
+interface TocEntry {
+  topic: string;
+  title: string;
+  h2s: string[];
+}
+
+let toc: TocEntry[] = [];
+const contentDir = "src/content";
+const l1Topics = fs
+  .readdirSync(`${contentDir}/${lang1}`)
+  .filter((f: string) => f.endsWith(".md"))
+  .map((f: string) => f.replace(".md", ""));
+const l2Topics = fs
+  .readdirSync(`${contentDir}/${lang2}`)
+  .filter((f: string) => f.endsWith(".md"))
+  .map((f: string) => f.replace(".md", ""));
+
+// scheduled order
+const order = ["types", "control-flow", "function", "class", "collection"];
+for (const topic of order) {
+  if (l1Topics.includes(topic) && l2Topics.includes(topic)) {
+    const raw = fs.readFileSync(`${contentDir}/${lang1}/${topic}.md`, "utf-8");
+    const tree = parseSections(raw);
+    const h2s: string[] = [];
+    const h1 = tree.children[0];
+    if (h1) {
+      for (const h2 of h1.children) {
+        if (h2.level === 2) h2s.push(h2.heading);
+      }
+    }
+    toc.push({ topic, title: tree.children[0]?.heading || topic, h2s });
+  }
+}
+
+// --- Topic data ---
+let blocks: any[] = [];
+---
+
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width" />
+    <title>{lang1} vs {lang2} - Polyglot</title>
+    <link rel="stylesheet" href="/index.css" />
+  </head>
+
+  <body>
+    <h1>{lang1} vs {lang2}</h1>
+    <p class="subtitle">Topic overview</p>
+    {
+      toc.map((entry) => (
+        <div class="toc-section">
+          <h2>
+            <a href={`/${lang1}/vs/${lang2}/${entry.topic}`}>{entry.title}</a>
+          </h2>
+          <ol>
+            {entry.h2s.map((h2) => (
+              <li>
+                <a href={`/${lang1}/vs/${lang2}/${entry.topic}#${slugify(h2)}`}>
+                  {h2}
+                </a>
+              </li>
+            ))}
+          </ol>
+        </div>
+      ))
+    }
+  </body>
+</html>

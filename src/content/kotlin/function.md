@@ -1,10 +1,8 @@
-# Kotlin
+# Functions
 
-## Functions
+## Function
 
-### Function
-
-#### definition
+### definition
 
 ```kotlin
 fun greet(name: String): String {
@@ -12,7 +10,7 @@ fun greet(name: String): String {
 }
 ```
 
-#### default parameters
+### default parameters
 
 ```kotlin
 fun greet(name: String, greeting: String = "Hello"): String {
@@ -20,14 +18,14 @@ fun greet(name: String, greeting: String = "Hello"): String {
 }
 ```
 
-#### overloading
+### overloading
 
 ```kotlin
 fun stringify(arg: Int): String = "int: $arg"
 fun stringify(arg: String): String = "str: $arg"
 ```
 
-#### varargs
+### varargs
 
 ```kotlin
 fun sumAll(vararg args: Int): Int {
@@ -39,7 +37,7 @@ fun printAll(vararg args: Any) {
 }
 ```
 
-#### keyword arguments
+### keyword arguments
 
 ```kotlin
 fun configure(host: String = "localhost",
@@ -49,7 +47,7 @@ fun configure(host: String = "localhost",
 configure(host = "example.com", port = 3000, debug = true)
 ```
 
-#### return
+### return
 
 ```kotlin
 fun divide(a: Int, b: Int): Double? {
@@ -58,16 +56,16 @@ fun divide(a: Int, b: Int): Double? {
 }
 ```
 
-#### callable check
+### callable check
 
 ```kotlin
 ::greet.isCallable      // true
 42::isCallable          // error — Int is not callable
 ```
 
-### Lambda
+## Lambda
 
-#### basic
+### basic
 
 ```kotlin
 val square: (Int) -> Int = { x -> x * x }
@@ -75,7 +73,7 @@ val square = { x: Int -> x * x }
 val add = { a: Int, b: Int -> a + b }
 ```
 
-#### as argument
+### as argument
 
 ```kotlin
 listOf(1, 2, 3).map { it * 2 }
@@ -89,7 +87,7 @@ val doubler: (Int) -> Int = { it * 2 }
 nums.map(doubler)
 ```
 
-#### receiver
+### receiver
 
 ```kotlin
 // lambda with receiver: this refers to the object

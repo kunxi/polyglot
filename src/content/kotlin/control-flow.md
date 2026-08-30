@@ -1,10 +1,8 @@
-# Kotlin
+# Control Flow
 
-## Control Flow
+## if
 
-### if
-
-#### basic
+### basic
 
 ```kotlin
 if (x > 0) {
@@ -16,13 +14,13 @@ if (x > 0) {
 }
 ```
 
-#### ternary
+### ternary
 
 ```kotlin
 val s = if (x > 0) "positive" else "not positive"
 ```
 
-#### as expression
+### as expression
 
 ```kotlin
 // if is an expression in Kotlin — returns a value
@@ -38,9 +36,9 @@ val grade = if (score >= 90) {
 }
 ```
 
-### match / when
+## match / when
 
-#### basic
+### basic
 
 ```kotlin
 when (x) {
@@ -50,7 +48,7 @@ when (x) {
 }
 ```
 
-#### guard
+### guard
 
 ```kotlin
 when {
@@ -60,7 +58,7 @@ when {
 }
 ```
 
-#### destructuring
+### destructuring
 
 ```kotlin
 when (cmd) {
@@ -70,7 +68,7 @@ when (cmd) {
 }
 ```
 
-#### exhaustiveness
+### exhaustiveness
 
 ```kotlin
 // Compiler checks exhaustiveness for sealed classes
@@ -84,9 +82,9 @@ when (cmd) {   // no else needed — all cases covered
 }
 ```
 
-### for
+## for
 
-#### basic
+### basic
 
 ```kotlin
 for (item in items) {
@@ -94,7 +92,7 @@ for (item in items) {
 }
 ```
 
-#### with index
+### with index
 
 ```kotlin
 for ((i, item) in items.withIndex()) {
@@ -102,7 +100,7 @@ for ((i, item) in items.withIndex()) {
 }
 ```
 
-#### range loop
+### range loop
 
 ```kotlin
 for (i in 0..9) {
@@ -110,7 +108,7 @@ for (i in 0..9) {
 }
 ```
 
-#### break & continue
+### break & continue
 
 ```kotlin
 for (x in items) {
@@ -120,7 +118,7 @@ for (x in items) {
 }
 ```
 
-#### for else
+### for else
 
 ```kotlin
 // Kotlin has no for-else. Use a flag or any/none:
@@ -128,9 +126,9 @@ val found = items.any { it == target }
 if (!found) println("not found")
 ```
 
-### while
+## while
 
-#### basic
+### basic
 
 ```kotlin
 while (x > 0) {
@@ -139,7 +137,7 @@ while (x > 0) {
 }
 ```
 
-#### break & continue
+### break & continue
 
 ```kotlin
 while (true) {
@@ -150,7 +148,7 @@ while (true) {
 }
 ```
 
-#### do while
+### do while
 
 ```kotlin
 do {
@@ -159,9 +157,9 @@ do {
 } while (x > 0)
 ```
 
-### Exception
+## Exception
 
-#### try / except
+### try / except
 
 ```kotlin
 try {
@@ -173,7 +171,7 @@ try {
 }
 ```
 
-#### finally
+### finally
 
 ```kotlin
 try {
@@ -184,7 +182,7 @@ try {
 }
 ```
 
-#### else
+### else
 
 ```kotlin
 // Kotlin has no try-else. Just put the code after try.
@@ -196,13 +194,13 @@ try {
 }
 ```
 
-#### raise
+### raise
 
 ```kotlin
 throw IllegalArgumentException("invalid value")
 ```
 
-#### custom exception
+### custom exception
 
 ```kotlin
 class MyError(message: String) : Exception(message)
@@ -210,7 +208,7 @@ class MyError(message: String) : Exception(message)
 throw MyError("something went wrong")
 ```
 
-#### context manager
+### context manager
 
 ```kotlin
 // use() — Kotlin's equivalent of Python's with
