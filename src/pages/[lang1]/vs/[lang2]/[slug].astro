@@ -97,10 +97,10 @@ blocks = flatten(tree1, lookup2);
     {
       blocks.map((block: any) => {
         if (block.type === "h1") {
-          return <h1>{block.heading}</h1>;
+          return <h2>{block.heading}</h2>;
         }
         if (block.type === "h2") {
-          return <h2 id={slugify(block.heading)}>{block.heading}</h2>;
+          return <h3 id={slugify(block.heading)}>{block.heading}</h3>;
         }
         return (
           <table>
