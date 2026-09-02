@@ -55,7 +55,14 @@ const l2Topics = fs
   .map((f: string) => f.replace(".md", ""));
 
 // scheduled order
-const order = ["types", "control-flow", "function", "class", "collection", "iterator"];
+const order = [
+  "types",
+  "control-flow",
+  "function",
+  "class",
+  "collection",
+  "iterator",
+];
 for (const topic of order) {
   if (l1Topics.includes(topic) && l2Topics.includes(topic)) {
     const raw = fs.readFileSync(`${contentDir}/${lang1}/${topic}.md`, "utf-8");
