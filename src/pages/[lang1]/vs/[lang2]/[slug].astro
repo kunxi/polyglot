@@ -94,6 +94,7 @@ blocks = flatten(tree1, lookup2);
     <link rel="stylesheet" href="/index.css" />
   </head>
   <body>
+    <a href={`/${lang1}/vs/${lang2}`} class="back-link">&larr; Back</a>
     {
       blocks.map((block: any) => {
         if (block.type === "h1") {
