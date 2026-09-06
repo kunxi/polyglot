@@ -151,15 +151,17 @@ d.map { it.value to it.key }.toMap()
 \`keys\` and \`values\` returns the set of keys and values respectively.
 `;
 
-const META_MD = `# Collections
+const META_MD = `# Language
 
-## Dictionary
+## Collections
 
-### literal
+### Dictionary
 
-### size
+#### literal
 
-### lookup
+#### size
+
+#### lookup
 `;
 
 const PY_LANG_MD = `# Python

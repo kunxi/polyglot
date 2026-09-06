@@ -102,14 +102,16 @@ function findChild(node: Section, heading: string): Section | undefined {
 
 // -- meta.md validation & template rendering --
 
-// meta.md: h1 = topic, h2 = group, h3 = leaf.
-// language file: h1 = language, h2 = topic, h3 = group, h4 = leaf.
+// meta.md and language files share the same shape:
+// h1 = title, h2 = topic, h3 = group, h4 = leaf.
 export function validateLanguage(langTree: Section, metaTree: Section, langName: string): void {
   const langRoot = langTree.children.find((c) => c.level === 1);
   if (!langRoot) throw new Error(`${langName}: missing h1 title`);
+  const metaRoot = metaTree.children.find((c) => c.level === 1);
+  if (!metaRoot) throw new Error('meta.md: missing h1 title');
 
   for (const topic of langRoot.children) {
-    const metaTopic = findChild(metaTree, topic.heading);
+    const metaTopic = findChild(metaRoot, topic.heading);
     if (!metaTopic) {
       throw new Error(`${langName}: topic "${topic.heading}" not found in meta.md`);
     }
@@ -128,11 +130,13 @@ export function validateLanguage(langTree: Section, metaTree: Section, langName:
 }
 
 export function renderComparison(metaTree: Section, lang1Tree: Section, lang2Tree: Section): Block[] {
+  const metaRoot = metaTree.children.find((c) => c.level === 1);
+  if (!metaRoot) throw new Error('meta.md: missing h1 title');
   const l1 = lang1Tree.children.find((c) => c.level === 1);
   const l2 = lang2Tree.children.find((c) => c.level === 1);
   const blocks: Block[] = [];
 
-  for (const topic of metaTree.children) {
+  for (const topic of metaRoot.children) {
     blocks.push({ type: 'h2', heading: topic.heading });
     const t1 = l1 ? findChild(l1, topic.heading) : undefined;
     const t2 = l2 ? findChild(l2, topic.heading) : undefined;
