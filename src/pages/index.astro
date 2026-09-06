@@ -8,10 +8,11 @@ const languages = fs
   .map((f: string) => f.replace(".md", ""));
 ---
 
-<Layout title="Polyglot — Compare languages">
+<Layout title="I know this, I want to learn that. — Polyglot">
   <main class="home" data-langs={JSON.stringify(languages)} id="app">
     <h1 class="sentence">
-      I know <span class="slot" id="slot-0" data-index="0"></span>, I want to<br />
+      I know <span class="slot" id="slot-0" data-index="0"></span>, I want to<br
+      />
       learn <span class="slot" id="slot-1" data-index="1"></span>
     </h1>
 
