@@ -1,5 +1,6 @@
 ---
 import fs from "node:fs";
+import Layout from "../../../../layouts/Layout.astro";
 import {
   parseSections,
   renderMD,
@@ -44,11 +45,8 @@ validateLanguage(tree2, metaTree, lang2);
 const blocks = renderComparison(metaTree, tree1, tree2);
 ---
 
-<html lang="en">
-  <head>
-    <meta charset="utf-8" />
-    <meta name="viewport" content="width=device-width" />
-    <title>{lang1} vs {lang2} — Polyglot</title>
+<Layout title={`${lang1} vs ${lang2} — Polyglot`}>
+  <Fragment slot="head">
     <link
       rel="stylesheet"
       href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.11.1/styles/github.min.css"
@@ -69,11 +67,15 @@ const blocks = renderComparison(metaTree, tree1, tree2);
       is:inline
       src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.11.1/languages/rust.min.js"
     ></script>
-    <link rel="stylesheet" href="/index.css" />
-  </head>
-  <body>
+  </Fragment>
+
+  <main class="content">
     <a href="/" class="back-link">&larr; Back</a>
-    <h1>{lang1} vs {lang2}</h1>
+    <h1 class="page-title">
+      <span class="lang">{lang1}</span>
+      <span class="vs">vs</span>
+      <span class="lang">{lang2}</span>
+    </h1>
     {
       blocks.map((block) => {
         if (block.type === "h2") {
@@ -112,8 +114,9 @@ const blocks = renderComparison(metaTree, tree1, tree2);
         );
       })
     }
-  </body>
+  </main>
+
   <script is:inline>
     hljs.highlightAll();
   </script>
-</html>
+</Layout>
