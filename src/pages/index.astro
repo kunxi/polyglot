@@ -1,228 +1,115 @@
 ---
 import fs from "node:fs";
+import Layout from "../layouts/Layout.astro";
 
 const languages = fs
-  .readdirSync("src/content", { withFileTypes: true })
-  .filter((d) => d.isDirectory())
-  .map((d) => d.name);
+  .readdirSync("src/content")
+  .filter((f: string) => f.endsWith(".md") && f !== "meta.md")
+  .map((f: string) => f.replace(".md", ""));
 ---
 
-<!doctype html>
-<html lang="en">
-  <head>
-    <meta charset="utf-8" />
-    <meta name="viewport" content="width=device-width" />
-    <title>Polyglot — Compare languages</title>
-    <link rel="stylesheet" href="/index.css" />
-  </head>
-  <body>
-    <main class="home" data-langs={JSON.stringify(languages)} id="app">
-      <h1 class="sentence">
-        I know <span class="slot" id="slot-0" data-index="0"></span>, I want to<br />
-        learn <span class="slot" id="slot-1" data-index="1"></span>
-      </h1>
+<Layout title="Polyglot — Compare languages">
+  <main class="home" data-langs={JSON.stringify(languages)} id="app">
+    <h1 class="sentence">
+      I know <span class="slot" id="slot-0" data-index="0"></span>, I want to<br />
+      learn <span class="slot" id="slot-1" data-index="1"></span>
+    </h1>
 
-      <p class="helper">Drag a language into each blank, or click one.</p>
+    <p class="helper">Drag a language into each blank, or click one.</p>
 
-      <div class="pool" id="pool" aria-label="Available languages"></div>
+    <div class="pool" id="pool" aria-label="Available languages"></div>
 
-      <a id="go" class="go" aria-disabled="true">Let's go</a>
-    </main>
+    <a id="go" class="go" aria-disabled="true">Let's go</a>
+  </main>
 
-    <script is:inline>
-      (() => {
-        const app = document.getElementById("app");
-        const languages = JSON.parse(app.dataset.langs || "[]");
-        const pool = document.getElementById("pool");
-        const go = document.getElementById("go");
-        const slots = [null, null];
-        let dragLang = null;
+  <script is:inline>
+    (() => {
+      const app = document.getElementById("app");
+      const languages = JSON.parse(app.dataset.langs || "[]");
+      const pool = document.getElementById("pool");
+      const go = document.getElementById("go");
+      const slots = [null, null];
+      let dragLang = null;
 
-        const cap = (s) => s.charAt(0).toUpperCase() + s.slice(1);
+      const cap = (s) => s.charAt(0).toUpperCase() + s.slice(1);
 
-        function chip(lang, cls) {
-          return `<button type="button" class="${cls}" draggable="true" data-lang="${lang}">${cap(lang)}</button>`;
+      function chip(lang, cls) {
+        return `<button type="button" class="${cls}" draggable="true" data-lang="${lang}">${cap(lang)}</button>`;
+      }
+
+      function render() {
+        const placed = slots.filter(Boolean);
+        pool.innerHTML = languages
+          .filter((lang) => !placed.includes(lang))
+          .map((lang) => chip(lang, "lang-chip"))
+          .join("");
+
+        slots.forEach((lang, i) => {
+          const slot = document.getElementById("slot-" + i);
+          slot.dataset.lang = lang || "";
+          slot.innerHTML = lang
+            ? `<span class="slot-text" draggable="true" data-lang="${lang}">${cap(lang)}</span>`
+            : "";
+        });
+
+        const ready = slots[0] && slots[1];
+        if (ready) {
+          go.href = "/" + slots[0] + "/vs/" + slots[1];
+          go.removeAttribute("aria-disabled");
+          go.classList.add("ready");
+        } else {
+          go.removeAttribute("href");
+          go.setAttribute("aria-disabled", "true");
+          go.classList.remove("ready");
         }
+      }
 
-        function render() {
-          const placed = slots.filter(Boolean);
-          pool.innerHTML = languages
-            .filter((lang) => !placed.includes(lang))
-            .map((lang) => chip(lang, "lang-chip"))
-            .join("");
+      function place(lang, index) {
+        if (slots[index] === lang) return;
+        if (slots[1 - index] === lang) slots[1 - index] = slots[index];
+        slots[index] = lang;
+        render();
+      }
 
-          slots.forEach((lang, i) => {
-            const slot = document.getElementById("slot-" + i);
-            slot.dataset.lang = lang || "";
-            slot.innerHTML = lang
-              ? `<span class="slot-text" draggable="true" data-lang="${lang}">${cap(lang)}</span>`
-              : "";
-          });
+      app.addEventListener("dragstart", (e) => {
+        const el = e.target.closest('[draggable="true"][data-lang]');
+        if (!el) return;
+        dragLang = el.dataset.lang;
+        e.dataTransfer.setData("text/plain", el.dataset.lang);
+        e.dataTransfer.effectAllowed = "move";
+      });
 
-          const ready = slots[0] && slots[1];
-          if (ready) {
-            go.href = "/" + slots[0] + "/vs/" + slots[1];
-            go.removeAttribute("aria-disabled");
-            go.classList.add("ready");
-          } else {
-            go.removeAttribute("href");
-            go.setAttribute("aria-disabled", "true");
-            go.classList.remove("ready");
-          }
-        }
+      app.addEventListener("dragover", (e) => {
+        if (e.target.closest(".slot")) e.preventDefault();
+      });
 
-        function place(lang, index) {
-          if (slots[index] === lang) return;
-          if (slots[1 - index] === lang) slots[1 - index] = slots[index];
-          slots[index] = lang;
+      app.addEventListener("drop", (e) => {
+        const slot = e.target.closest(".slot");
+        if (!slot) return;
+        e.preventDefault();
+        const lang = e.dataTransfer.getData("text/plain") || dragLang;
+        if (!lang) return;
+        place(lang, Number(slot.dataset.index));
+      });
+
+      app.addEventListener("click", (e) => {
+        const el = e.target.closest("[data-lang]");
+        if (!el) return;
+        const lang = el.dataset.lang;
+        if (el.classList.contains("lang-chip")) {
+          const i = slots.findIndex((s) => !s);
+          if (i >= 0) place(lang, i);
+        } else if (el.classList.contains("slot-text")) {
+          slots[Number(el.closest(".slot").dataset.index)] = null;
           render();
         }
+      });
 
-        app.addEventListener("dragstart", (e) => {
-          const el = e.target.closest('[draggable="true"][data-lang]');
-          if (!el) return;
-          dragLang = el.dataset.lang;
-          e.dataTransfer.setData("text/plain", el.dataset.lang);
-          e.dataTransfer.effectAllowed = "move";
-        });
+      go.addEventListener("click", (e) => {
+        if (!(slots[0] && slots[1])) e.preventDefault();
+      });
 
-        app.addEventListener("dragover", (e) => {
-          if (e.target.closest(".slot")) e.preventDefault();
-        });
-
-        app.addEventListener("drop", (e) => {
-          const slot = e.target.closest(".slot");
-          if (!slot) return;
-          e.preventDefault();
-          const lang = e.dataTransfer.getData("text/plain") || dragLang;
-          if (!lang) return;
-          place(lang, Number(slot.dataset.index));
-        });
-
-        app.addEventListener("click", (e) => {
-          const el = e.target.closest("[data-lang]");
-          if (!el) return;
-          const lang = el.dataset.lang;
-          if (el.classList.contains("lang-chip")) {
-            const i = slots.findIndex((s) => !s);
-            if (i >= 0) place(lang, i);
-          } else if (el.classList.contains("slot-text")) {
-            slots[Number(el.closest(".slot").dataset.index)] = null;
-            render();
-          }
-        });
-
-        go.addEventListener("click", (e) => {
-          if (!(slots[0] && slots[1])) e.preventDefault();
-        });
-
-        render();
-      })();
-    </script>
-  </body>
-</html>
-
-<style is:global>
-  .home {
-    min-height: 100dvh;
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    justify-content: center;
-    padding: 3rem 1rem;
-    box-sizing: border-box;
-    text-align: center;
-  }
-
-  .sentence {
-    font-family: Georgia, 'Times New Roman', serif;
-    font-size: clamp(2.4rem, 6vw, 4rem);
-    line-height: 1.3;
-    letter-spacing: -0.02em;
-    font-weight: 700;
-    color: #161616;
-    margin: 0 auto 1.5rem;
-  }
-
-  .slot {
-    display: inline-block;
-    font-family: ui-monospace, SFMono-Regular, Menlo, Consolas, 'Liberation Mono', monospace;
-    min-width: 6ch;
-    line-height: 1;
-    margin: 0 0.15em;
-    border-bottom: 2px solid #c9c9c9;
-    vertical-align: baseline;
-    text-align: center;
-  }
-
-  .slot:empty::before {
-    content: "\00a0";
-  }
-
-  .slot-text {
-    font-family: ui-monospace, SFMono-Regular, Menlo, Consolas, 'Liberation Mono', monospace;
-    font-weight: 700;
-    color: #6c63ff;
-    white-space: nowrap;
-  }
-
-  .helper {
-    color: #888;
-    margin: 0 0 2rem;
-  }
-
-  .pool {
-    display: flex;
-    flex-wrap: wrap;
-    justify-content: center;
-    gap: 0.6rem;
-    min-height: 3rem;
-    margin-bottom: 2.25rem;
-  }
-
-  .lang-chip {
-    border: none;
-    border-radius: 999px;
-    cursor: grab;
-    font-weight: 600;
-  }
-
-  .lang-chip {
-    font-family: ui-monospace, SFMono-Regular, Menlo, Consolas, 'Liberation Mono', monospace;
-    background: #f0f0f0;
-    color: #222;
-    padding: 0.6rem 1.4rem;
-  }
-
-  .lang-chip:hover {
-    background: #e8e8e8;
-  }
-
-  .lang-chip:active {
-    cursor: grabbing;
-  }
-
-  .go {
-    display: inline-block;
-    min-width: 180px;
-    padding: 0.85rem 1.6rem;
-    border-radius: 999px;
-    background: #e2e2e2;
-    color: #9a9a9a;
-    text-decoration: none;
-    font-weight: 700;
-    pointer-events: none;
-    transition: background 0.15s, color 0.15s, transform 0.15s;
-  }
-
-  .go.ready {
-    background: #6c63ff;
-    color: #fff;
-    pointer-events: auto;
-  }
-
-  .go.ready:hover {
-    background: #5a50f0;
-    transform: translateY(-1px);
-  }
-</style>
+      render();
+    })();
+  </script>
+</Layout>
