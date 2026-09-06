@@ -2,9 +2,9 @@
 import fs from "node:fs";
 
 const languages = fs
-  .readdirSync("src/content", { withFileTypes: true })
-  .filter((d) => d.isDirectory())
-  .map((d) => d.name);
+  .readdirSync("src/content")
+  .filter((f: string) => f.endsWith(".md") && f !== "meta.md")
+  .map((f: string) => f.replace(".md", ""));
 ---
 
 <!doctype html>

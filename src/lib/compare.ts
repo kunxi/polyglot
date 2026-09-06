@@ -12,7 +12,7 @@ export interface ItemRow {
 }
 
 export interface Block {
-  type: 'h1' | 'h2' | 'table';
+  type: 'h2' | 'h3' | 'table';
   heading?: string;
   items?: ItemRow[];
 }
@@ -96,61 +96,66 @@ export function buildLookup(node: Section): Map<string, Section> {
   return map;
 }
 
-// -- flatten into display blocks --
-
-export function collectItems(node: Section, lookIn2: Section | null): ItemRow[] {
-  const items: ItemRow[] = [];
-
-  // h2 direct content from either side as first row with empty label
-  const c1 = node.content.trim();
-  const c2 = (lookIn2?.content ?? '').trim();
-  if (c1 || c2) {
-    items.push({ label: '', content1: node.content, content2: lookIn2?.content ?? '' });
-  }
-
-  const hasH3 = node.children.some((c: Section) => c.level >= 3);
-  const matchHasH3 = lookIn2?.children.some((c: Section) => c.level >= 3);
-
-  // scoped lookup within the matched h2, not global
-  const matchKids = buildLookup(lookIn2 ?? { level: 0, heading: '', content: '', children: [] });
-
-  if (hasH3) {
-    for (const gc of node.children) {
-      if (gc.level >= 3) {
-        const gm = matchKids.get(normalize(gc.heading));
-        items.push({ label: gc.heading, content1: gc.content, content2: gm?.content ?? '' });
-      }
-    }
-  } else if (matchHasH3 && lookIn2) {
-    for (const gc of lookIn2.children) {
-      if (gc.level >= 3) {
-        const gm = buildLookup(node).get(normalize(gc.heading));
-        items.push({ label: gc.heading, content1: gm?.content ?? '', content2: gc.content });
-      }
-    }
-  }
-  return items;
+function findChild(node: Section, heading: string): Section | undefined {
+  return node.children.find((c) => normalize(c.heading) === normalize(heading));
 }
 
-export function flatten(node: Section, lookup2: Map<string, Section>): Block[] {
-  const blocks: Block[] = [];
+// -- meta.md validation & template rendering --
 
-  function walk(n: Section) {
-    for (const child of n.children) {
-      if (child.level === 1) {
-        blocks.push({ type: 'h1', heading: child.heading });
-        walk(child);
-      } else if (child.level === 2) {
-        const match = lookup2.get(normalize(child.heading));
-        blocks.push({ type: 'h2', heading: child.heading });
-        blocks.push({ type: 'table', items: collectItems(child, match) });
-        walk(child);
-      } else {
-        walk(child);
+// meta.md: h1 = topic, h2 = group, h3 = leaf.
+// language file: h1 = language, h2 = topic, h3 = group, h4 = leaf.
+export function validateLanguage(langTree: Section, metaTree: Section, langName: string): void {
+  const langRoot = langTree.children.find((c) => c.level === 1);
+  if (!langRoot) throw new Error(`${langName}: missing h1 title`);
+
+  for (const topic of langRoot.children) {
+    const metaTopic = findChild(metaTree, topic.heading);
+    if (!metaTopic) {
+      throw new Error(`${langName}: topic "${topic.heading}" not found in meta.md`);
+    }
+    for (const group of topic.children) {
+      const metaGroup = findChild(metaTopic, group.heading);
+      if (!metaGroup) {
+        throw new Error(`${langName}: section "${group.heading}" under "${topic.heading}" not found in meta.md`);
+      }
+      for (const leaf of group.children) {
+        if (!findChild(metaGroup, leaf.heading)) {
+          throw new Error(`${langName}: section "${leaf.heading}" under "${topic.heading} > ${group.heading}" not found in meta.md`);
+        }
       }
     }
   }
+}
 
-  walk(node);
+export function renderComparison(metaTree: Section, lang1Tree: Section, lang2Tree: Section): Block[] {
+  const l1 = lang1Tree.children.find((c) => c.level === 1);
+  const l2 = lang2Tree.children.find((c) => c.level === 1);
+  const blocks: Block[] = [];
+
+  for (const topic of metaTree.children) {
+    blocks.push({ type: 'h2', heading: topic.heading });
+    const t1 = l1 ? findChild(l1, topic.heading) : undefined;
+    const t2 = l2 ? findChild(l2, topic.heading) : undefined;
+
+    for (const group of topic.children) {
+      blocks.push({ type: 'h3', heading: group.heading });
+      const g1 = t1 ? findChild(t1, group.heading) : undefined;
+      const g2 = t2 ? findChild(t2, group.heading) : undefined;
+
+      const items: ItemRow[] = [];
+      if ((g1?.content ?? '').trim() || (g2?.content ?? '').trim()) {
+        items.push({ label: '', content1: g1?.content ?? '', content2: g2?.content ?? '' });
+      }
+
+      for (const leaf of group.children) {
+        const leaf1 = g1 ? findChild(g1, leaf.heading) : undefined;
+        const leaf2 = g2 ? findChild(g2, leaf.heading) : undefined;
+        items.push({ label: leaf.heading, content1: leaf1?.content ?? '', content2: leaf2?.content ?? '' });
+      }
+
+      blocks.push({ type: 'table', items });
+    }
+  }
+
   return blocks;
 }

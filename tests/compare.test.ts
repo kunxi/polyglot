@@ -1,5 +1,13 @@
 import { describe, it, expect } from 'vitest';
-import { parseSections, renderMD, normalize, buildLookup, collectItems, flatten, esc } from '../src/lib/compare';
+import {
+  parseSections,
+  renderMD,
+  normalize,
+  buildLookup,
+  esc,
+  validateLanguage,
+  renderComparison,
+} from '../src/lib/compare';
 
 const PYTHON_MD = `# Collections
 
@@ -143,6 +151,65 @@ d.map { it.value to it.key }.toMap()
 \`keys\` and \`values\` returns the set of keys and values respectively.
 `;
 
+const META_MD = `# Collections
+
+## Dictionary
+
+### literal
+
+### size
+
+### lookup
+`;
+
+const PY_LANG_MD = `# Python
+
+## Collections
+
+### Dictionary
+
+#### literal
+
+\`\`\`python
+d = {'t': 1, 'f': 0}
+\`\`\`
+
+#### size
+
+\`len(d)\`
+
+#### lookup
+
+\`\`\`python
+d['t']
+\`\`\`
+`;
+
+const KT_LANG_MD = `# Kotlin
+
+## Collections
+
+### Dictionary
+
+\`Map<K, V>\` is a Kotlin collection type.
+
+#### literal
+
+\`\`\`kotlin
+val d = mapOf('t' to 1, 'f' to 0)
+\`\`\`
+
+#### size
+
+\`d.size\`
+
+#### lookup
+
+\`\`\`kotlin
+d['t']
+\`\`\`
+`;
+
 // -- parseSections --
 
 describe('parseSections', () => {
@@ -278,19 +345,44 @@ describe('buildLookup', () => {
   });
 });
 
-// -- flatten --
+// -- validateLanguage --
 
-describe('flatten', () => {
-  it('produces correct block sequence for python vs kotlin', () => {
-    const tree1 = parseSections(PYTHON_MD);
-    const tree2 = parseSections(KOTLIN_MD);
-    const lookup2 = buildLookup(tree2);
-    const blocks = flatten(tree1, lookup2);
+describe('validateLanguage', () => {
+  it('accepts a language whose sections are all in meta.md', () => {
+    const meta = parseSections(META_MD);
+    expect(() => validateLanguage(parseSections(PY_LANG_MD), meta, 'python')).not.toThrow();
+    expect(() => validateLanguage(parseSections(KT_LANG_MD), meta, 'kotlin')).not.toThrow();
+  });
 
-    expect(blocks).toHaveLength(3); // h1, h2, table
+  it('throws when a topic is missing from meta.md', () => {
+    const meta = parseSections(META_MD);
+    const md = PY_LANG_MD.replace('## Collections', '## Collections\n\n## Other\n\n### Dictionary');
+    expect(() => validateLanguage(parseSections(md), meta, 'python')).toThrow(/topic "Other" not found/);
+  });
 
-    expect(blocks[0]).toEqual({ type: 'h1', heading: 'Collections' });
-    expect(blocks[1]).toEqual({ type: 'h2', heading: 'Dictionary' });
+  it('throws when a group is missing from meta.md', () => {
+    const meta = parseSections(META_MD);
+    const md = PY_LANG_MD.replace('### Dictionary', '### List\n\n### Dictionary');
+    expect(() => validateLanguage(parseSections(md), meta, 'python')).toThrow(/section "List"/);
+  });
+
+  it('throws when a leaf is missing from meta.md', () => {
+    const meta = parseSections(META_MD);
+    const md = PY_LANG_MD.replace('#### lookup', '#### extra\n\n```python\nx\n```\n\n#### lookup');
+    expect(() => validateLanguage(parseSections(md), meta, 'python')).toThrow(/section "extra"/);
+  });
+});
+
+// -- renderComparison --
+
+describe('renderComparison', () => {
+  it('renders topic, group, and one table with intro + leaf rows', () => {
+    const meta = parseSections(META_MD);
+    const blocks = renderComparison(meta, parseSections(PY_LANG_MD), parseSections(KT_LANG_MD));
+
+    expect(blocks).toHaveLength(3);
+    expect(blocks[0]).toEqual({ type: 'h2', heading: 'Collections' });
+    expect(blocks[1]).toEqual({ type: 'h3', heading: 'Dictionary' });
     expect(blocks[2].type).toBe('table');
 
     const items = blocks[2].items!;
@@ -298,74 +390,27 @@ describe('flatten', () => {
     expect(items[0].content1.trim()).toBe('');
     expect(items[0].content2.trim()).toContain('Map');
 
-    expect(items).toHaveLength(11);
-    const labels = items.slice(1).map(i => i.label);
-    expect(labels).toEqual([
-      'literal', 'size', 'lookup', 'update', 'is key present',
-      'delete', 'from array of pairs', 'merge', 'invert', 'keys and values as arrays',
-    ]);
+    expect(items).toHaveLength(4);
+    expect(items.slice(1).map(i => i.label)).toEqual(['literal', 'size', 'lookup']);
   });
 
-  it('produces correct block sequence for kotlin vs python (reverse)', () => {
-    const tree1 = parseSections(KOTLIN_MD);
-    const tree2 = parseSections(PYTHON_MD);
-    const lookup2 = buildLookup(tree2);
-    const blocks = flatten(tree1, lookup2);
-
-    expect(blocks).toHaveLength(3);
-    expect(blocks[0].type).toBe('h1');
-    expect(blocks[1].type).toBe('h2');
-    expect(blocks[2].type).toBe('table');
-
-    const items = blocks[2].items!;
-    expect(items[0].label).toBe('');
-    expect(items[0].content1.trim()).toContain('Map');
-    expect(items[0].content2.trim()).toBe('');
-    expect(items).toHaveLength(11);
-  });
-
-  it('fills content1 and content2 for matching items', () => {
-    const tree1 = parseSections(PYTHON_MD);
-    const tree2 = parseSections(KOTLIN_MD);
-    const lookup2 = buildLookup(tree2);
-    const blocks = flatten(tree1, lookup2);
+  it('fills content1 and content2 for matching leaves', () => {
+    const meta = parseSections(META_MD);
+    const blocks = renderComparison(meta, parseSections(PY_LANG_MD), parseSections(KT_LANG_MD));
     const items = blocks[2].items!;
 
     const lit = items.find(i => i.label === 'literal')!;
     expect(lit.content1).toContain("d = {'t': 1, 'f': 0}");
     expect(lit.content2).toContain("val d = mapOf('t' to 1, 'f' to 0)");
-
-    const sz = items.find(i => i.label === 'size')!;
-    expect(sz.content1).toContain('len(d)');
-    expect(sz.content2).toContain('d.size');
   });
 
-  it('leaves content2 blank when lang2 has no matching heading', () => {
-    const tree1 = parseSections(PYTHON_MD);
-    const tree2 = parseSections(KOTLIN_MD);
-    // Remove "invert" from kotlin's Dictionary h2 children
-    const ktDict = tree2.children[0]!.children[0]!;
-    ktDict.children = ktDict.children.filter(c => c.heading !== 'invert');
-
-    const lookup2 = buildLookup(tree2);
-    const blocks = flatten(tree1, lookup2);
+  it('renders in reverse with content sides swapped', () => {
+    const meta = parseSections(META_MD);
+    const blocks = renderComparison(meta, parseSections(KT_LANG_MD), parseSections(PY_LANG_MD));
     const items = blocks[2].items!;
-    const inv = items.find(i => i.label === 'invert')!;
-    expect(inv.content1).toContain('to_sym');
-    expect(inv.content2).toBe('');
-  });
-
-  it('handles multiple sections', () => {
-    const md1 = '# A\n## X\n### a\ncode1\n# B\n## Y\n### b\ncode2\n';
-    const md2 = '# A\n## X\n### a\nother1\n# B\n## Y\n### b\nother2\n';
-    const tree1 = parseSections(md1);
-    const tree2 = parseSections(md2);
-    const lookup2 = buildLookup(tree2);
-    const blocks = flatten(tree1, lookup2);
-
-    expect(blocks).toHaveLength(6); // h1, h2, table, h1, h2, table
-    expect(blocks[0]).toEqual({ type: 'h1', heading: 'A' });
-    expect(blocks[3]).toEqual({ type: 'h1', heading: 'B' });
+    const sz = items.find(i => i.label === 'size')!;
+    expect(sz.content1).toContain('d.size');
+    expect(sz.content2).toContain('len(d)');
   });
 });
 
