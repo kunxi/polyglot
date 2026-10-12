@@ -12,6 +12,17 @@ let b: i32 = -7;
 let c: i32 = "42".parse().unwrap();
 ```
 
+#### integer overflow
+
+```rust
+// Rust: overflow wraps in release, panics in debug
+let x: u8 = 255;
+let y = x.wrapping_add(1);   // 0
+let z = x.saturating_add(1); // 255
+let c = x.checked_add(1);    // None
+// plain `x + 1` panics in debug builds
+```
+
 #### float
 
 ```rust

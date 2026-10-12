@@ -12,6 +12,16 @@ b = -7
 c = int('42')
 ```
 
+#### integer overflow
+
+```python
+# Python integers are arbitrary precision — no overflow
+big = 2 ** 1000
+print(big)
+# Floating point can overflow to inf
+1e308 * 10   # inf
+```
+
 #### float
 
 ```python

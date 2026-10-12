@@ -12,6 +12,15 @@ val b = -7
 val c = "42".toInt()
 ```
 
+#### integer overflow
+
+```kotlin
+// Kotlin (JVM) integers wrap silently on overflow
+val x = Int.MAX_VALUE
+val y = x + 1            // -2147483648 (wraps silently)
+val z = Math.addExact(x, 1)  // throws ArithmeticException
+```
+
 #### float
 
 ```kotlin
