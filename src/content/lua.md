@@ -12,6 +12,16 @@ local b = -7
 local c = tonumber("42")
 ```
 
+#### integer overflow
+
+```lua
+-- Lua 5.3+ has 64-bit integers; overflow wraps
+local x = math.maxinteger
+print(x + 1)        -- math.mininteger (wraps)
+-- Lua 5.1/5.2 use doubles only — no integer overflow, only precision loss
+print(2 ^ 53)
+```
+
 #### float
 
 ```lua
