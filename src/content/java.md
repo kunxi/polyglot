@@ -13,6 +13,19 @@ int c = Integer.parseInt("42");
 long big = 1_000_000_000_000L;
 ```
 
+#### integer overflow
+
+```java
+// Java primitives wrap silently on overflow
+int x = Integer.MAX_VALUE;
+int y = x + 1;              // Integer.MIN_VALUE (wraps silently)
+int z = Math.addExact(x, 1); // throws ArithmeticException
+
+long b = Long.MAX_VALUE;
+b + 1;                      // Long.MIN_VALUE (wraps)
+Math.multiplyExact(b, 2);   // throws ArithmeticException
+```
+
 #### float
 
 ```java
