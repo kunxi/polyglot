@@ -104,6 +104,15 @@ for (const block of blocks) {
     ></script>
   </Fragment>
 
+  <div class="toc-wrap">
+    <button class="menu-toggle" aria-label="Table of contents"></button>
+    <nav class="toc-dropdown" aria-label="On this page">
+      {topics.map((t) => (
+        <a href={`#${slugify(t.heading)}`}>{t.heading}</a>
+      ))}
+    </nav>
+  </div>
+
   <main class="content">
     <a href="/" class="back-link">&larr; Back</a>
     <h1 class="page-title">
@@ -113,7 +122,7 @@ for (const block of blocks) {
     </h1>
     {
       topics.map((topic) => (
-        <details class="topic" open>
+        <details id={slugify(topic.heading)} class="topic" open>
           <summary>
             <h2>{topic.heading}</h2>
           </summary>

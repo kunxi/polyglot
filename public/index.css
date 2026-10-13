@@ -85,6 +85,57 @@ h3 {
 .topic-body {
   padding-top: 1rem;
 }
+
+/* TOC dropdown */
+.toc-wrap {
+  position: fixed;
+  top: 0;
+  right: 1.5rem;
+  z-index: 50;
+}
+.menu-toggle {
+  display: block;
+  width: 0;
+  height: 0;
+  border: none;
+  padding: 0;
+  background: none;
+  border-left: 12px solid transparent;
+  border-right: 12px solid transparent;
+  border-top: 10px solid #555;
+  cursor: pointer;
+}
+.menu-toggle:hover {
+  border-top-color: #111;
+}
+.toc-dropdown {
+  position: absolute;
+  top: 100%;
+  right: 0;
+  display: none;
+  background: #fff;
+  border: 1px solid #eee;
+  border-radius: 12px;
+  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.12);
+  padding: 0.5rem;
+  min-width: 200px;
+  text-align: left;
+}
+.toc-dropdown a {
+  display: block;
+  padding: 0.4rem 0.7rem;
+  border-radius: 8px;
+  color: #222;
+  text-decoration: none;
+  font-size: 0.9rem;
+}
+.toc-dropdown a:hover {
+  background: #f4f4f4;
+}
+.toc-wrap:hover .toc-dropdown,
+.toc-wrap:focus-within .toc-dropdown {
+  display: block;
+}
 table {
   width: 100%;
   table-layout: fixed;
