@@ -49,6 +49,42 @@ h3 {
   color: #555;
   margin: 2.25rem 0 0.75rem;
 }
+
+.topic {
+  margin: 3rem 0 1.25rem;
+}
+.topic > summary {
+  cursor: pointer;
+  list-style: none;
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  padding-bottom: 0.5rem;
+  border-bottom: 1px solid #e4e4e4;
+  user-select: none;
+}
+.topic > summary::-webkit-details-marker {
+  display: none;
+}
+.topic > summary::before {
+  content: "▸";
+  color: #666;
+  font-size: 1.6em;
+  line-height: 1;
+  flex: none;
+  transition: transform 0.15s ease;
+}
+.topic[open] > summary::before {
+  transform: rotate(90deg);
+}
+.topic > summary h2 {
+  margin: 0;
+  padding: 0;
+  border: none;
+}
+.topic-body {
+  padding-top: 1rem;
+}
 table {
   width: 100%;
   table-layout: fixed;

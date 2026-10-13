@@ -6,6 +6,7 @@ import {
   renderMD,
   validateLanguage,
   renderComparison,
+  type Block,
 } from "../../../../lib/compare";
 
 function slugify(s: string) {
@@ -48,6 +49,15 @@ validateLanguage(tree1, metaTree, lang1);
 validateLanguage(tree2, metaTree, lang2);
 
 const blocks = renderComparison(metaTree, tree1, tree2);
+
+const topics: { heading: string; blocks: Block[] }[] = [];
+for (const block of blocks) {
+  if (block.type === "h2") {
+    topics.push({ heading: block.heading ?? "", blocks: [] });
+  } else {
+    topics[topics.length - 1].blocks.push(block);
+  }
+}
 ---
 
 <Layout title={`${disp(lang1)} vs ${disp(lang2)} — Polyglot`}>
@@ -102,42 +112,50 @@ const blocks = renderComparison(metaTree, tree1, tree2);
       <span class="lang">{disp(lang2)}</span>
     </h1>
     {
-      blocks.map((block) => {
-        if (block.type === "h2") {
-          return <h2>{block.heading}</h2>;
-        }
-        if (block.type === "h3") {
-          return <h3 id={slugify(block.heading!)}>{block.heading}</h3>;
-        }
-        return (
-          <table>
-            <thead>
-              <tr>
-                <th />
-                <th>{disp(lang1)}</th>
-                <th>{disp(lang2)}</th>
-              </tr>
-            </thead>
-            <tbody>
-              {block.items!.map((item) => (
-                <tr>
-                  <td class="col-label">{item.label}</td>
-                  <td
-                    set:html={
-                      item.content1.trim() ? renderMD(item.content1) : ""
-                    }
-                  />
-                  <td
-                    set:html={
-                      item.content2.trim() ? renderMD(item.content2) : ""
-                    }
-                  />
-                </tr>
-              ))}
-            </tbody>
-          </table>
-        );
-      })
+      topics.map((topic) => (
+        <details class="topic" open>
+          <summary>
+            <h2>{topic.heading}</h2>
+          </summary>
+          <div class="topic-body">
+            {topic.blocks.map((block) => {
+              if (block.type === "h3") {
+                return (
+                  <h3 id={slugify(block.heading ?? "")}>{block.heading}</h3>
+                );
+              }
+              return (
+                <table>
+                  <thead>
+                    <tr>
+                      <th />
+                      <th>{disp(lang1)}</th>
+                      <th>{disp(lang2)}</th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    {block.items!.map((item) => (
+                      <tr>
+                        <td class="col-label">{item.label}</td>
+                        <td
+                          set:html={
+                            item.content1.trim() ? renderMD(item.content1) : ""
+                          }
+                        />
+                        <td
+                          set:html={
+                            item.content2.trim() ? renderMD(item.content2) : ""
+                          }
+                        />
+                      </tr>
+                    ))}
+                  </tbody>
+                </table>
+              );
+            })}
+          </div>
+        </details>
+      ))
     }
   </main>
 
