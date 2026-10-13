@@ -335,6 +335,49 @@ local function make_sound(s)
 end
 ```
 
+## Memory & Reference
+
+### Memory
+
+#### value vs reference
+
+```lua
+local a = 1
+local b = a        -- value copy
+local x = {1, 2}
+local y = x        -- same table
+y[3] = 3           -- x is also {1, 2, 3}
+```
+
+#### pointer / reference
+
+```lua
+-- Tables are references; numbers, strings, booleans are values
+local t = {1, 2}
+local u = t
+u[1] = 10          -- t[1] is also 10
+```
+
+#### ownership / borrowing
+
+```lua
+-- No ownership/borrowing — garbage collected
+```
+
+#### copy vs move
+
+```lua
+local a = {1, 2, {3, 4}}
+local b = {table.unpack(a)}   -- shallow copy of the outer table
+```
+
+#### immutability
+
+```lua
+-- No immutable types — freeze by convention
+local READONLY = {1, 2, 3}
+```
+
 ## Control Flow
 
 ### if

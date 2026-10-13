@@ -343,6 +343,49 @@ class Dog implements Speaker {
 static String makeSound(Speaker s) { return s.speak(); }
 ```
 
+## Memory & Reference
+
+### Memory
+
+#### value vs reference
+
+```java
+int a = 1;
+int b = a;                     // value copy
+List<Integer> x = new ArrayList<>(List.of(1, 2));
+List<Integer> y = x;           // same list reference
+y.add(3);                      // x is also [1, 2, 3]
+```
+
+#### pointer / reference
+
+```java
+// No raw pointers — only object references
+String s = "hello";
+String t = s;                  // same reference
+s == t                         // true (reference equality)
+```
+
+#### ownership / borrowing
+
+```java
+// No ownership/borrowing — garbage collected
+```
+
+#### copy vs move
+
+```java
+List<Integer> a = new ArrayList<>(List.of(1, 2, 3));
+List<Integer> b = new ArrayList<>(a);   // shallow copy
+```
+
+#### immutability
+
+```java
+final List<Integer> list = List.of(1, 2, 3);   // immutable
+record Point(int x, int y) {}
+```
+
 ## Control Flow
 
 ### if

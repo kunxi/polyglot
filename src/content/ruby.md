@@ -333,6 +333,50 @@ def make_sound(s)
 end
 ```
 
+## Memory & Reference
+
+### Memory
+
+#### value vs reference
+
+```ruby
+a = 1
+b = a            # Integer is immutable — behaves like a value
+x = [1, 2]
+y = x            # same array
+y << 3           # x is also [1, 2, 3]
+```
+
+#### pointer / reference
+
+```ruby
+# No pointers — every name is a reference to an object
+x = "hello"
+y = x
+y.equal?(x)      # true
+```
+
+#### ownership / borrowing
+
+```ruby
+# No ownership/borrowing — garbage collected
+```
+
+#### copy vs move
+
+```ruby
+a = [1, 2, [3, 4]]
+b = a.dup          # shallow copy
+c = Marshal.load(Marshal.dump(a))  # deep copy
+```
+
+#### immutability
+
+```ruby
+arr = [1, 2, 3].freeze
+s = "hello".freeze
+```
+
 ## Control Flow
 
 ### if

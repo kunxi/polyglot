@@ -44,6 +44,13 @@
 #### dict
 #### type alias
 #### protocol / interface
+## Memory & Reference
+### Memory
+#### value vs reference
+#### pointer / reference
+#### ownership / borrowing
+#### copy vs move
+#### immutability
 ## Control Flow
 ### if
 #### basic

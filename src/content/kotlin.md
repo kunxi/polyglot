@@ -342,6 +342,50 @@ class Dog : Speaker {
 fun makeSound(s: Speaker): String = s.speak()
 ```
 
+## Memory & Reference
+
+### Memory
+
+#### value vs reference
+
+```kotlin
+val a = 1
+var b = a        // value copy
+val x = mutableListOf(1, 2)
+val y = x        // same list reference
+y.add(3)         // x is also [1, 2, 3]
+```
+
+#### pointer / reference
+
+```kotlin
+// No raw pointers — object references only
+val x = "hello"
+val y = x        // same reference
+y === x          // true
+```
+
+#### ownership / borrowing
+
+```kotlin
+// No ownership/borrowing — garbage collected
+```
+
+#### copy vs move
+
+```kotlin
+data class Point(val x: Int, val y: Int)
+val p = Point(1, 2)
+val q = p.copy()   // value copy
+```
+
+#### immutability
+
+```kotlin
+val list = listOf(1, 2, 3)   // immutable
+val map = mapOf("a" to 1)
+```
+
 ## Control Flow
 
 ### if

@@ -357,6 +357,56 @@ fn make_sound(s: &impl Speaker) -> String {
 }
 ```
 
+## Memory & Reference
+
+### Memory
+
+#### value vs reference
+
+```rust
+let a = 5;
+let b = a;          // i32 is Copy, so a is copied
+let x = vec![1, 2];
+let y = x;          // x is moved, can't use x afterward
+```
+
+#### pointer / reference
+
+```rust
+let mut x = 5;
+let r = &x;         // shared reference
+let m = &mut x;     // mutable reference
+*m += 1;
+```
+
+#### ownership / borrowing
+
+```rust
+fn take(v: Vec<i32>) {}      // takes ownership
+fn borrow(v: &Vec<i32>) {}   // borrows
+let v = vec![1, 2];
+borrow(&v);
+take(v);            // v moved here
+```
+
+#### copy vs move
+
+```rust
+let a = 5;
+let b = a;             // Copy
+let v1 = vec![1, 2];
+let v2 = v1.clone();   // explicit deep copy
+let v3 = v1;           // move
+```
+
+#### immutability
+
+```rust
+let x = 5;        // immutable by default
+let mut y = 5;    // mutable
+y += 1;
+```
+
 ## Control Flow
 
 ### if

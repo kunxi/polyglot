@@ -353,6 +353,52 @@ public:
 std::string make_sound(const Speaker& s) { return s.speak(); }
 ```
 
+## Memory & Reference
+
+### Memory
+
+#### value vs reference
+
+```cpp
+int a = 1;
+int b = a;                    // value copy
+std::vector<int> x = {1, 2};
+std::vector<int> y = x;       // copy (value semantics)
+y.push_back(3);               // x unchanged
+```
+
+#### pointer / reference
+
+```cpp
+int x = 5;
+int* p = &x;                  // pointer
+int& r = x;                   // reference
+std::unique_ptr<int> up = std::make_unique<int>(5);
+```
+
+#### ownership / borrowing
+
+```cpp
+// RAII + smart pointers express ownership
+std::unique_ptr<int> u = std::make_unique<int>(5);   // unique ownership
+std::shared_ptr<int> s = std::make_shared<int>(5);   // shared ownership
+```
+
+#### copy vs move
+
+```cpp
+std::vector<int> a = {1, 2};
+std::vector<int> b = a;             // copy
+std::vector<int> c = std::move(a);  // move — a is emptied
+```
+
+#### immutability
+
+```cpp
+const int x = 5;
+const std::vector<int> v = {1, 2, 3};
+```
+
 ## Control Flow
 
 ### if

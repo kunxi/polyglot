@@ -340,6 +340,50 @@ class Dog implements Speaker {
 function makeSound(s: Speaker): string { return s.speak(); }
 ```
 
+## Memory & Reference
+
+### Memory
+
+#### value vs reference
+
+```typescript
+let a = 1;
+let b = a;            // value copy
+const x = [1, 2];
+const y = x;          // same array reference
+y.push(3);            // x is also [1, 2, 3]
+```
+
+#### pointer / reference
+
+```typescript
+// No pointers — objects are references
+const s = { name: "dog" };
+const t = s;          // same reference
+s === t               // true
+```
+
+#### ownership / borrowing
+
+```typescript
+// No ownership/borrowing — garbage collected
+```
+
+#### copy vs move
+
+```typescript
+const a = [1, 2, [3, 4]];
+const b = [...a];             // shallow copy
+const c = structuredClone(a); // deep copy
+```
+
+#### immutability
+
+```typescript
+const arr = [1, 2, 3] as const;      // readonly
+const obj = Object.freeze({ x: 1 }); // frozen
+```
+
 ## Control Flow
 
 ### if
