@@ -33,6 +33,7 @@ export function getStaticPaths() {
 }
 
 const { lang1, lang2 } = Astro.params;
+const disp = (s: string) => (s === "cpp" ? "C++" : s);
 const contentDir = "src/content";
 
 const metaTree = parseSections(fs.readFileSync(`${contentDir}/meta.md`, "utf-8"));
@@ -45,7 +46,7 @@ validateLanguage(tree2, metaTree, lang2);
 const blocks = renderComparison(metaTree, tree1, tree2);
 ---
 
-<Layout title={`${lang1} vs ${lang2} — Polyglot`}>
+<Layout title={`${disp(lang1)} vs ${disp(lang2)} — Polyglot`}>
   <Fragment slot="head">
     <link
       rel="stylesheet"
@@ -75,14 +76,18 @@ const blocks = renderComparison(metaTree, tree1, tree2);
       is:inline
       src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.11.1/languages/java.min.js"
     ></script>
+    <script
+      is:inline
+      src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.11.1/languages/cpp.min.js"
+    ></script>
   </Fragment>
 
   <main class="content">
     <a href="/" class="back-link">&larr; Back</a>
     <h1 class="page-title">
-      <span class="lang">{lang1}</span>
+      <span class="lang">{disp(lang1)}</span>
       <span class="vs">vs</span>
-      <span class="lang">{lang2}</span>
+      <span class="lang">{disp(lang2)}</span>
     </h1>
     {
       blocks.map((block) => {
@@ -97,8 +102,8 @@ const blocks = renderComparison(metaTree, tree1, tree2);
             <thead>
               <tr>
                 <th />
-                <th>{lang1}</th>
-                <th>{lang2}</th>
+                <th>{disp(lang1)}</th>
+                <th>{disp(lang2)}</th>
               </tr>
             </thead>
             <tbody>
