@@ -33,7 +33,11 @@ export function getStaticPaths() {
 }
 
 const { lang1, lang2 } = Astro.params;
-const disp = (s: string) => (s === "cpp" ? "C++" : s);
+const disp = (s: string) => {
+  if (s === "cpp") return "C++";
+  if (s === "typescript") return "TypeScript";
+  return s;
+};
 const contentDir = "src/content";
 
 const metaTree = parseSections(fs.readFileSync(`${contentDir}/meta.md`, "utf-8"));
@@ -79,6 +83,10 @@ const blocks = renderComparison(metaTree, tree1, tree2);
     <script
       is:inline
       src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.11.1/languages/cpp.min.js"
+    ></script>
+    <script
+      is:inline
+      src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.11.1/languages/typescript.min.js"
     ></script>
   </Fragment>
 

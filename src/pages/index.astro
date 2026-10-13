@@ -32,7 +32,11 @@ const languages = fs
       const slots = [null, null];
       let dragLang = null;
 
-      const cap = (s) => s === "cpp" ? "C++" : s.charAt(0).toUpperCase() + s.slice(1);
+      const cap = (s) => {
+        if (s === "cpp") return "C++";
+        if (s === "typescript") return "TypeScript";
+        return s.charAt(0).toUpperCase() + s.slice(1);
+      };
 
       function chip(lang, cls) {
         return `<button type="button" class="${cls}" draggable="true" data-lang="${lang}">${cap(lang)}</button>`;
