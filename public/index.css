@@ -90,8 +90,22 @@ h3 {
 .toc-wrap {
   position: fixed;
   top: 0;
-  right: 1.5rem;
+  left: 0;
+  right: 0;
   z-index: 50;
+  pointer-events: none;
+}
+.toc-inner {
+  position: relative;
+  max-width: 1020px;
+  margin: 0 auto;
+  padding: 0 1rem;
+}
+.toc-trigger {
+  position: absolute;
+  top: 0;
+  right: calc(1rem - 12px);
+  pointer-events: auto;
 }
 .menu-toggle {
   display: block;
@@ -132,8 +146,8 @@ h3 {
 .toc-dropdown a:hover {
   background: #f4f4f4;
 }
-.toc-wrap:hover .toc-dropdown,
-.toc-wrap:focus-within .toc-dropdown {
+.toc-trigger:hover .toc-dropdown,
+.toc-trigger:focus-within .toc-dropdown {
   display: block;
 }
 table {
