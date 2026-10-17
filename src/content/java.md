@@ -343,7 +343,9 @@ class Dog implements Speaker {
 static String makeSound(Speaker s) { return s.speak(); }
 ```
 
-## Memory & Reference
+## Memory model
+
+Java stores primitives by value and objects on the heap, accessed through references. There are no raw pointers, and the JVM garbage collector reclaims unreachable objects.
 
 ### Memory
 

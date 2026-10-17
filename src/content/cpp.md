@@ -353,7 +353,9 @@ public:
 std::string make_sound(const Speaker& s) { return s.speak(); }
 ```
 
-## Memory & Reference
+## Memory model
+
+C++ gives explicit control over storage. Values live on the stack or heap; use pointers (`T*`) or references (`T&`) for indirection, and smart pointers (`std::unique_ptr`, `std::shared_ptr`) for ownership. Expressions have lvalue/rvalue categories, and move semantics transfer resources.
 
 ### Memory
 

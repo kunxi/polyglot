@@ -335,7 +335,9 @@ local function make_sound(s)
 end
 ```
 
-## Memory & Reference
+## Memory model
+
+Lua uses a single dynamic value type. Tables are the only reference type — numbers, strings, and booleans are values. There are no pointers, and the garbage collector reclaims unreferenced tables.
 
 ### Memory
 

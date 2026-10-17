@@ -12,9 +12,10 @@ export interface ItemRow {
 }
 
 export interface Block {
-  type: 'h2' | 'h3' | 'table';
+  type: 'h2' | 'h3' | 'table' | 'intro';
   heading?: string;
   items?: ItemRow[];
+  intro?: { meta: string; lang1: string; lang2: string };
 }
 
 // -- parse markdown into section tree --
@@ -140,6 +141,15 @@ export function renderComparison(metaTree: Section, lang1Tree: Section, lang2Tre
     blocks.push({ type: 'h2', heading: topic.heading });
     const t1 = l1 ? findChild(l1, topic.heading) : undefined;
     const t2 = l2 ? findChild(l2, topic.heading) : undefined;
+
+    const intro = {
+      meta: topic.content,
+      lang1: t1?.content ?? '',
+      lang2: t2?.content ?? '',
+    };
+    if (intro.meta.trim() || intro.lang1.trim() || intro.lang2.trim()) {
+      blocks.push({ type: 'intro', intro });
+    }
 
     for (const group of topic.children) {
       blocks.push({ type: 'h3', heading: group.heading });

@@ -357,7 +357,9 @@ fn make_sound(s: &impl Speaker) -> String {
 }
 ```
 
-## Memory & Reference
+## Memory model
+
+Rust has no garbage collector. Values are owned and moved by default; `&T` and `&mut T` borrow without taking ownership, and the borrow checker enforces lifetimes. `Copy` types duplicate their bits, while other types move.
 
 ### Memory
 

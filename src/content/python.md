@@ -342,7 +342,9 @@ def make_sound(s: Speaker) -> str:
     return s.speak()
 ```
 
-## Memory & Reference
+## Memory model
+
+Python stores everything — including integers — as objects on the heap, and names bind to those objects. Assignment copies the reference, not the object; `int`, `str`, and `tuple` are immutable, while `list` and `dict` are shared by reference. There are no pointers.
 
 ### Memory
 

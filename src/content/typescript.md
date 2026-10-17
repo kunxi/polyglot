@@ -340,7 +340,9 @@ class Dog implements Speaker {
 function makeSound(s: Speaker): string { return s.speak(); }
 ```
 
-## Memory & Reference
+## Memory model
+
+TypeScript (JavaScript) stores primitives by value and objects — arrays, objects, functions — by reference on the heap. There are no pointers, and the garbage collector frees unreachable objects.
 
 ### Memory
 

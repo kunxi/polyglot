@@ -44,7 +44,12 @@
 #### dict
 #### type alias
 #### protocol / interface
-## Memory & Reference
+## Memory model
+
+Memory is split between the stack and the heap. The stack holds local variables and call frames — fast, automatically managed, and freed on return. The heap holds dynamically allocated objects that outlive the current call and are shared; languages differ in how (and whether) heap memory is reclaimed.
+
+Across threads, the memory model also defines ordering. Sequentially consistent programs behave as if operations run in one global order, while acquire/release and relaxed orderings allow weaker, faster guarantees. Languages range from strongly ordered defaults to explicit ordering primitives.
+
 ### Memory
 #### value vs reference
 #### pointer / reference

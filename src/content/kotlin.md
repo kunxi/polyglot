@@ -342,7 +342,9 @@ class Dog : Speaker {
 fun makeSound(s: Speaker): String = s.speak()
 ```
 
-## Memory & Reference
+## Memory model
+
+Kotlin runs on the JVM: `Int`, `Double`, and `Boolean` compile to JVM primitives (`int`, `double`, `boolean`) and are passed by value; objects live on the heap behind references. The compiler auto-boxes primitives to wrappers (`Int` → `Integer`) when an object is required, e.g. for nullable `Int?` or generic `List<Int>`. There are no raw pointers, and memory is reclaimed by the garbage collector.
 
 ### Memory
 

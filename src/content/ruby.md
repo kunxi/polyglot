@@ -333,7 +333,9 @@ def make_sound(s)
 end
 ```
 
-## Memory & Reference
+## Memory model
+
+Ruby stores everything as an object; names are references to objects. Immediate values like integers and symbols are immutable, while arrays and hashes are shared by reference. There are no pointers, and memory is garbage collected.
 
 ### Memory
 
