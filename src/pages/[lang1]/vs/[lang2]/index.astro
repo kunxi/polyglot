@@ -50,10 +50,12 @@ validateLanguage(tree2, metaTree, lang2);
 
 const blocks = renderComparison(metaTree, tree1, tree2);
 
-const topics: { heading: string; blocks: Block[] }[] = [];
+const topics: { heading: string; intro?: Block["intro"]; blocks: Block[] }[] = [];
 for (const block of blocks) {
   if (block.type === "h2") {
     topics.push({ heading: block.heading ?? "", blocks: [] });
+  } else if (block.type === "intro") {
+    topics[topics.length - 1].intro = block.intro;
   } else {
     topics[topics.length - 1].blocks.push(block);
   }
@@ -131,6 +133,19 @@ for (const block of blocks) {
             <h2>{topic.heading}</h2>
           </summary>
           <div class="topic-body">
+            {topic.intro && (
+              <div class="topic-intro">
+                {topic.intro.meta.trim() && (
+                  <div set:html={renderMD(topic.intro.meta)} />
+                )}
+                {topic.intro.lang1.trim() && (
+                  <div set:html={renderMD(topic.intro.lang1)} />
+                )}
+                {topic.intro.lang2.trim() && (
+                  <div set:html={renderMD(topic.intro.lang2)} />
+                )}
+              </div>
+            )}
             {topic.blocks.map((block) => {
               if (block.type === "h3") {
                 return (

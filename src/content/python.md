@@ -342,6 +342,57 @@ def make_sound(s: Speaker) -> str:
     return s.speak()
 ```
 
+## Memory model
+
+Python stores everything — including integers — as objects on the heap, and names bind to those objects. Assignment copies the reference, not the object; `int`, `str`, and `tuple` are immutable, while `list` and `dict` are shared by reference. There are no pointers.
+
+### Memory
+
+#### value vs reference
+
+```python
+# Immutable types (int, str, tuple) behave like values
+a = 1
+b = a          # copy
+# Mutable types (list, dict) are references
+x = [1, 2]
+y = x          # same list
+y.append(3)    # x is also [1, 2, 3]
+```
+
+#### pointer / reference
+
+```python
+# No pointers — every name is a reference to an object
+x = 5
+y = x
+y is x          # True
+```
+
+#### ownership / borrowing
+
+```python
+# No ownership or borrowing — garbage collected (refcounting)
+del x           # decrements the reference count
+```
+
+#### copy vs move
+
+```python
+import copy
+a = [1, 2, [3, 4]]
+b = a.copy()          # shallow copy
+c = copy.deepcopy(a)  # deep copy
+```
+
+#### immutability
+
+```python
+t = (1, 2, 3)        # tuple, immutable
+s = frozenset([1, 2, 3])
+d = {1: 'a'}         # dict, mutable
+```
+
 ## Control Flow
 
 ### if

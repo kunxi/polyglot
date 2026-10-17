@@ -85,6 +85,12 @@ h3 {
 .topic-body {
   padding-top: 1rem;
 }
+.topic-intro {
+  margin-bottom: 1.5rem;
+}
+.topic-intro p {
+  margin: 0 0 0.75rem;
+}
 
 /* TOC dropdown */
 .toc-wrap {
