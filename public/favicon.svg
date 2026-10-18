@@ -1,11 +1,15 @@
 <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64" width="64" height="64">
   <rect width="64" height="64" fill="#ffffff" />
-  <text x="32" y="46" font-family="sans-serif" font-size="44" font-weight="700" text-anchor="middle" fill="#000000">t</text>
-  <polygon points="64,0 64,64 0,64" fill="#000000" />
+  <polygon points="0,0 64,0 0,64" fill="#000000" />
   <defs>
+    <clipPath id="upper-left">
+      <polygon points="0,0 64,0 0,64" />
+    </clipPath>
     <clipPath id="lower-right">
       <polygon points="64,0 64,64 0,64" />
     </clipPath>
   </defs>
-  <text x="32" y="46" font-family="sans-serif" font-size="44" font-weight="700" text-anchor="middle" fill="#ffffff" clip-path="url(#lower-right)">t</text>
+  <text x="32" y="46" font-family="sans-serif" font-size="44" font-weight="700" text-anchor="middle" fill="#000000" clip-path="url(#lower-right)">t</text>
+  <text x="32" y="46" font-family="sans-serif" font-size="44" font-weight="700" text-anchor="middle" fill="#ffffff" clip-path="url(#upper-left)">t</text>
+  <rect x="2" y="2" width="60" height="60" fill="none" stroke="#000000" stroke-width="4" />
 </svg>
