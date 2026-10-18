@@ -1433,8 +1433,160 @@ fib().take(10).toList()
 // [0, 1, 1, 2, 3, 5, 8, 13, 21, 34]
 ```
 
+## Modules & Imports
 
+### Import
 
+#### import
 
+```kotlin
+import java.time.LocalDate
+```
 
+#### from import
+
+```kotlin
+import java.time.*   // wildcard import
+```
+
+#### alias
+
+```kotlin
+import java.util.Date as JDate
+```
+
+### Export
+
+#### export
+
+```kotlin
+public class Foo   // public is the default visibility
+```
+
+### Package manager
+
+#### manifest
+
+```kotlin
+build.gradle.kts   // + gradle/libs.versions.toml
+```
+
+#### install
+
+```kotlin
+// build.gradle.kts
+dependencies {
+    implementation("org.jetbrains.kotlinx:kotlinx-coroutines-core:1.8.0")
+}
+```
+
+## Metaprogramming & Reflection
+
+### Annotations
+
+#### annotation
+
+```kotlin
+annotation class Logged
+
+@Logged
+fun f() {}
+```
+
+### Introspection
+
+#### type name
+
+```kotlin
+x::class.simpleName
+```
+
+#### members
+
+```kotlin
+x::class.members
+```
+
+### Macros
+
+#### macro
+
+```kotlin
+// No macros — use annotation processing (KSP/kapt)
+```
+
+### Eval
+
+#### eval
+
+```kotlin
+// No eval — use the kotlin-scripting engine
+```
+
+## Concurrency & Async
+
+### Threads & coroutines
+
+#### thread
+
+```kotlin
+import kotlin.concurrent.thread
+thread { println("hi") }
+```
+
+### Async / await
+
+#### async await
+
+```kotlin
+suspend fun f() = coroutineScope {
+    val d = async { compute() }
+    d.await()
+}
+```
+
+### Channels / queues
+
+#### channel
+
+```kotlin
+val ch = Channel<Int>()
+ch.send(1)
+val v = ch.receive()
+```
+
+### Mutex / lock
+
+#### mutex
+
+```kotlin
+val m = Mutex()
+m.withLock { /* ... */ }
+```
+
+## Generics & Templates
+
+### Generic function
+
+#### function
+
+```kotlin
+fun <T> identity(x: T): T = x
+```
+
+### Generic class
+
+#### class
+
+```kotlin
+class Box<T>(val value: T)
+```
+
+### Constraints / bounds
+
+#### constraint
+
+```kotlin
+fun <T : Number> f(x: T) {}   // upper bound
+```
 

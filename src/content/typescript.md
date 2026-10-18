@@ -1382,8 +1382,154 @@ Array.from({ length: 10 }, () => it.next().value);
 // [0, 1, 1, 2, 3, 5, 8, 13, 21, 34]
 ```
 
+## Modules & Imports
 
+### Import
 
+#### import
 
+```typescript
+import * as fs from "node:fs";
+```
 
+#### from import
+
+```typescript
+import { readFile } from "node:fs";
+```
+
+#### alias
+
+```typescript
+import { readFile as read } from "node:fs";
+```
+
+### Export
+
+#### export
+
+```typescript
+export function f() {}
+export default class App {}
+```
+
+### Package manager
+
+#### manifest
+
+```typescript
+package.json
+```
+
+#### install
+
+```typescript
+npm install express   // or pnpm add express
+```
+
+## Metaprogramming & Reflection
+
+### Annotations
+
+#### annotation
+
+```typescript
+function logged(target: any) { /* ... */ }
+
+@logged
+class Foo {}
+```
+
+### Introspection
+
+#### type name
+
+```typescript
+x.constructor.name
+```
+
+#### members
+
+```typescript
+Object.getOwnPropertyNames(obj)
+```
+
+### Macros
+
+#### macro
+
+```typescript
+// No macros — use codegen or the compiler API
+```
+
+### Eval
+
+#### eval
+
+```typescript
+eval("1 + 2")   // 3
+```
+
+## Concurrency & Async
+
+### Threads & coroutines
+
+#### thread
+
+```typescript
+// worker_threads / Web Workers for parallelism
+```
+
+### Async / await
+
+#### async await
+
+```typescript
+async function f() {
+  await g();
+  return 1;
+}
+```
+
+### Channels / queues
+
+#### channel
+
+```typescript
+// No built-in channel — use a queue or async iterators
+```
+
+### Mutex / lock
+
+#### mutex
+
+```typescript
+// No built-in mutex — use Atomics or a lock library
+```
+
+## Generics & Templates
+
+### Generic function
+
+#### function
+
+```typescript
+function identity<T>(x: T): T { return x; }
+```
+
+### Generic class
+
+#### class
+
+```typescript
+class Box<T> { constructor(public value: T) {} }
+```
+
+### Constraints / bounds
+
+#### constraint
+
+```typescript
+function f<T extends number>(x: T): T { return x; }
+```
 

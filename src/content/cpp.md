@@ -1435,8 +1435,152 @@ std::generator<long long> fib() {
 // for (long long x : fib() | std::views::take(10)) { }
 ```
 
+## Modules & Imports
 
+### Import
 
+#### import
 
+```cpp
+#include <iostream>   // or C++20: import <iostream>;
+```
 
+#### from import
+
+```cpp
+using std::sqrt;   // pull a single name into scope
+```
+
+#### alias
+
+```cpp
+namespace fs = std::filesystem;   // namespace alias
+```
+
+### Export
+
+#### export
+
+```cpp
+export module mymodule;   // C++20 modules
+```
+
+### Package manager
+
+#### manifest
+
+```cpp
+CMakeLists.txt   // or vcpkg.json / conanfile.txt
+```
+
+#### install
+
+```cpp
+// CMake
+find_package(fmt REQUIRED)
+target_link_libraries(app PRIVATE fmt::fmt)
+```
+
+## Metaprogramming & Reflection
+
+### Annotations
+
+#### annotation
+
+```cpp
+[[nodiscard]] int f() { return 1; }
+```
+
+### Introspection
+
+#### type name
+
+```cpp
+typeid(x).name()   // compiler-specific name
+```
+
+#### members
+
+```cpp
+// No runtime reflection — use type traits
+```
+
+### Macros
+
+#### macro
+
+```cpp
+#define SQUARE(x) ((x) * (x))
+```
+
+### Eval
+
+#### eval
+
+```cpp
+// No eval
+```
+
+## Concurrency & Async
+
+### Threads & coroutines
+
+#### thread
+
+```cpp
+std::thread t([]{ std::cout << "hi"; });
+t.join();
+```
+
+### Async / await
+
+#### async await
+
+```cpp
+auto fut = std::async(std::launch::async, f);
+auto x = fut.get();  // C++20: co_await
+```
+
+### Channels / queues
+
+#### channel
+
+```cpp
+// No built-in channel — use a thread-safe queue
+```
+
+### Mutex / lock
+
+#### mutex
+
+```cpp
+std::mutex m;
+std::lock_guard lock(m);
+```
+
+## Generics & Templates
+
+### Generic function
+
+#### function
+
+```cpp
+template <typename T> T identity(T x) { return x; }
+```
+
+### Generic class
+
+#### class
+
+```cpp
+template <typename T> struct Box { T value; };
+```
+
+### Constraints / bounds
+
+#### constraint
+
+```cpp
+template <std::integral T> T f(T x) { return x; }   // C++20 concept
+```
 

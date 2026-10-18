@@ -212,3 +212,55 @@ Interfaces and traits declare shared behavior. Some languages also allow default
 #### chunked
 #### groupby
 #### generator
+
+## Modules & Imports
+
+Modules organize code into reusable units; a package manager resolves and installs dependencies.
+
+### Import
+#### import
+#### from import
+#### alias
+### Export
+#### export
+### Package manager
+#### manifest
+#### install
+
+## Metaprogramming & Reflection
+
+Code that inspects or generates code at compile time or runtime.
+
+### Annotations
+#### annotation
+### Introspection
+#### type name
+#### members
+### Macros
+#### macro
+### Eval
+#### eval
+
+## Concurrency & Async
+
+Code that runs concurrently: threads and coroutines, async/await, channels for message passing, and locks for shared state.
+
+### Threads & coroutines
+#### thread
+### Async / await
+#### async await
+### Channels / queues
+#### channel
+### Mutex / lock
+#### mutex
+
+## Generics & Templates
+
+Code parameterized over types.
+
+### Generic function
+#### function
+### Generic class
+#### class
+### Constraints / bounds
+#### constraint

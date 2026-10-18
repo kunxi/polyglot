@@ -1440,8 +1440,154 @@ Array(fib.prefix(10))
 // [0, 1, 1, 2, 3, 5, 8, 13, 21, 34]
 ```
 
+## Modules & Imports
 
+### Import
 
+#### import
 
+```swift
+import Foundation
+```
 
+#### from import
+
+```swift
+// Swift imports whole modules — no selective import
+```
+
+#### alias
+
+```swift
+// No import alias — use a typealias after import
+```
+
+### Export
+
+#### export
+
+```swift
+public struct Foo { }   // public; @_exported import re-exports
+```
+
+### Package manager
+
+#### manifest
+
+```swift
+Package.swift   # SwiftPM
+```
+
+#### install
+
+```swift
+// Package.swift
+dependencies: [
+  .package(url: "https://github.com/...", from: "1.0.0")
+]
+```
+
+## Metaprogramming & Reflection
+
+### Annotations
+
+#### annotation
+
+```swift
+@available(iOS 16, *)
+func f() {}
+```
+
+### Introspection
+
+#### type name
+
+```swift
+String(describing: type(of: x))
+```
+
+#### members
+
+```swift
+Mirror(reflecting: obj).children
+```
+
+### Macros
+
+#### macro
+
+```swift
+// Swift 5.9+ macros, e.g. #stringify
+```
+
+### Eval
+
+#### eval
+
+```swift
+// No eval
+```
+
+## Concurrency & Async
+
+### Threads & coroutines
+
+#### thread
+
+```swift
+DispatchQueue.global().async { print("hi") }
+```
+
+### Async / await
+
+#### async await
+
+```swift
+func f() async -> Int {
+    await g()
+    return 1
+}
+```
+
+### Channels / queues
+
+#### channel
+
+```swift
+// No built-in channel — use AsyncStream or an actor queue
+```
+
+### Mutex / lock
+
+#### mutex
+
+```swift
+// No built-in mutex — use actors or NSLock
+```
+
+## Generics & Templates
+
+### Generic function
+
+#### function
+
+```swift
+func identity<T>(_ x: T) -> T { x }
+```
+
+### Generic class
+
+#### class
+
+```swift
+struct Box<T> { let value: T }
+```
+
+### Constraints / bounds
+
+#### constraint
+
+```swift
+func f<T: Numeric>(_ x: T) -> T { x }
+```
 

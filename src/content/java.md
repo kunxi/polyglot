@@ -1402,8 +1402,157 @@ Stream.iterate(new long[]{0, 1}, p -> new long[]{p[1], p[0] + p[1]})
     .toList();   // [0, 1, 1, 2, 3, 5, 8, 13, 21, 34]
 ```
 
+## Modules & Imports
 
+### Import
 
+#### import
 
+```java
+import java.time.LocalDate;
+```
 
+#### from import
+
+```java
+import static java.lang.Math.sqrt;   // static import
+```
+
+#### alias
+
+```java
+// No import alias — use fully-qualified names
+```
+
+### Export
+
+#### export
+
+```java
+public class Foo { }   // public; see module-info.java for exports
+```
+
+### Package manager
+
+#### manifest
+
+```java
+pom.xml   // Maven, or build.gradle
+```
+
+#### install
+
+```java
+// pom.xml
+<dependency>
+  <groupId>org.json</groupId>
+  <artifactId>json</artifactId>
+</dependency>
+```
+
+## Metaprogramming & Reflection
+
+### Annotations
+
+#### annotation
+
+```java
+@interface Logged {}
+
+@Logged
+void f() {}
+```
+
+### Introspection
+
+#### type name
+
+```java
+x.getClass().getSimpleName()
+```
+
+#### members
+
+```java
+x.getClass().getDeclaredMethods()
+```
+
+### Macros
+
+#### macro
+
+```java
+// No macros — use annotation processors (APT)
+```
+
+### Eval
+
+#### eval
+
+```java
+// No eval — use the Java scripting API
+```
+
+## Concurrency & Async
+
+### Threads & coroutines
+
+#### thread
+
+```java
+new Thread(() -> System.out.println("hi")).start();
+```
+
+### Async / await
+
+#### async await
+
+```java
+CompletableFuture.supplyAsync(this::compute)
+    .thenAccept(System.out::println);  // no async/await keyword
+```
+
+### Channels / queues
+
+#### channel
+
+```java
+var q = new LinkedBlockingQueue<Integer>();
+q.put(1);
+var v = q.take();
+```
+
+### Mutex / lock
+
+#### mutex
+
+```java
+synchronized (lock) { /* ... */ }
+```
+
+## Generics & Templates
+
+### Generic function
+
+#### function
+
+```java
+<T> T identity(T x) { return x; }
+```
+
+### Generic class
+
+#### class
+
+```java
+class Box<T> { T value; }
+```
+
+### Constraints / bounds
+
+#### constraint
+
+```java
+<T extends Number> T f(T x) { return x; }
+```
 
