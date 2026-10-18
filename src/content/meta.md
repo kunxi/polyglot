@@ -1,17 +1,41 @@
 # Language
-## Types
+## Primitive types
+
+Primitive types map directly to hardware storage: `byte`, `short`, `int`, `long`, and `long long`, each signed or unsigned, plus `float` and `double`. Languages with arbitrary-precision integers (e.g. Python) don't map to fixed hardware widths; padding and alignment vary by language and platform.
+
 ### Number
 #### integer
 #### integer overflow
 #### float
 #### arithmetic
+#### min max abs
+#### random
+### Integer types
+#### short
+#### long
+#### long long
+#### unsigned
+#### signed
+#### struct
 #### divmod
 #### rounding
-#### min max abs
 #### range
 #### descending range
-#### complex
-#### random
+### Boolean
+#### literal
+#### negation
+#### logical and
+#### logical or
+#### truthy and falsy values
+#### conversion
+### None / null
+#### literal
+#### null check
+#### optional access
+## Composite types
+
+Composite types bundle or extend primitive values: `string`, `complex`, and the `date`/`datetime`/`decimal` types from the standard library.
+
 ### String
 #### literal
 #### length
@@ -25,30 +49,38 @@
 #### case
 #### replace
 #### justify
-### Boolean
+#### format
+### Complex
+#### operations
+### Date
+#### now
+#### format
+### Datetime
+#### now
+#### format
+### Decimal
 #### literal
-#### negation
-#### logical and
-#### logical or
-#### truthy and falsy values
-#### conversion
-### None / null
-#### literal
-#### null check
-#### optional access
+#### precision
+## Type system
+
+Types beyond simple annotations: `union`, `intersection`, `optional`, and structural `interface` types.
+
 ### type hints
 #### variable
 #### nullable
 #### function
 #### list of elements
 #### dict
+### Type operations
 #### type alias
-#### protocol / interface
+#### union
+#### intersection
+#### literal types
 ## Memory model
 
-Memory is split between the stack and the heap. The stack holds local variables and call frames — fast, automatically managed, and freed on return. The heap holds dynamically allocated objects that outlive the current call and are shared; languages differ in how (and whether) heap memory is reclaimed.
+Memory is split between the `stack` and the `heap`. The `stack` holds local variables and call frames — fast, automatically managed, and freed on return. The `heap` holds dynamically allocated objects that outlive the current call and are shared; languages differ in how (and whether) heap memory is reclaimed.
 
-Across threads, the memory model also defines ordering. Sequentially consistent programs behave as if operations run in one global order, while acquire/release and relaxed orderings allow weaker, faster guarantees. Languages range from strongly ordered defaults to explicit ordering primitives.
+Across threads, the memory model also defines ordering. `Sequentially consistent` programs behave as if operations run in one global order, while `acquire`/`release` and `relaxed` orderings allow weaker, faster guarantees. Languages range from strongly ordered defaults to explicit ordering primitives.
 
 ### Memory
 #### value vs reference
@@ -104,12 +136,13 @@ Across threads, the memory model also defines ordering. Sequentially consistent 
 #### attributes
 #### method
 #### inheritance
+#### multiple inheritance
 #### override
 #### super
 #### class method
 #### static method
 #### abstract
-#### interface
+#### protocol / interface
 #### data class
 #### equality
 #### string representation
@@ -117,6 +150,12 @@ Across threads, the memory model also defines ordering. Sequentially consistent 
 #### private
 #### protected
 #### public
+### Interface & trait
+
+Interfaces and traits declare shared behavior. Some languages also allow default methods that provide an implementation.
+
+#### definition
+#### default method
 ### Enum
 #### definition
 #### auto value

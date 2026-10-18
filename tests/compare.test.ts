@@ -48,7 +48,7 @@ describe("parseSections", () => {
     const tree = parseSections(PY_LANG_MD);
     const h1 = tree.children[0];
     expect(h1?.heading).toBe("Python");
-    expect(h1?.children.map((c) => c.heading)).toEqual(["Types", "Collections"]);
+    expect(h1?.children.map((c) => c.heading)).toEqual(["Primitive types", "Collections"]);
 
     const types = h1?.children[0];
     expect(types?.children.map((c) => c.heading)).toEqual(["Number", "String", "Boolean"]);
@@ -201,13 +201,13 @@ describe("renderComparison", () => {
       "h2", "h3", "table", "h3", "table", "h3", "table",
       "h2", "intro", "h3", "table", "h3", "table", "h3", "table",
     ]);
-    expect(blocks[0]).toEqual({ type: "h2", heading: "Types" });
+    expect(blocks[0]).toEqual({ type: "h2", heading: "Primitive types" });
     expect(blocks[7]).toEqual({ type: "h2", heading: "Collections" });
   });
 
   it("emits an intro block only for topics that have a paragraph", () => {
     const blocks = renderComparison(meta, py, kt);
-    // Types has no topic-level paragraph
+    // Primitive types has no topic-level paragraph
     expect(blocks[1].type).toBe("h3");
     // Collections has one
     const intro = blocks[8].intro!;
@@ -235,6 +235,16 @@ describe("renderComparison", () => {
     const size = list.find((i) => i.label === "size")!;
     expect(size.content1).toContain("a.size");
     expect(size.content2).toContain("len(a)");
+  });
+
+  it("emits a group-intro prose block when a group has a paragraph", () => {
+    const meta = parseSections("# Language\n\n## T\n\n### G\n\n#### leaf\n");
+    const l1 = parseSections("# A\n\n## T\n\n### G\n\nA side note.\n\n#### leaf\n\n```a\nx\n```\n");
+    const l2 = parseSections("# B\n\n## T\n\n### G\n\nB side note.\n\n#### leaf\n\n```b\ny\n```\n");
+    const blocks = renderComparison(meta, l1, l2);
+    expect(blocks.map((b) => b.type)).toEqual(["h2", "h3", "group-intro", "table"]);
+    expect(blocks[2].prose!.content1).toContain("A side note");
+    expect(blocks[2].prose!.content2).toContain("B side note");
   });
 });
 

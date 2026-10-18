@@ -1,7 +1,8 @@
 # Python
 
-## Types
+## Primitive types
 
+Python's `int` and `float` map to C primitives underneath but are exposed as arbitrary-precision `int` and IEEE-754 `float` objects; there are no fixed-width signed/unsigned types, and padding/alignment is handled by the interpreter.
 ### Number
 
 #### integer
@@ -42,6 +43,62 @@ a % b      # modulo
 a ** b     # exponentiation
 ```
 
+#### min max abs
+
+```python
+min(a, b)
+max(a, b)
+abs(-42)
+```
+
+#### random
+
+```python
+import random
+random.randint(1, 6)
+random.uniform(0, 1)
+```
+
+### Integer types
+
+#### short
+
+```python
+# No short — int is arbitrary precision
+```
+
+#### long
+
+```python
+# No long — int is arbitrary precision
+```
+
+#### long long
+
+```python
+# No long long — int is arbitrary precision
+```
+
+#### unsigned
+
+```python
+# No unsigned integer types
+```
+
+#### signed
+
+```python
+i = -42   # signed by nature
+```
+
+#### struct
+
+```python
+import struct
+struct.pack("<bI", 1, 2)          # pack byte + int (little-endian)
+struct.unpack("<bI", b"\x01\x02\x00\x00\x00")
+```
+
 #### divmod
 
 ```python
@@ -54,14 +111,6 @@ q, r = divmod(13, 5)   # q = 2, r = 3
 round(3.14)         # 3
 round(3.14, 1)      # 3.1
 int(3.9)            # 3 (truncates)
-```
-
-#### min max abs
-
-```python
-min(a, b)
-max(a, b)
-abs(-42)
 ```
 
 #### range
@@ -81,26 +130,79 @@ range(10, 0, -2)     # 10, 8, 6, 4, 2
 list(reversed(range(5)))  # [4, 3, 2, 1, 0]
 ```
 
-#### complex
+### Boolean
+
+#### literal
 
 ```python
-z = 1 + 2j
-c = complex(1, 2)
-z.real          # 1.0
-z.imag          # 2.0
-z.conjugate()   # (1-2j)
-abs(z)          # 2.236..., magnitude
-z1 + z2
-z1 * z2
+t = True
+f = False
 ```
 
-#### random
+#### negation
 
 ```python
-import random
-random.randint(1, 6)
-random.uniform(0, 1)
+not True        # False
 ```
+
+#### logical and
+
+```python
+True and False  # False
+```
+
+#### logical or
+
+```python
+True or False   # True
+```
+
+#### truthy and falsy values
+
+```python
+bool(0)         # False
+bool(1)         # True
+bool("")        # False
+bool("hello")   # True
+bool([])        # False
+bool(None)      # False
+```
+
+#### conversion
+
+```python
+bool(1)         # True
+int(True)       # 1
+str(True)       # 'True'
+```
+
+### None / null
+
+`None` is a singleton; all uninitialized variables in Python may hold any type or `None` at any time — no compile-time null safety.
+
+#### literal
+
+```python
+x = None
+```
+
+#### null check
+
+```python
+if x is None:
+    ...
+if x is not None:
+    ...
+```
+
+#### optional access
+
+```python
+if x is not None:
+    x.do_something()
+```
+
+## Composite types
 
 ### String
 
@@ -199,78 +301,72 @@ s.center(10)         # center
 s.zfill(5)           # pad with leading zeros
 ```
 
-### Boolean
+#### format
 
+```python
+"Hello, %s!" % name
+"Hello, {}!".format(name)
+f"{x:.2f}"          # "3.14"
+"{:05d}".format(42) # "00042"
+```
+
+### Complex
+#### operations
+
+```python
+z = 1 + 2j
+c = complex(1, 2)
+z.real          # 1.0
+z.imag          # 2.0
+z.conjugate()   # (1-2j)
+abs(z)          # 2.236..., magnitude
+z1 + z2
+z1 * z2
+```
+
+### Date
+#### now
+
+```python
+from datetime import date
+print(date.today())  # 2026-10-13
+```
+#### format
+
+```python
+d = date.today()
+d.strftime("%Y-%m-%d")
+d.isoformat()
+```
+### Datetime
+#### now
+
+```python
+from datetime import datetime
+print(datetime.now())
+```
+#### format
+
+```python
+dt = datetime.now()
+dt.strftime("%Y-%m-%d %H:%M:%S")
+dt.isoformat()
+```
+### Decimal
 #### literal
 
 ```python
-t = True
-f = False
+from decimal import Decimal
+Decimal("0.1") + Decimal("0.2")  # 0.3 (exact)
 ```
-
-#### negation
+#### precision
 
 ```python
-not True        # False
+from decimal import Decimal, getcontext
+getcontext().prec = 6
+Decimal(1) / Decimal(7)  # 0.142857
 ```
-
-#### logical and
-
-```python
-True and False  # False
-```
-
-#### logical or
-
-```python
-True or False   # True
-```
-
-#### truthy and falsy values
-
-```python
-bool(0)         # False
-bool(1)         # True
-bool("")        # False
-bool("hello")   # True
-bool([])        # False
-bool(None)      # False
-```
-
-#### conversion
-
-```python
-bool(1)         # True
-int(True)       # 1
-str(True)       # 'True'
-```
-
-### None / null
-
-`None` is a singleton; all uninitialized variables in Python
-may hold any type or `None` at any time — no compile-time null safety.
-
-#### literal
-
-```python
-x = None
-```
-
-#### null check
-
-```python
-if x is None:
-    ...
-if x is not None:
-    ...
-```
-
-#### optional access
-
-```python
-if x is not None:
-    x.do_something()
-```
+## Type system
 
 ### type hints
 
@@ -318,6 +414,7 @@ matrix: list[list[int]] = [[1, 2], [3, 4]]
 ages: dict[str, int] = {"Alice": 30, "Bob": 25}
 ```
 
+### Type operations
 #### type alias
 
 ```python
@@ -326,22 +423,30 @@ def scale(scalar: float, v: Vector) -> Vector:
     return [scalar * x for x in v]
 ```
 
-#### protocol / interface
+#### union
 
 ```python
-from typing import Protocol
-
-class Speaker(Protocol):
-    def speak(self) -> str: ...
-
-class Dog:
-    def speak(self) -> str:
-        return "Woof!"
-
-def make_sound(s: Speaker) -> str:
-    return s.speak()
+from typing import Union
+val: Union[int, str] = 5
+val = "five"
+# Python 3.10+
+val: int | str = 5
 ```
+#### intersection
 
+```python
+# No native intersection — use multiple inheritance or Protocol
+class A: pass
+class B: pass
+class AB(A, B): pass
+```
+#### literal types
+
+```python
+from typing import Literal
+Color = Literal["red", "green", "blue"]
+c: Color = "red"
+```
 ## Memory model
 
 Python stores everything — including integers — as objects on the heap, and names bind to those objects. Assignment copies the reference, not the object; `int`, `str`, and `tuple` are immutable, while `list` and `dict` are shared by reference. There are no pointers.
@@ -757,6 +862,23 @@ class Dog(Animal):
     pass
 ```
 
+#### multiple inheritance
+
+```python
+class A:
+    def f(self): return "A"
+class B:
+    def f(self): return "B"
+class C(A, B):   # A wins — C3 linearization
+    pass
+C.__mro__        # (C, A, B, object)
+C().f()          # "A"
+
+# Call the shadowed method explicitly
+B.f(C())         # "B"
+super(A, C()).f()  # "B"  (next after A in the MRO)
+```
+
 #### override
 
 ```python
@@ -800,11 +922,20 @@ class Animal(ABC):
         pass
 ```
 
-#### interface
+#### protocol / interface
 
 ```python
-# Python uses duck typing — no formal interface.
-# ABCs with abstract methods are the closest equivalent.
+from typing import Protocol
+
+class Speaker(Protocol):
+    def speak(self) -> str: ...
+
+class Dog:
+    def speak(self) -> str:
+        return "Woof!"
+
+def make_sound(s: Speaker) -> str:
+    return s.speak()
 ```
 
 #### data class
@@ -876,6 +1007,25 @@ class Dog:
     name = "Fido"   # everything is public by default
 ```
 
+### Interface & trait
+
+Python has no `interface` or `trait` keyword — `Protocol` (structural typing) and ABCs with abstract methods fill the role.
+#### definition
+
+```python
+# Python uses duck typing — no formal interface.
+# ABCs with abstract methods are the closest equivalent.
+```
+
+#### default method
+
+```python
+from abc import ABC, abstractmethod
+class Speaker(ABC):
+    @abstractmethod
+    def speak(self): ...
+    def greet(self): return self.speak()  # default method
+```
 ### Enum
 
 #### definition
@@ -1273,3 +1423,9 @@ from itertools import islice
 list(islice(fib(), 10))
 # [0, 1, 1, 2, 3, 5, 8, 13, 21, 34]
 ```
+
+
+
+
+
+

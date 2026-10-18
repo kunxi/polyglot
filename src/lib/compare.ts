@@ -12,10 +12,11 @@ export interface ItemRow {
 }
 
 export interface Block {
-  type: 'h2' | 'h3' | 'table' | 'intro';
+  type: 'h2' | 'h3' | 'table' | 'intro' | 'group-intro';
   heading?: string;
   items?: ItemRow[];
   intro?: { meta: string; lang1: string; lang2: string };
+  prose?: { content1: string; content2: string };
 }
 
 // -- parse markdown into section tree --
@@ -156,18 +157,20 @@ export function renderComparison(metaTree: Section, lang1Tree: Section, lang2Tre
       const g1 = t1 ? findChild(t1, group.heading) : undefined;
       const g2 = t2 ? findChild(t2, group.heading) : undefined;
 
-      const items: ItemRow[] = [];
-      if ((g1?.content ?? '').trim() || (g2?.content ?? '').trim()) {
-        items.push({ label: '', content1: g1?.content ?? '', content2: g2?.content ?? '' });
+      const prose = { content1: g1?.content ?? '', content2: g2?.content ?? '' };
+      if (prose.content1.trim() || prose.content2.trim()) {
+        blocks.push({ type: 'group-intro', prose });
       }
 
-      for (const leaf of group.children) {
-        const leaf1 = g1 ? findChild(g1, leaf.heading) : undefined;
-        const leaf2 = g2 ? findChild(g2, leaf.heading) : undefined;
-        items.push({ label: leaf.heading, content1: leaf1?.content ?? '', content2: leaf2?.content ?? '' });
+      if (group.children.length > 0) {
+        const items: ItemRow[] = [];
+        for (const leaf of group.children) {
+          const leaf1 = g1 ? findChild(g1, leaf.heading) : undefined;
+          const leaf2 = g2 ? findChild(g2, leaf.heading) : undefined;
+          items.push({ label: leaf.heading, content1: leaf1?.content ?? '', content2: leaf2?.content ?? '' });
+        }
+        blocks.push({ type: 'table', items });
       }
-
-      blocks.push({ type: 'table', items });
     }
   }
 

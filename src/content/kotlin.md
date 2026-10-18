@@ -1,7 +1,8 @@
 # Kotlin
 
-## Types
+## Primitive types
 
+Kotlin's `Byte`, `Short`, `Int`, `Long` (plus unsigned `UByte` through `ULong`) and `Float`/`Double` map directly to JVM hardware primitives; `Int` and `Long` are 32/64-bit signed, and padding/alignment is handled by the JVM.
 ### Number
 
 #### integer
@@ -41,6 +42,59 @@ a / b.toDouble()   // force float division
 a % b      // modulo
 ```
 
+#### min max abs
+
+```kotlin
+minOf(a, b)
+maxOf(a, b)
+abs(-42)
+```
+
+#### random
+
+```kotlin
+(1..6).random()
+(0.0..1.0).random()
+```
+
+### Integer types
+
+#### short
+
+```kotlin
+val s: Short = 42   // 16-bit signed
+```
+
+#### long
+
+```kotlin
+val l: Long = 42L   // 64-bit signed
+```
+
+#### long long
+
+```kotlin
+// No long long — Long is 64-bit
+```
+
+#### unsigned
+
+```kotlin
+val u: UInt = 42u   // unsigned: UByte..ULong
+```
+
+#### signed
+
+```kotlin
+val i: Int = -42   // signed by default
+```
+
+#### struct
+
+```kotlin
+data class Packed(val a: Byte, val b: Int)   // layout is JVM-managed
+```
+
 #### divmod
 
 ```kotlin
@@ -57,14 +111,6 @@ fun divmod(a: Int, b: Int) = Pair(a / b, a % b)
 3.14.roundToInt()    // 3
 3.14.toInt()          // 3 (truncates)
 "%.1f".format(3.14)   // "3.1"
-```
-
-#### min max abs
-
-```kotlin
-minOf(a, b)
-maxOf(a, b)
-abs(-42)
 ```
 
 #### range
@@ -86,28 +132,79 @@ abs(-42)
 (4 downTo 0).reversed()  // 0, 1, 2, 3, 4
 ```
 
-#### complex
+### Boolean
+
+#### literal
 
 ```kotlin
-// Kotlin has no built-in complex numbers.
-// Use a library like koma or define a data class:
+val t = true
+val f = false
+```
 
-data class Complex(val re: Double, val im: Double) {
-    operator fun plus(other: Complex) =
-        Complex(re + other.re, im + other.im)
-    operator fun times(other: Complex) =
-        Complex(re * other.re - im * other.im,
-                re * other.im + im * other.re)
+#### negation
+
+```kotlin
+!true           // false
+```
+
+#### logical and
+
+```kotlin
+true && false   // false
+```
+
+#### logical or
+
+```kotlin
+true || false   // true
+```
+
+#### truthy and falsy values
+
+```kotlin
+// Kotlin has no implicit truthiness convention.
+// Only Boolean can be used in conditions.
+1 != 0                      // explicit check for integer
+"".isEmpty()                // explicit check for string
+listOf<Int>().isEmpty()     // explicit check for list
+```
+
+#### conversion
+
+```kotlin
+1 != 0              // to Boolean
+true.toString()     // "true"
+```
+
+### None / null
+
+Kotlin enforces null safety at compile time: `String` and `String?`
+are different types.
+
+#### literal
+
+```kotlin
+val x: String? = null
+```
+
+#### null check
+
+```kotlin
+if (x != null) {
+    ...
 }
-val z = Complex(1.0, 2.0)
 ```
 
-#### random
+#### optional access
 
 ```kotlin
-(1..6).random()
-(0.0..1.0).random()
+x?.length           // safe call, returns null if x is null
+x?.length ?: 0      // elvis: provide default when null
+x!!.length          // force unwrap, throws if null
+x?.let { ... }      // execute block only if non-null
 ```
+
+## Composite types
 
 ### String
 
@@ -202,77 +299,68 @@ s.padEnd(10)          // left justify
 "%10s".format(s)       // right justify
 ```
 
-### Boolean
-
-#### literal
+#### format
 
 ```kotlin
-val t = true
-val f = false
+"Hello, %s!".format(name)
+String.format("value: %.2f", 3.14159)   // "value: 3.14"
+"%05d".format(42)                       // "00042"
 ```
 
-#### negation
+### Complex
+#### operations
 
 ```kotlin
-!true           // false
-```
+// Kotlin has no built-in complex numbers.
+// Use a library like koma or define a data class:
 
-#### logical and
-
-```kotlin
-true && false   // false
-```
-
-#### logical or
-
-```kotlin
-true || false   // true
-```
-
-#### truthy and falsy values
-
-```kotlin
-// Kotlin has no implicit truthiness convention.
-// Only Boolean can be used in conditions.
-1 != 0                      // explicit check for integer
-"".isEmpty()                // explicit check for string
-listOf<Int>().isEmpty()     // explicit check for list
-```
-
-#### conversion
-
-```kotlin
-1 != 0              // to Boolean
-true.toString()     // "true"
-```
-
-### None / null
-
-Kotlin enforces null safety at compile time: `String` and `String?`
-are different types.
-
-#### literal
-
-```kotlin
-val x: String? = null
-```
-
-#### null check
-
-```kotlin
-if (x != null) {
-    ...
+data class Complex(val re: Double, val im: Double) {
+    operator fun plus(other: Complex) =
+        Complex(re + other.re, im + other.im)
+    operator fun times(other: Complex) =
+        Complex(re * other.re - im * other.im,
+                re * other.im + im * other.re)
 }
+val z = Complex(1.0, 2.0)
 ```
 
-#### optional access
+### Date
+#### now
 
 ```kotlin
-x?.length           // safe call, returns null if x is null
-x?.length ?: 0      // elvis: provide default when null
-x!!.length          // force unwrap, throws if null
-x?.let { ... }      // execute block only if non-null
+import java.time.LocalDate
+LocalDate.now()   // 2026-10-13
 ```
+#### format
+
+```kotlin
+LocalDate.now().format(DateTimeFormatter.ISO_DATE)
+```
+### Datetime
+#### now
+
+```kotlin
+import java.time.LocalDateTime
+LocalDateTime.now()
+```
+#### format
+
+```kotlin
+LocalDateTime.now().format(DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss"))
+```
+### Decimal
+#### literal
+
+```kotlin
+import java.math.BigDecimal
+BigDecimal("0.1").add(BigDecimal("0.2"))  // 0.3
+```
+#### precision
+
+```kotlin
+BigDecimal("1").divide(BigDecimal("7"), 6, RoundingMode.HALF_UP)  // 0.142857
+```
+## Type system
 
 ### type hints
 
@@ -319,6 +407,7 @@ val matrix: List<List<Int>> = listOf(listOf(1, 2), listOf(3, 4))
 val ages: Map<String, Int> = mapOf("Alice" to 30, "Bob" to 25)
 ```
 
+### Type operations
 #### type alias
 
 ```kotlin
@@ -328,20 +417,25 @@ fun scale(scalar: Double, v: Vector): Vector {
 }
 ```
 
-#### protocol / interface
+#### union
 
 ```kotlin
-interface Speaker {
-    fun speak(): String
-}
-
-class Dog : Speaker {
-    override fun speak() = "Woof!"
-}
-
-fun makeSound(s: Speaker): String = s.speak()
+// No union types — use sealed classes
+sealed class A
+data class B(val x: Int) : A()
+data class C(val s: String) : A()
 ```
+#### intersection
 
+```kotlin
+// Intersections only in generic bounds
+fun <T> pick(x: T) where T : CharSequence, T : Comparable<T> = x
+```
+#### literal types
+
+```kotlin
+// No literal types — use enums or sealed classes
+```
 ## Memory model
 
 Kotlin runs on the JVM: `Int`, `Double`, and `Boolean` compile to JVM primitives (`int`, `double`, `boolean`) and are passed by value; objects live on the heap behind references. The compiler auto-boxes primitives to wrappers (`Int` → `Integer`) when an object is required, e.g. for nullable `Int?` or generic `List<Int>`. There are no raw pointers, and memory is reclaimed by the garbage collector.
@@ -779,6 +873,20 @@ open class Animal
 class Dog : Animal()
 ```
 
+#### multiple inheritance
+
+```kotlin
+// No multiple class inheritance — a class has one parent
+open class A
+open class B
+// class C : A(), B()   // error
+
+// Compose with interfaces instead
+interface X { fun x() }
+interface Y { fun y() }
+class C : A(), X, Y
+```
+
 #### override
 
 ```kotlin
@@ -832,16 +940,18 @@ abstract class Animal {
 }
 ```
 
-#### interface
+#### protocol / interface
 
 ```kotlin
-interface Speakable {
+interface Speaker {
     fun speak(): String
 }
 
-class Dog : Speakable {
+class Dog : Speaker {
     override fun speak() = "Woof!"
 }
+
+fun makeSound(s: Speaker): String = s.speak()
 ```
 
 #### data class
@@ -916,6 +1026,29 @@ class Dog {
 }
 ```
 
+### Interface & trait
+
+Kotlin uses `interface` (with default methods) for the trait role; there is no separate `trait` keyword.
+#### definition
+
+```kotlin
+interface Speakable {
+    fun speak(): String
+}
+
+class Dog : Speakable {
+    override fun speak() = "Woof!"
+}
+```
+
+#### default method
+
+```kotlin
+interface Speaker {
+    fun speak(): String
+    fun greet() = speak()   // default method
+}
+```
 ### Enum
 
 #### definition
@@ -1299,3 +1432,9 @@ fun fib() = sequence {
 fib().take(10).toList()
 // [0, 1, 1, 2, 3, 5, 8, 13, 21, 34]
 ```
+
+
+
+
+
+

@@ -1,6 +1,6 @@
 # Language
 
-## Types
+## Primitive types
 
 ### Number
 

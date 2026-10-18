@@ -1,6 +1,6 @@
 # Kotlin
 
-## Types
+## Primitive types
 
 ### Number
 

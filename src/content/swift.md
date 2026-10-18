@@ -1,7 +1,8 @@
 # Swift
 
-## Types
+## Primitive types
 
+Swift's fixed-width integers (`Int8` through `Int64`, `UInt8` through `UInt64`) map to hardware with signed/unsigned variants; `Int` is 64-bit on 64-bit platforms. Padding/alignment follows the platform ABI.
 ### Number
 
 #### integer
@@ -42,6 +43,66 @@ Double(a) / Double(b)   // force float division
 a % b      // remainder (truncating)
 ```
 
+#### min max abs
+
+```swift
+min(a, b)
+max(a, b)
+abs(-42)
+min(max(x, 0), 10)   // clamp — stdlib has no clamp
+```
+
+#### random
+
+```swift
+Int.random(in: 1...6)
+Double.random(in: 0..<1)
+Bool.random()
+```
+
+### Integer types
+
+#### short
+
+```swift
+let s: Int16 = 42   // 16-bit signed
+```
+
+#### long
+
+```swift
+let l: Int64 = 42   // 64-bit signed
+```
+
+#### long long
+
+```swift
+// No long long — Int64 is the widest fixed integer
+```
+
+#### unsigned
+
+```swift
+let u: UInt32 = 42  // unsigned
+```
+
+#### signed
+
+```swift
+let i: Int = -42   // signed by default
+```
+
+#### struct
+
+```swift
+struct Packed {
+    var a: UInt8
+    var b: UInt32
+}
+MemoryLayout<Packed>.size      // includes padding
+MemoryLayout<Packed>.stride
+```
+
 #### divmod
 
 ```swift
@@ -59,15 +120,6 @@ let r = a % b   // remainder, not modulo
 3.14.rounded(.toNearestOrAwayFromZero) // 3.0
 Int(3.9)                              // 3 (truncates)
 String(format: "%.1f", 3.14)          // "3.1"
-```
-
-#### min max abs
-
-```swift
-min(a, b)
-max(a, b)
-abs(-42)
-min(max(x, 0), 10)   // clamp — stdlib has no clamp
 ```
 
 #### range
@@ -88,27 +140,81 @@ Array(stride(from: 4, through: 0, by: -1))   // [4, 3, 2, 1, 0]
 Array(stride(from: 10, through: 0, by: -2))  // [10, 8, 6, 4, 2]
 ```
 
-#### complex
+### Boolean
+
+#### literal
 
 ```swift
-// Swift has no built-in complex numbers. Use swift-numerics:
-import ComplexModule
-let z = Complex(1.0, 2.0)
-z.real        // 1.0
-z.imaginary   // 2.0
-z.conjugate   // 1 - 2i
-z.magnitude   // |z|
-z + z
-z * z
+let t = true
+let f = false
 ```
 
-#### random
+#### negation
 
 ```swift
-Int.random(in: 1...6)
-Double.random(in: 0..<1)
-Bool.random()
+!true           // false
 ```
+
+#### logical and
+
+```swift
+true && false   // false
+```
+
+#### logical or
+
+```swift
+true || false   // true
+```
+
+#### truthy and falsy values
+
+```swift
+// Swift has no implicit truthiness — only Bool works in conditions.
+1 != 0                     // explicit check for integer
+!s.isEmpty                 // explicit check for string
+!arr.isEmpty               // explicit check for list
+```
+
+#### conversion
+
+```swift
+1 != 0             // to Boolean
+String(true)       // "true"
+Bool("true")       // true?
+```
+
+### None / null
+
+Swift has no null; absence is modeled with `Optional<T>` and `nil`.
+
+#### literal
+
+```swift
+let x: Int? = nil
+let y: Int? = 5
+```
+
+#### null check
+
+```swift
+if let v = x {
+    // ...
+}
+x != nil
+x == nil
+```
+
+#### optional access
+
+```swift
+x.map { abs($0) }   // Int?
+x ?? 0              // provide default
+x!                  // force unwrap — traps if nil
+x?.magnitude        // optional chaining
+```
+
+## Composite types
 
 ### String
 
@@ -208,79 +314,70 @@ s.padding(toLength: 10, withPad: " ", startingAt: 0)   // left justify
 String(repeating: " ", count: max(0, 10 - s.count)) + s // right justify
 ```
 
-### Boolean
+#### format
 
+```swift
+String(format: "Hello, %@!", name)
+String(format: "%.2f", 3.14159)   // "3.14"
+String(format: "%05d", 42)        // "00042"
+```
+
+### Complex
+#### operations
+
+```swift
+// Swift has no built-in complex numbers. Use swift-numerics:
+import ComplexModule
+let z = Complex(1.0, 2.0)
+z.real        // 1.0
+z.imaginary   // 2.0
+z.conjugate   // 1 - 2i
+z.magnitude   // |z|
+z + z
+z * z
+```
+
+### Date
+#### now
+
+```swift
+import Foundation
+Date()   // current date/time
+```
+#### format
+
+```swift
+let df = DateFormatter()
+df.dateFormat = "yyyy-MM-dd"
+df.string(from: Date())
+```
+### Datetime
+#### now
+
+```swift
+import Foundation
+Date()
+```
+#### format
+
+```swift
+df.dateFormat = "yyyy-MM-dd HH:mm:ss"
+df.string(from: Date())
+```
+### Decimal
 #### literal
 
 ```swift
-let t = true
-let f = false
+import Foundation
+Decimal(string: "0.1")! + Decimal(string: "0.2")!   // 0.3
 ```
-
-#### negation
+#### precision
 
 ```swift
-!true           // false
+// Decimal keeps 38 digits; division rounds to that scale
+Decimal(string: "1")! / Decimal(string: "7")!
 ```
-
-#### logical and
-
-```swift
-true && false   // false
-```
-
-#### logical or
-
-```swift
-true || false   // true
-```
-
-#### truthy and falsy values
-
-```swift
-// Swift has no implicit truthiness — only Bool works in conditions.
-1 != 0                     // explicit check for integer
-!s.isEmpty                 // explicit check for string
-!arr.isEmpty               // explicit check for list
-```
-
-#### conversion
-
-```swift
-1 != 0             // to Boolean
-String(true)       // "true"
-Bool("true")       // true?
-```
-
-### None / null
-
-Swift has no null; absence is modeled with `Optional<T>` and `nil`.
-
-#### literal
-
-```swift
-let x: Int? = nil
-let y: Int? = 5
-```
-
-#### null check
-
-```swift
-if let v = x {
-    // ...
-}
-x != nil
-x == nil
-```
-
-#### optional access
-
-```swift
-x.map { abs($0) }   // Int?
-x ?? 0              // provide default
-x!                  // force unwrap — traps if nil
-x?.magnitude        // optional chaining
-```
+## Type system
 
 ### type hints
 
@@ -326,6 +423,7 @@ let matrix: [[Int]] = [[1, 2], [3, 4]]
 var ages: [String: Int] = ["Alice": 30, "Bob": 25]
 ```
 
+### Type operations
 #### type alias
 
 ```swift
@@ -335,22 +433,28 @@ func scale(_ scalar: Double, _ v: Vector) -> Vector {
 }
 ```
 
-#### protocol / interface
+#### union
 
 ```swift
-protocol Speaker {
-    func speak() -> String
-}
-
-struct Dog: Speaker {
-    func speak() -> String { "Woof!" }
-}
-
-func makeSound(_ s: any Speaker) -> String {
-    s.speak()
+// No union types — use enums with associated values
+enum A {
+    case b(Int)
+    case c(String)
 }
 ```
+#### intersection
 
+```swift
+// Protocol composition with &
+protocol Named { var name: String { get } }
+protocol Aged { var age: Int { get } }
+func f(_ x: any Named & Aged) {}
+```
+#### literal types
+
+```swift
+// No literal types
+```
 ## Memory model
 
 Swift uses Automatic Reference Counting (ARC) for class instances. Structs and enums are value types that copy on assignment; classes are reference types shared through ARC. Arrays and dictionaries are value types with copy-on-write storage.
@@ -784,6 +888,16 @@ class Puppy: Dog {
 }
 ```
 
+#### multiple inheritance
+
+```swift
+// No multiple class inheritance — one superclass only
+// Compose with protocols
+protocol X { func x() }
+protocol Y { func y() }
+class C: A, X, Y { }
+```
+
 #### override
 
 ```swift
@@ -821,15 +935,19 @@ protocol Animal {
 }
 ```
 
-#### interface
+#### protocol / interface
 
 ```swift
-protocol Speakable {
+protocol Speaker {
     func speak() -> String
 }
 
-struct Dog: Speakable {
+struct Dog: Speaker {
     func speak() -> String { "Woof!" }
+}
+
+func makeSound(_ s: any Speaker) -> String {
+    s.speak()
 }
 ```
 
@@ -913,6 +1031,31 @@ public class Dog {
 }
 ```
 
+### Interface & trait
+
+Swift uses `protocol` for shared behavior; there is no `trait` keyword. Protocols gain default implementations through extensions.
+#### definition
+
+```swift
+protocol Speakable {
+    func speak() -> String
+}
+
+struct Dog: Speakable {
+    func speak() -> String { "Woof!" }
+}
+```
+
+#### default method
+
+```swift
+protocol Speaker {
+    func speak() -> String
+}
+extension Speaker {
+    func greet() -> String { speak() }   // default method
+}
+```
 ### Enum
 
 #### definition
@@ -1296,3 +1439,9 @@ let fib = sequence(state: (0, 1)) { (state: inout (Int, Int)) -> Int? in
 Array(fib.prefix(10))
 // [0, 1, 1, 2, 3, 5, 8, 13, 21, 34]
 ```
+
+
+
+
+
+

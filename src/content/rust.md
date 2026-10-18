@@ -1,7 +1,8 @@
 # Rust
 
-## Types
+## Primitive types
 
+Rust's fixed-width types (`i8`/`u8` through `i128`/`u128`, plus `isize`/`usize`) map to hardware with an explicit signed/unsigned choice; `repr(C)` controls padding/alignment, and `size_of`/`align_of` inspect layout.
 ### Number
 
 #### integer
@@ -42,6 +43,63 @@ a as f64 / b as f64  // force float division
 a % b      // modulo
 ```
 
+#### min max abs
+
+```rust
+a.min(b)
+a.max(b)
+(-42_i32).abs()
+a.clamp(0, 10)
+```
+
+#### random
+
+```rust
+// Requires the rand crate
+use rand::Rng;
+rand::thread_rng().gen_range(1..=6);
+rand::thread_rng().gen_range(0.0..1.0);
+```
+
+### Integer types
+
+#### short
+
+```rust
+let s: i16 = 42;   // 16-bit signed
+```
+
+#### long
+
+```rust
+let l: i64 = 42;   // 64-bit signed
+```
+
+#### long long
+
+```rust
+let l: i128 = 42;  // 128-bit signed (widest fixed)
+```
+
+#### unsigned
+
+```rust
+let u: u32 = 42;   // unsigned
+```
+
+#### signed
+
+```rust
+let i: i32 = -42;  // signed via i32
+```
+
+#### struct
+
+```rust
+#[repr(C, packed)]
+struct Packed { a: u8, b: u32 }   // packed — no padding between fields
+```
+
 #### divmod
 
 ```rust
@@ -58,15 +116,6 @@ let (q, r) = (a / b, a % b);
 3.14_f64.trunc();    // 3.0 (truncates)
 3.9_f64 as i32;      // 3
 format!("{:.1}", 3.14); // "3.1"
-```
-
-#### min max abs
-
-```rust
-a.min(b)
-a.max(b)
-(-42_i32).abs()
-a.clamp(0, 10)
 ```
 
 #### range
@@ -86,30 +135,81 @@ a.clamp(0, 10)
 (0..=10).rev().step_by(2).collect::<Vec<_>>() // [10, 8, 6, 4, 2]
 ```
 
-#### complex
+### Boolean
+
+#### literal
 
 ```rust
-// Rust has no built-in complex numbers.
-// Use the num crate:
-use num::complex::Complex;
-let z = Complex::new(1.0_f64, 2.0_f64);
-let c = Complex::new(1.0_f64, 2.0_f64);
-z.re        // 1.0
-z.im        // 2.0
-z.conj()    // 1 - 2i
-z.norm()    // magnitude
-z + c
-z * c
+let t = true;
+let f = false;
 ```
 
-#### random
+#### negation
 
 ```rust
-// Requires the rand crate
-use rand::Rng;
-rand::thread_rng().gen_range(1..=6);
-rand::thread_rng().gen_range(0.0..1.0);
+!true           // false
 ```
+
+#### logical and
+
+```rust
+true && false   // false
+```
+
+#### logical or
+
+```rust
+true || false   // true
+```
+
+#### truthy and falsy values
+
+```rust
+// Rust has no implicit truthiness — only bool works in conditions.
+1 != 0                     // explicit check for integer
+!s.is_empty()              // explicit check for string
+!vec.is_empty()            // explicit check for list
+```
+
+#### conversion
+
+```rust
+1 != 0                    // to Boolean
+true.to_string()          // "true"
+"true".parse::<bool>()    // Ok(true)
+```
+
+### None / null
+
+Rust has no null; absence is modeled with `Option<T>`.
+
+#### literal
+
+```rust
+let x: Option<i32> = None;
+let y: Option<i32> = Some(5);
+```
+
+#### null check
+
+```rust
+if let Some(v) = x {
+    // ...
+}
+x.is_some()
+x.is_none()
+```
+
+#### optional access
+
+```rust
+x.map(|v| v.abs())      // Option<i32>
+x.unwrap_or(0)          // provide default
+x.expect("must exist")  // panic with message if None
+x?                      // propagate None in Option-returning fn
+```
+
+## Composite types
 
 ### String
 
@@ -207,79 +307,71 @@ format!("{s:<10}")   // left justify
 format!("{s:^10}")   // center
 ```
 
-### Boolean
+#### format
 
+```rust
+format!("Hello, {}!", name)
+format!("{:.2}", 3.14159)   // "3.14"
+format!("{:05}", 42)        // "00042"
+```
+
+### Complex
+#### operations
+
+```rust
+// Rust has no built-in complex numbers.
+// Use the num crate:
+use num::complex::Complex;
+let z = Complex::new(1.0_f64, 2.0_f64);
+let c = Complex::new(1.0_f64, 2.0_f64);
+z.re        // 1.0
+z.im        // 2.0
+z.conj()    // 1 - 2i
+z.norm()    // magnitude
+z + c
+z * c
+```
+
+### Date
+#### now
+
+```rust
+// chrono crate
+use chrono::Local;
+Local::now().date_naive()
+```
+#### format
+
+```rust
+Local::now().date_naive().format("%Y-%m-%d").to_string()
+```
+### Datetime
+#### now
+
+```rust
+use chrono::Local;
+Local::now()
+```
+#### format
+
+```rust
+Local::now().format("%Y-%m-%d %H:%M:%S").to_string()
+```
+### Decimal
 #### literal
 
 ```rust
-let t = true;
-let f = false;
+// rust_decimal crate
+use rust_decimal::Decimal;
+Decimal::new(3, 1) + Decimal::new(2, 1) // 0.5
 ```
-
-#### negation
+#### precision
 
 ```rust
-!true           // false
+// rust_decimal keeps a fixed scale; use rounding for division
+Decimal::new(1, 0).checked_div(Decimal::new(7, 0))
 ```
-
-#### logical and
-
-```rust
-true && false   // false
-```
-
-#### logical or
-
-```rust
-true || false   // true
-```
-
-#### truthy and falsy values
-
-```rust
-// Rust has no implicit truthiness — only bool works in conditions.
-1 != 0                     // explicit check for integer
-!s.is_empty()              // explicit check for string
-!vec.is_empty()            // explicit check for list
-```
-
-#### conversion
-
-```rust
-1 != 0                    // to Boolean
-true.to_string()          // "true"
-"true".parse::<bool>()    // Ok(true)
-```
-
-### None / null
-
-Rust has no null; absence is modeled with `Option<T>`.
-
-#### literal
-
-```rust
-let x: Option<i32> = None;
-let y: Option<i32> = Some(5);
-```
-
-#### null check
-
-```rust
-if let Some(v) = x {
-    // ...
-}
-x.is_some()
-x.is_none()
-```
-
-#### optional access
-
-```rust
-x.map(|v| v.abs())      // Option<i32>
-x.unwrap_or(0)          // provide default
-x.expect("must exist")  // panic with message if None
-x?                      // propagate None in Option-returning fn
-```
+## Type system
 
 ### type hints
 
@@ -329,6 +421,7 @@ ages.insert("Alice".into(), 30);
 ages.insert("Bob".into(), 25);
 ```
 
+### Type operations
 #### type alias
 
 ```rust
@@ -338,25 +431,23 @@ fn scale(scalar: f64, v: &Vector) -> Vector {
 }
 ```
 
-#### protocol / interface
+#### union
 
 ```rust
-trait Speaker {
-    fn speak(&self) -> String;
-}
-
-struct Dog;
-impl Speaker for Dog {
-    fn speak(&self) -> String {
-        "Woof!".to_string()
-    }
-}
-
-fn make_sound(s: &impl Speaker) -> String {
-    s.speak()
-}
+// enums are sum types (tagged unions)
+enum A { B(i32), C(String) }
 ```
+#### intersection
 
+```rust
+// trait-bound intersections
+fn f<T: Clone + Default>(x: T) -> T { x.clone() }
+```
+#### literal types
+
+```rust
+// No literal types; use const generics or enums
+```
 ## Memory model
 
 Rust has no garbage collector. Values are owned and moved by default; `&T` and `&mut T` borrow without taking ownership, and the borrow checker enforces lifetimes. `Copy` types duplicate their bits, while other types move.
@@ -799,6 +890,21 @@ struct Dog;
 impl Animal for Dog {}
 ```
 
+#### multiple inheritance
+
+```rust
+// No class inheritance — compose behaviors with traits
+trait A { fn f(&self); }
+trait B { fn f(&self); }
+struct C;
+impl A for C { fn f(&self) {} }
+impl B for C { fn f(&self) {} }
+
+// c.f() is ambiguous — disambiguate with fully-qualified syntax
+A::f(&c);
+B::f(&c);
+```
+
 #### override
 
 ```rust
@@ -855,16 +961,22 @@ trait Animal {
 }
 ```
 
-#### interface
+#### protocol / interface
 
 ```rust
-trait Speakable {
+trait Speaker {
     fn speak(&self) -> String;
 }
 
 struct Dog;
-impl Speakable for Dog {
-    fn speak(&self) -> String { "Woof!".to_string() }
+impl Speaker for Dog {
+    fn speak(&self) -> String {
+        "Woof!".to_string()
+    }
+}
+
+fn make_sound(s: &impl Speaker) -> String {
+    s.speak()
 }
 ```
 
@@ -958,6 +1070,30 @@ pub struct Dog {
 }
 ```
 
+### Interface & trait
+
+Rust has no `interface` keyword — `trait` provides shared behavior, with default methods and blanket implementations.
+#### definition
+
+```rust
+trait Speakable {
+    fn speak(&self) -> String;
+}
+
+struct Dog;
+impl Speakable for Dog {
+    fn speak(&self) -> String { "Woof!".to_string() }
+}
+```
+
+#### default method
+
+```rust
+trait Speaker {
+    fn speak(&self) -> String;
+    fn greet(&self) -> String { self.speak() } // default method
+}
+```
 ### Enum
 
 #### definition
@@ -1353,3 +1489,9 @@ fn fib() -> impl Iterator<Item = u64> {
 fib().take(10).collect::<Vec<_>>()
 // [0, 1, 1, 2, 3, 5, 8, 13, 21, 34]
 ```
+
+
+
+
+
+

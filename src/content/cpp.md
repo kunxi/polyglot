@@ -1,7 +1,8 @@
 # C++
 
-## Types
+## Primitive types
 
+C++ primitive widths are implementation-defined: `short`>=16, `int`>=16, `long`>=32, `long long`>=64 bits, signed/unsigned by keyword; use `alignof`/`alignas` for layout and `<cstdint>` (`int32_t`, `uint64_t`) for fixed widths.
 ### Number
 
 #### integer
@@ -41,6 +42,68 @@ double(a) / b   // force float division
 a % b      // modulo
 ```
 
+#### min max abs
+
+```cpp
+std::min(a, b)
+std::max(a, b)
+std::abs(-42)
+std::clamp(a, 0, 10)
+```
+
+#### random
+
+```cpp
+#include <random>
+std::mt19937 rng{std::random_device{}()};
+std::uniform_int_distribution<int> dist(1, 6);
+dist(rng);
+std::uniform_real_distribution<double> rdist(0.0, 1.0);
+rdist(rng);
+```
+
+### Integer types
+
+#### short
+
+```cpp
+short s = 42;   // >=16-bit signed
+```
+
+#### long
+
+```cpp
+long l = 42L;   // >=32-bit signed
+```
+
+#### long long
+
+```cpp
+long long ll = 42LL;   // >=64-bit signed
+```
+
+#### unsigned
+
+```cpp
+unsigned int u = 42u;
+```
+
+#### signed
+
+```cpp
+signed int i = -42;   // signed is the default
+```
+
+#### struct
+
+```cpp
+struct __attribute__((packed)) Packed {
+    char a;
+    int b;
+};   // packed — no padding
+// or: #pragma pack(push, 1)
+```
+
 #### divmod
 
 ```cpp
@@ -58,15 +121,6 @@ std::floor(3.14);        // 3.0
 std::format("{:.1f}", 3.14); // "3.1" (C++20)
 ```
 
-#### min max abs
-
-```cpp
-std::min(a, b)
-std::max(a, b)
-std::abs(-42)
-std::clamp(a, 0, 10)
-```
-
 #### range
 
 ```cpp
@@ -82,30 +136,79 @@ for (int i = 4; i >= 0; --i) {}        // 4, 3, 2, 1, 0
 for (int i : std::views::iota(0, 11) | std::views::reverse) {} // 10..0
 ```
 
-#### complex
+### Boolean
+
+#### literal
 
 ```cpp
-#include <complex>
-std::complex<double> z(1.0, 2.0);
-std::complex<double> c(1.0, 2.0);
-z.real()       // 1.0
-z.imag()       // 2.0
-std::conj(z)   // 1 - 2i
-std::abs(z)    // magnitude
-z + c
-z * c
+bool t = true;
+bool f = false;
 ```
 
-#### random
+#### negation
 
 ```cpp
-#include <random>
-std::mt19937 rng{std::random_device{}()};
-std::uniform_int_distribution<int> dist(1, 6);
-dist(rng);
-std::uniform_real_distribution<double> rdist(0.0, 1.0);
-rdist(rng);
+!true           // false
 ```
+
+#### logical and
+
+```cpp
+true && false   // false
+```
+
+#### logical or
+
+```cpp
+true || false   // true
+```
+
+#### truthy and falsy values
+
+```cpp
+// C++ converts to bool implicitly, but write explicit checks
+1 != 0                      // explicit check for integer
+!s.empty()                  // explicit check for string
+!vec.empty()                // explicit check for vector
+```
+
+#### conversion
+
+```cpp
+1 != 0              // to Boolean
+std::to_string(true) // "1"  (use "true"/"false" via stream)
+```
+
+### None / null
+
+C++ uses `nullptr` and `std::optional<T>`.
+
+#### literal
+
+```cpp
+int* p = nullptr;
+std::optional<int> x = std::nullopt;
+std::optional<int> y = 5;
+```
+
+#### null check
+
+```cpp
+if (p != nullptr) { /* ... */ }
+x.has_value()
+if (x) { /* x has a value */ }
+```
+
+#### optional access
+
+```cpp
+x.value_or(0)      // provide default
+x.value()          // throws std::bad_optional_access if empty
+*x                 // dereference
+x->member          // member access
+```
+
+## Composite types
 
 ### String
 
@@ -208,77 +311,66 @@ std::format("{:>10}", s)    // right justify
 std::format("{:<10}", s)    // left justify
 ```
 
-### Boolean
+#### format
 
+```cpp
+std::format("Hello, {}!", name)      // C++20
+std::format("{:.2f}", 3.14159)       // "3.14"
+std::printf("%05d\n", 42);           // "00042"
+```
+
+### Complex
+#### operations
+
+```cpp
+#include <complex>
+std::complex<double> z(1.0, 2.0);
+std::complex<double> c(1.0, 2.0);
+z.real()       // 1.0
+z.imag()       // 2.0
+std::conj(z)   // 1 - 2i
+std::abs(z)    // magnitude
+z + c
+z * c
+```
+
+### Date
+#### now
+
+```cpp
+#include <chrono>
+auto now = std::chrono::system_clock::now();
+```
+#### format
+
+```cpp
+// C++20 chrono formatting
+std::format("{:%Y-%m-%d}", std::chrono::system_clock::now())
+```
+### Datetime
+#### now
+
+```cpp
+std::chrono::system_clock::now()
+```
+#### format
+
+```cpp
+std::format("{:%Y-%m-%d %H:%M:%S}", std::chrono::system_clock::now())
+```
+### Decimal
 #### literal
 
 ```cpp
-bool t = true;
-bool f = false;
+// No built-in decimal — use Boost.Multiprecision
+boost::multiprecision::cpp_dec_float_50 d("0.1");
 ```
-
-#### negation
+#### precision
 
 ```cpp
-!true           // false
+// cpp_dec_float_50 keeps 50 decimal digits by default
 ```
-
-#### logical and
-
-```cpp
-true && false   // false
-```
-
-#### logical or
-
-```cpp
-true || false   // true
-```
-
-#### truthy and falsy values
-
-```cpp
-// C++ converts to bool implicitly, but write explicit checks
-1 != 0                      // explicit check for integer
-!s.empty()                  // explicit check for string
-!vec.empty()                // explicit check for vector
-```
-
-#### conversion
-
-```cpp
-1 != 0              // to Boolean
-std::to_string(true) // "1"  (use "true"/"false" via stream)
-```
-
-### None / null
-
-C++ uses `nullptr` and `std::optional<T>`.
-
-#### literal
-
-```cpp
-int* p = nullptr;
-std::optional<int> x = std::nullopt;
-std::optional<int> y = 5;
-```
-
-#### null check
-
-```cpp
-if (p != nullptr) { /* ... */ }
-x.has_value()
-if (x) { /* x has a value */ }
-```
-
-#### optional access
-
-```cpp
-x.value_or(0)      // provide default
-x.value()          // throws std::bad_optional_access if empty
-*x                 // dereference
-x->member          // member access
-```
+## Type system
 
 ### type hints
 
@@ -325,6 +417,7 @@ std::vector<std::vector<int>> matrix = {{1, 2}, {3, 4}};
 std::unordered_map<std::string, int> ages = {{"Alice", 30}, {"Bob", 25}};
 ```
 
+### Type operations
 #### type alias
 
 ```cpp
@@ -336,23 +429,24 @@ auto scale(double scalar, const Vector& v) {
 }
 ```
 
-#### protocol / interface
+#### union
 
 ```cpp
-class Speaker {
-public:
-    virtual std::string speak() const = 0;
-    virtual ~Speaker() = default;
-};
-
-class Dog : public Speaker {
-public:
-    std::string speak() const override { return "Woof!"; }
-};
-
-std::string make_sound(const Speaker& s) { return s.speak(); }
+#include <variant>
+std::variant<int, std::string> v = 5;
 ```
+#### intersection
 
+```cpp
+// Concepts with multiple requirements (C++20)
+template <class T> requires std::integral<T> && std::copyable<T>
+void f(T t);
+```
+#### literal types
+
+```cpp
+// No literal types
+```
 ## Memory model
 
 C++ gives explicit control over storage. Values live on the stack or heap; use pointers (`T*`) or references (`T&`) for indirection, and smart pointers (`std::unique_ptr`, `std::shared_ptr`) for ownership. Expressions have lvalue/rvalue categories, and move semantics transfer resources.
@@ -766,6 +860,20 @@ class Animal { };
 class Dog : public Animal { };
 ```
 
+#### multiple inheritance
+
+```cpp
+class A { public: int a; };
+class B { public: int b; };
+class C : public A, public B { };   // multiple inheritance
+
+// Diamond: virtual inheritance shares the base
+class Base { public: int v; };
+class L : virtual public Base {};
+class R : virtual public Base {};
+class D : public L, public R {};   // one Base subobject
+```
+
 #### override
 
 ```cpp
@@ -822,19 +930,21 @@ public:
 };
 ```
 
-#### interface
+#### protocol / interface
 
 ```cpp
-class Speakable {
+class Speaker {
 public:
-    virtual std::string speak() = 0;
-    virtual ~Speakable() = default;
+    virtual std::string speak() const = 0;
+    virtual ~Speaker() = default;
 };
 
-class Dog : public Speakable {
+class Dog : public Speaker {
 public:
-    std::string speak() override { return "Woof!"; }
+    std::string speak() const override { return "Woof!"; }
 };
+
+std::string make_sound(const Speaker& s) { return s.speak(); }
 ```
 
 #### data class
@@ -907,6 +1017,32 @@ public:
 };
 ```
 
+### Interface & trait
+
+C++ has no `trait`/`interface` keyword — pure-virtual abstract classes and C++20 `concept`s fill the role.
+#### definition
+
+```cpp
+class Speakable {
+public:
+    virtual std::string speak() = 0;
+    virtual ~Speakable() = default;
+};
+
+class Dog : public Speakable {
+public:
+    std::string speak() override { return "Woof!"; }
+};
+```
+
+#### default method
+
+```cpp
+struct Speaker {
+    virtual std::string speak() = 0;
+    std::string greet() { return speak(); } // default method
+};
+```
 ### Enum
 
 #### definition
@@ -1298,3 +1434,9 @@ std::generator<long long> fib() {
 }
 // for (long long x : fib() | std::views::take(10)) { }
 ```
+
+
+
+
+
+
