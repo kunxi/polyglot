@@ -6,10 +6,14 @@ const languages = fs
   .readdirSync("src/content")
   .filter((f: string) => f.endsWith(".md") && f !== "meta.md")
   .map((f: string) => f.replace(".md", ""));
+
+const logos: Record<string, string> = Object.fromEntries(
+  languages.map((lang) => [lang, `/logos/${lang}.svg`])
+);
 ---
 
 <Layout title="I know this, I want to learn that. — Polyglot">
-  <main class="home" data-langs={JSON.stringify(languages)} id="app">
+  <main class="home" data-langs={JSON.stringify(languages)} data-logos={JSON.stringify(logos)} id="app">
     <h1 class="sentence">
       I know <span class="slot" id="slot-0" data-index="0"></span>, I want to<br
       />
@@ -27,6 +31,7 @@ const languages = fs
     (() => {
       const app = document.getElementById("app");
       const languages = JSON.parse(app.dataset.langs || "[]");
+      const logos = JSON.parse(app.dataset.logos || "{}");
       const pool = document.getElementById("pool");
       const go = document.getElementById("go");
       const slots = [null, null];
@@ -39,7 +44,10 @@ const languages = fs
       };
 
       function chip(lang, cls) {
-        return `<button type="button" class="${cls}" draggable="true" data-lang="${lang}">${cap(lang)}</button>`;
+        const logo = logos[lang]
+          ? `<img class="chip-logo" src="${logos[lang]}" alt="" />`
+          : "";
+        return `<button type="button" class="${cls}" draggable="true" data-lang="${lang}">${logo}${cap(lang)}</button>`;
       }
 
       function render() {
