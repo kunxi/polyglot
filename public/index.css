@@ -322,6 +322,9 @@ pre code.hljs,
 }
 
 .lang-chip {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.4em;
   border: none;
   border-radius: 12px;
   cursor: grab;
@@ -331,6 +334,12 @@ pre code.hljs,
   background: #f0f0f0;
   color: #222;
   padding: 0.4rem 0.9rem;
+}
+
+.chip-logo {
+  width: 1.1em;
+  height: 1.1em;
+  flex: none;
 }
 
 .lang-chip:hover {
