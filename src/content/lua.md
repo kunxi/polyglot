@@ -1,7 +1,8 @@
 # Lua
 
-## Types
+## Primitive types
 
+Lua numbers are a single `number` type: 64-bit integers (5.3+) or doubles, with no fixed-width signed/unsigned types and no explicit alignment control.
 ### Number
 
 #### integer
@@ -42,6 +43,60 @@ a % b      -- modulo
 a ^ b      -- exponentiation
 ```
 
+#### min max abs
+
+```lua
+math.min(a, b)
+math.max(a, b)
+math.abs(-42)
+```
+
+#### random
+
+```lua
+math.randomseed(os.time())
+math.random(1, 6)
+math.random()      -- 0..1
+```
+
+### Integer types
+
+#### short
+
+```lua
+-- No short — single number type
+```
+
+#### long
+
+```lua
+-- No long — single number type
+```
+
+#### long long
+
+```lua
+-- No long long — single number type
+```
+
+#### unsigned
+
+```lua
+-- No unsigned types
+```
+
+#### signed
+
+```lua
+local i = -42   -- signed by nature
+```
+
+#### struct
+
+```lua
+string.pack("<bi4", 1, 2)   -- pack a byte and a 32-bit int
+```
+
 #### divmod
 
 ```lua
@@ -58,14 +113,6 @@ math.floor(3.14)        -- 3
 math.floor(3.14 + 0.5)  -- 3 (round to nearest)
 math.ceil(3.14)         -- 4
 string.format("%.1f", 3.14) -- "3.1"
-```
-
-#### min max abs
-
-```lua
-math.min(a, b)
-math.max(a, b)
-math.abs(-42)
 ```
 
 #### range
@@ -88,26 +135,80 @@ for i = 4, 0, -1 do print(i) end   -- 4, 3, 2, 1, 0
 for i = 10, 0, -2 do print(i) end  -- 10, 8, 6, 4, 2
 ```
 
-#### complex
+### Boolean
+
+#### literal
 
 ```lua
--- Lua has no built-in complex numbers; use a table
-local z = {re = 1, im = 2}
-local function cadd(a, b)
-  return {re = a.re + b.re, im = a.im + b.im}
+local t = true
+local f = false
+```
+
+#### negation
+
+```lua
+not true        -- false
+```
+
+#### logical and
+
+```lua
+true and false  -- false
+```
+
+#### logical or
+
+```lua
+true or false   -- true
+```
+
+#### truthy and falsy values
+
+```lua
+-- Only false and nil are falsy; 0 and "" are truthy.
+1 ~= 0                      -- explicit check for integer
+#s > 0                      -- explicit check for string
+#t > 0                      -- explicit check for list
+```
+
+#### conversion
+
+```lua
+1 ~= 0              -- to Boolean
+tostring(true)      -- "true"
+tonumber("1") ~= 0  -- to Boolean
+```
+
+### None / null
+
+Lua uses `nil` for absence.
+
+#### literal
+
+```lua
+local x = nil
+```
+
+#### null check
+
+```lua
+if x == nil then
+  -- ...
 end
-local function cmul(a, b)
-  return {re = a.re * b.re - a.im * b.im, im = a.re * b.im + a.im * b.re}
+if x then
+  -- x is present and truthy
 end
 ```
 
-#### random
+#### optional access
 
 ```lua
-math.randomseed(os.time())
-math.random(1, 6)
-math.random()      -- 0..1
+x and x.length           -- nil-safe access
+x and x:do_something()
+local v = x or 0         -- provide default
 ```
+
+## Composite types
 
 ### String
 
@@ -200,78 +301,63 @@ string.format("%10s", s)    -- right justify
 string.format("%-10s", s)   -- left justify
 ```
 
-### Boolean
-
-#### literal
+#### format
 
 ```lua
-local t = true
-local f = false
+string.format("Hello, %s!", name)
+string.format("%.2f", 3.14159)   -- "3.14"
+string.format("%05d", 42)        -- "00042"
 ```
 
-#### negation
+### Complex
+#### operations
 
 ```lua
-not true        -- false
-```
-
-#### logical and
-
-```lua
-true and false  -- false
-```
-
-#### logical or
-
-```lua
-true or false   -- true
-```
-
-#### truthy and falsy values
-
-```lua
--- Only false and nil are falsy; 0 and "" are truthy.
-1 ~= 0                      -- explicit check for integer
-#s > 0                      -- explicit check for string
-#t > 0                      -- explicit check for list
-```
-
-#### conversion
-
-```lua
-1 ~= 0              -- to Boolean
-tostring(true)      -- "true"
-tonumber("1") ~= 0  -- to Boolean
-```
-
-### None / null
-
-Lua uses `nil` for absence.
-
-#### literal
-
-```lua
-local x = nil
-```
-
-#### null check
-
-```lua
-if x == nil then
-  -- ...
+-- Lua has no built-in complex numbers; use a table
+local z = {re = 1, im = 2}
+local function cadd(a, b)
+  return {re = a.re + b.re, im = a.im + b.im}
 end
-if x then
-  -- x is present and truthy
+local function cmul(a, b)
+  return {re = a.re * b.re - a.im * b.im, im = a.re * b.im + a.im * b.re}
 end
 ```
 
-#### optional access
+### Date
+#### now
 
 ```lua
-x and x.length           -- nil-safe access
-x and x:do_something()
-local v = x or 0         -- provide default
+os.date("%Y-%m-%d")   -- 2026-10-13
 ```
+#### format
+
+```lua
+os.date("%d/%m/%Y", os.time())
+```
+### Datetime
+#### now
+
+```lua
+os.date("%Y-%m-%d %H:%M:%S")
+```
+#### format
+
+```lua
+os.date("%H:%M:%S", os.time())
+```
+### Decimal
+#### literal
+
+```lua
+-- No built-in decimal; use a library or string math
+0.1 + 0.2  -- 0.3 (double rounding)
+```
+#### precision
+
+```lua
+-- Use a decimal library (e.g. ldecNumber) for exact precision
+```
+## Type system
 
 ### type hints
 
@@ -318,6 +404,7 @@ local matrix = {{1, 2}, {3, 4}}
 local ages = {Alice = 30, Bob = 25}
 ```
 
+### Type operations
 #### type alias
 
 ```lua
@@ -326,15 +413,21 @@ local ages = {Alice = 30, Bob = 25}
 local v = {1.0, 2.0}
 ```
 
-#### protocol / interface
+#### union
 
 ```lua
--- Duck typing: define expected methods, no interface declaration
-local function make_sound(s)
-  return s:speak()
-end
+-- Dynamically typed — any value is allowed
 ```
+#### intersection
 
+```lua
+-- No type system — duck typing
+```
+#### literal types
+
+```lua
+-- No literal types
+```
 ## Memory model
 
 Lua uses a single dynamic value type. Tables are the only reference type — numbers, strings, and booleans are values. There are no pointers, and the garbage collector reclaims unreferenced tables.
@@ -754,6 +847,17 @@ local Dog = setmetatable({}, {__index = Animal})
 Dog.__index = Dog
 ```
 
+#### multiple inheritance
+
+```lua
+-- No native multiple inheritance — chain __index fallbacks
+local A = {}
+local B = {}
+local C = setmetatable({}, { __index = function(t, k)
+  return A[k] or B[k]
+end })
+```
+
 #### override
 
 ```lua
@@ -803,12 +907,13 @@ Animal.__index = Animal
 -- subclass must define Animal:speak()
 ```
 
-#### interface
+#### protocol / interface
 
 ```lua
--- Duck typing: an object qualifies by implementing the methods
-local Speakable = {}
--- anything with speak() satisfies Speakable
+-- Duck typing: define expected methods, no interface declaration
+local function make_sound(s)
+  return s:speak()
+end
 ```
 
 #### data class
@@ -871,6 +976,24 @@ self._name = ""
 self.name = "Fido"
 ```
 
+### Interface & trait
+
+Lua has no interfaces or traits — metatables and duck typing fill the role.
+#### definition
+
+```lua
+-- Duck typing: an object qualifies by implementing the methods
+local Speakable = {}
+-- anything with speak() satisfies Speakable
+```
+
+#### default method
+
+```lua
+-- Default behavior via an __index metatable fallback
+local Speaker = {}
+function Speaker:greet() return self:speak() end
+```
 ### Enum
 
 #### definition
@@ -1300,3 +1423,9 @@ local it = fib()
 for i = 1, 10 do print(it()) end
 -- 0, 1, 1, 2, 3, 5, 8, 13, 21, 34
 ```
+
+
+
+
+
+

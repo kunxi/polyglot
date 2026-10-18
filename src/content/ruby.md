@@ -1,7 +1,8 @@
 # Ruby
 
-## Types
+## Primitive types
 
+Ruby's `Integer` is arbitrary precision (no fixed-width types) and `Float` is an IEEE-754 double; there are no signed/unsigned keywords, and padding/alignment is handled by the VM.
 ### Number
 
 #### integer
@@ -41,6 +42,60 @@ a % b      # modulo
 a ** b     # exponentiation
 ```
 
+#### min max abs
+
+```ruby
+[a, b].min
+[a, b].max
+-42.abs
+a.clamp(0, 10)
+```
+
+#### random
+
+```ruby
+rand(1..6)
+rand        # 0.0..1.0
+```
+
+### Integer types
+
+#### short
+
+```ruby
+# No short — Integer is arbitrary precision
+```
+
+#### long
+
+```ruby
+# No long — Integer is arbitrary precision
+```
+
+#### long long
+
+```ruby
+# No long long — Integer is arbitrary precision
+```
+
+#### unsigned
+
+```ruby
+# No unsigned types
+```
+
+#### signed
+
+```ruby
+i = -42   # signed by nature
+```
+
+#### struct
+
+```ruby
+[1, 2].pack("CI")   # pack 8-bit + native unsigned int
+```
+
 #### divmod
 
 ```ruby
@@ -56,15 +111,6 @@ r = a % b
 3.9.to_i            # 3 (truncates)
 3.14.floor          # 3
 format("%.1f", 3.14) # "3.1"
-```
-
-#### min max abs
-
-```ruby
-[a, b].min
-[a, b].max
--42.abs
-a.clamp(0, 10)
 ```
 
 #### range
@@ -84,25 +130,80 @@ a.clamp(0, 10)
 10.step(0, -2).to_a     # [10, 8, 6, 4, 2]
 ```
 
-#### complex
+### Boolean
+
+#### literal
 
 ```ruby
-z = Complex(1, 2)
-c = Complex(1, 2)
-z.real     # 1.0
-z.imag     # 2.0
-z.conj     # 1 - 2i
-z.abs      # magnitude
-z + c
-z * c
+t = true
+f = false
 ```
 
-#### random
+#### negation
 
 ```ruby
-rand(1..6)
-rand        # 0.0..1.0
+!true           # false
 ```
+
+#### logical and
+
+```ruby
+true && false   # false
+```
+
+#### logical or
+
+```ruby
+true || false   # true
+```
+
+#### truthy and falsy values
+
+```ruby
+# Only false and nil are falsy; 0 and "" are truthy
+1 != 0               # explicit check for integer
+!s.empty?            # explicit check for string
+!arr.empty?          # explicit check for array
+```
+
+#### conversion
+
+```ruby
+1 != 0         # to Boolean
+true.to_s      # "true"
+!!1            # true
+```
+
+### None / null
+
+Ruby uses `nil` for absence.
+
+#### literal
+
+```ruby
+x = nil
+```
+
+#### null check
+
+```ruby
+if x.nil?
+  # ...
+end
+if x
+  # x is present and truthy
+end
+```
+
+#### optional access
+
+```ruby
+x&.length          # safe navigation
+x&.upcase
+x || 0             # provide default
+```
+
+## Composite types
 
 ### String
 
@@ -198,78 +299,66 @@ s.ljust(10)    # left justify
 s.center(10)   # center
 ```
 
-### Boolean
+#### format
 
+```ruby
+"Hello, %s!" % name
+format("Hello, %s!", name)
+"%.2f" % 3.14159   # "3.14"
+"%05d" % 42        # "00042"
+```
+
+### Complex
+#### operations
+
+```ruby
+z = Complex(1, 2)
+c = Complex(1, 2)
+z.real     # 1.0
+z.imag     # 2.0
+z.conj     # 1 - 2i
+z.abs      # magnitude
+z + c
+z * c
+```
+
+### Date
+#### now
+
+```ruby
+require "date"
+Date.today   # => #<Date: 2026-10-13>
+```
+#### format
+
+```ruby
+Date.today.strftime("%Y-%m-%d")
+```
+### Datetime
+#### now
+
+```ruby
+require "date"
+DateTime.now
+```
+#### format
+
+```ruby
+DateTime.now.strftime("%Y-%m-%d %H:%M:%S")
+```
+### Decimal
 #### literal
 
 ```ruby
-t = true
-f = false
+require "bigdecimal"
+BigDecimal("0.1") + BigDecimal("0.2")
 ```
-
-#### negation
+#### precision
 
 ```ruby
-!true           # false
+BigDecimal("1").div(BigDecimal("7"), 6)
 ```
-
-#### logical and
-
-```ruby
-true && false   # false
-```
-
-#### logical or
-
-```ruby
-true || false   # true
-```
-
-#### truthy and falsy values
-
-```ruby
-# Only false and nil are falsy; 0 and "" are truthy
-1 != 0               # explicit check for integer
-!s.empty?            # explicit check for string
-!arr.empty?          # explicit check for array
-```
-
-#### conversion
-
-```ruby
-1 != 0         # to Boolean
-true.to_s      # "true"
-!!1            # true
-```
-
-### None / null
-
-Ruby uses `nil` for absence.
-
-#### literal
-
-```ruby
-x = nil
-```
-
-#### null check
-
-```ruby
-if x.nil?
-  # ...
-end
-if x
-  # x is present and truthy
-end
-```
-
-#### optional access
-
-```ruby
-x&.length          # safe navigation
-x&.upcase
-x || 0             # provide default
-```
+## Type system
 
 ### type hints
 
@@ -316,6 +405,7 @@ matrix = [[1, 2], [3, 4]]
 ages = { "Alice" => 30, "Bob" => 25 }
 ```
 
+### Type operations
 #### type alias
 
 ```ruby
@@ -324,15 +414,21 @@ ages = { "Alice" => 30, "Bob" => 25 }
 v = [1.0, 2.0]
 ```
 
-#### protocol / interface
+#### union
 
 ```ruby
-# Duck typing: an object qualifies by responding to the methods
-def make_sound(s)
-  s.speak
-end
+# No static union types — any object works (duck typing)
 ```
+#### intersection
 
+```ruby
+# No intersection types
+```
+#### literal types
+
+```ruby
+# No literal types
+```
 ## Memory model
 
 Ruby stores everything as an object; names are references to objects. Immediate values like integers and symbols are immutable, while arrays and hashes are shared by reference. There are no pointers, and memory is garbage collected.
@@ -739,6 +835,22 @@ class Dog < Animal
 end
 ```
 
+#### multiple inheritance
+
+```ruby
+module A
+  def f = "A"
+end
+module B
+  def f = "B"
+end
+class C
+  include A
+  include B   # B wins — last included first
+end
+C.ancestors   # [C, B, A, Object, ...]
+```
+
 #### override
 
 ```ruby
@@ -789,12 +901,12 @@ class Animal
 end
 ```
 
-#### interface
+#### protocol / interface
 
 ```ruby
-# Duck typing — any object with speak() satisfies the interface
-module Speakable
-  def speak = raise NotImplementedError
+# Duck typing: an object qualifies by responding to the methods
+def make_sound(s)
+  s.speak
 end
 ```
 
@@ -866,6 +978,25 @@ class Dog
 end
 ```
 
+### Interface & trait
+
+Ruby has no `interface` or `trait` keyword — modules and mixins provide shared and default behavior.
+#### definition
+
+```ruby
+# Duck typing — any object with speak() satisfies the interface
+module Speakable
+  def speak = raise NotImplementedError
+end
+```
+
+#### default method
+
+```ruby
+module Speaker
+  def greet = speak   # default method via module
+end
+```
 ### Enum
 
 #### definition
@@ -1238,3 +1369,9 @@ end
 fib.first(10)
 # [0, 1, 1, 2, 3, 5, 8, 13, 21, 34]
 ```
+
+
+
+
+
+

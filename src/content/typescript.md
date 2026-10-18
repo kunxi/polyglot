@@ -1,7 +1,8 @@
 # TypeScript
 
-## Types
+## Primitive types
 
+TypeScript's `number` is an IEEE-754 double (no separate `int`/`long`); `bigint` gives arbitrary precision. There are no fixed-width signed/unsigned types, and alignment is handled by the JS engine.
 ### Number
 
 #### integer
@@ -44,6 +45,61 @@ a % b      // modulo
 a ** b     // exponentiation
 ```
 
+#### min max abs
+
+```typescript
+Math.min(a, b)
+Math.max(a, b)
+Math.abs(-42)
+```
+
+#### random
+
+```typescript
+Math.random()                      // 0..1
+Math.floor(Math.random() * 6) + 1  // 1..6
+```
+
+### Integer types
+
+#### short
+
+```typescript
+// No short — number is an IEEE-754 double
+```
+
+#### long
+
+```typescript
+// No long — number is a double; bigint for large ints
+```
+
+#### long long
+
+```typescript
+const big = 42n;   // bigint (arbitrary precision)
+```
+
+#### unsigned
+
+```typescript
+// No unsigned number — BigUint64Array or >>> for unsigned ops
+```
+
+#### signed
+
+```typescript
+let i = -42;   // signed double
+```
+
+#### struct
+
+```typescript
+// Use DataView over an ArrayBuffer for a packed layout
+const buf = new ArrayBuffer(5);
+new DataView(buf).setInt32(1, 2, true);   // little-endian int after byte
+```
+
 #### divmod
 
 ```typescript
@@ -62,14 +118,6 @@ Math.floor(3.14);        // 3
 (3.14).toFixed(1);       // "3.1"
 ```
 
-#### min max abs
-
-```typescript
-Math.min(a, b)
-Math.max(a, b)
-Math.abs(-42)
-```
-
 #### range
 
 ```typescript
@@ -84,26 +132,81 @@ Array.from({ length: 5 }, (_, i) => 4 - i)  // [4, 3, 2, 1, 0]
 for (let i = 10; i >= 0; i -= 2) { }
 ```
 
-#### complex
+### Boolean
+
+#### literal
 
 ```typescript
-// No built-in complex numbers — use a class or library
-class Complex {
-  constructor(public re: number, public im: number) {}
-  add(o: Complex) { return new Complex(this.re + o.re, this.im + o.im); }
-  mul(o: Complex) {
-    return new Complex(this.re * o.re - this.im * o.im, this.re * o.im + this.im * o.re);
-  }
+const t = true;
+const f = false;
+```
+
+#### negation
+
+```typescript
+!true           // false
+```
+
+#### logical and
+
+```typescript
+true && false   // false
+```
+
+#### logical or
+
+```typescript
+true || false   // true
+```
+
+#### truthy and falsy values
+
+```typescript
+// Only false, 0, "", null, undefined, and NaN are falsy
+1 !== 0              // explicit check for number
+s.length > 0         // explicit check for string
+arr.length > 0       // explicit check for array
+```
+
+#### conversion
+
+```typescript
+Boolean(1)       // true
+String(true)     // "true"
+!!1              // true
+```
+
+### None / null
+
+TypeScript has both `null` and `undefined`; use `?` for optional access.
+
+#### literal
+
+```typescript
+let x: string | null = null;
+let y: number | undefined = undefined;
+```
+
+#### null check
+
+```typescript
+if (x !== null && x !== undefined) {
+  // ...
 }
-const z = new Complex(1, 2);
+if (x != null) {   // matches both null and undefined
+  // ...
+}
 ```
 
-#### random
+#### optional access
 
 ```typescript
-Math.random()                      // 0..1
-Math.floor(Math.random() * 6) + 1  // 1..6
+x?.length              // safe access, undefined if null
+x?.length ?? 0         // default when nullish
+x?.toUpperCase()
 ```
+
+## Composite types
 
 ### String
 
@@ -198,79 +301,65 @@ s.padStart(10)    // right justify
 s.padEnd(10)      // left justify
 ```
 
-### Boolean
+#### format
 
+```typescript
+`Hello, ${name}!`
+(3.14159).toFixed(2)          // "3.14"
+String(42).padStart(5, "0")   // "00042"
+```
+
+### Complex
+#### operations
+
+```typescript
+// No built-in complex numbers — use a class or library
+class Complex {
+  constructor(public re: number, public im: number) {}
+  add(o: Complex) { return new Complex(this.re + o.re, this.im + o.im); }
+  mul(o: Complex) {
+    return new Complex(this.re * o.re - this.im * o.im, this.re * o.im + this.im * o.re);
+  }
+}
+const z = new Complex(1, 2);
+```
+
+### Date
+#### now
+
+```typescript
+new Date().toISOString().slice(0, 10)
+```
+#### format
+
+```typescript
+new Date().toLocaleDateString("en-CA")  // YYYY-MM-DD
+```
+### Datetime
+#### now
+
+```typescript
+new Date().toISOString()
+```
+#### format
+
+```typescript
+new Date().toISOString().slice(0, 19).replace("T", " ")
+```
+### Decimal
 #### literal
 
 ```typescript
-const t = true;
-const f = false;
+// No built-in decimal — 0.1 + 0.2 === 0.30000000000000004
+// Use a library like decimal.js
 ```
-
-#### negation
+#### precision
 
 ```typescript
-!true           // false
+import Decimal from "decimal.js";
+new Decimal("0.1").plus("0.2").toString()  // "0.3"
 ```
-
-#### logical and
-
-```typescript
-true && false   // false
-```
-
-#### logical or
-
-```typescript
-true || false   // true
-```
-
-#### truthy and falsy values
-
-```typescript
-// Only false, 0, "", null, undefined, and NaN are falsy
-1 !== 0              // explicit check for number
-s.length > 0         // explicit check for string
-arr.length > 0       // explicit check for array
-```
-
-#### conversion
-
-```typescript
-Boolean(1)       // true
-String(true)     // "true"
-!!1              // true
-```
-
-### None / null
-
-TypeScript has both `null` and `undefined`; use `?` for optional access.
-
-#### literal
-
-```typescript
-let x: string | null = null;
-let y: number | undefined = undefined;
-```
-
-#### null check
-
-```typescript
-if (x !== null && x !== undefined) {
-  // ...
-}
-if (x != null) {   // matches both null and undefined
-  // ...
-}
-```
-
-#### optional access
-
-```typescript
-x?.length              // safe access, undefined if null
-x?.length ?? 0         // default when nullish
-x?.toUpperCase()
-```
+## Type system
 
 ### type hints
 
@@ -317,6 +406,7 @@ let matrix: number[][] = [[1, 2], [3, 4]];
 const ages: Record<string, number> = { Alice: 30, Bob: 25 };
 ```
 
+### Type operations
 #### type alias
 
 ```typescript
@@ -326,20 +416,24 @@ function scale(scalar: number, v: Vector): Vector {
 }
 ```
 
-#### protocol / interface
+#### union
 
 ```typescript
-interface Speaker {
-  speak(): string;
-}
-
-class Dog implements Speaker {
-  speak(): string { return "Woof!"; }
-}
-
-function makeSound(s: Speaker): string { return s.speak(); }
+type A = number | string;
+let v: A = 5; v = "five";
 ```
+#### intersection
 
+```typescript
+type A = { x: number } & { y: string };
+const o: A = { x: 1, y: "a" };
+```
+#### literal types
+
+```typescript
+type Color = "red" | "green" | "blue";
+const c: Color = "red";
+```
 ## Memory model
 
 TypeScript (JavaScript) stores primitives by value and objects — arrays, objects, functions — by reference on the heap. There are no pointers, and the garbage collector frees unreachable objects.
@@ -746,6 +840,18 @@ class Animal { }
 class Dog extends Animal { }
 ```
 
+#### multiple inheritance
+
+```typescript
+interface X { x(): void; }
+interface Y { y(): void; }
+class C implements X, Y {
+  x() {}
+  y() {}
+}
+// No multiple class inheritance — use mixins to share behavior
+```
+
 #### override
 
 ```typescript
@@ -795,16 +901,18 @@ abstract class Animal {
 }
 ```
 
-#### interface
+#### protocol / interface
 
 ```typescript
-interface Speakable {
+interface Speaker {
   speak(): string;
 }
 
-class Dog implements Speakable {
+class Dog implements Speaker {
   speak(): string { return "Woof!"; }
 }
+
+function makeSound(s: Speaker): string { return s.speak(); }
 ```
 
 #### data class
@@ -873,6 +981,28 @@ class Dog {
 }
 ```
 
+### Interface & trait
+
+TypeScript uses `interface` and structural typing; there is no `trait` keyword — mixins and interfaces fill the role.
+#### definition
+
+```typescript
+interface Speakable {
+  speak(): string;
+}
+
+class Dog implements Speakable {
+  speak(): string { return "Woof!"; }
+}
+```
+
+#### default method
+
+```typescript
+// Interfaces declare, classes implement; mixins add default behavior
+interface Speaker { speak(): string; }
+class Dog implements Speaker { speak() { return "Woof!"; } }
+```
 ### Enum
 
 #### definition
@@ -1251,3 +1381,9 @@ const it = fib();
 Array.from({ length: 10 }, () => it.next().value);
 // [0, 1, 1, 2, 3, 5, 8, 13, 21, 34]
 ```
+
+
+
+
+
+

@@ -91,6 +91,12 @@ h3 {
 .topic-intro p {
   margin: 0 0 0.75rem;
 }
+.group-prose {
+  margin: 0.75rem 0 1.5rem;
+}
+.group-prose p {
+  margin: 0 0 0.5rem;
+}
 
 /* TOC dropdown */
 .toc-wrap {
@@ -194,6 +200,12 @@ td pre {
   border-radius: 3px;
   overflow-x: auto;
   max-width: 100%;
+  white-space: pre-wrap;
+  overflow-wrap: break-word;
+}
+td pre code.hljs {
+  white-space: inherit;
+  overflow-wrap: inherit;
 }
 td code {
   font-size: 0.82rem;

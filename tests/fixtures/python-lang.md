@@ -1,6 +1,6 @@
 # Python
 
-## Types
+## Primitive types
 
 ### Number
 

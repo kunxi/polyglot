@@ -1,7 +1,8 @@
 # Java
 
-## Types
+## Primitive types
 
+Java's `byte`(8), `short`(16), `int`(32), `long`(64) and `float`/`double` are fixed hardware primitives (signed only); wrapper classes (`Integer`, `Long`) box them, and alignment is JVM-managed.
 ### Number
 
 #### integer
@@ -45,6 +46,62 @@ a / b      // integer division if both int
 a % b      // modulo
 ```
 
+#### min max abs
+
+```java
+Math.min(a, b)
+Math.max(a, b)
+Math.abs(-42)
+```
+
+#### random
+
+```java
+new Random().nextInt(1, 7)   // 1..6
+Math.random()                // 0.0..1.0
+```
+
+### Integer types
+
+#### short
+
+```java
+short s = 42;   // 16-bit signed
+```
+
+#### long
+
+```java
+long l = 42L;   // 64-bit signed
+```
+
+#### long long
+
+```java
+// No long long — long is 64-bit
+```
+
+#### unsigned
+
+```java
+// No unsigned primitives — char is 16-bit unsigned
+char c = 'a';
+```
+
+#### signed
+
+```java
+int i = -42;   // signed by default
+```
+
+#### struct
+
+```java
+// Use ByteBuffer for a packed layout
+var buf = ByteBuffer.allocate(5).order(ByteOrder.LITTLE_ENDIAN);
+buf.put((byte) 1).putInt(2);
+```
+
 #### divmod
 
 ```java
@@ -60,14 +117,6 @@ Math.round(3.14);        // 3
 (int) 3.9;               // 3 (truncates)
 Math.floor(3.14);        // 3.0
 String.format("%.1f", 3.14); // "3.1"
-```
-
-#### min max abs
-
-```java
-Math.min(a, b)
-Math.max(a, b)
-Math.abs(-42)
 ```
 
 #### range
@@ -87,27 +136,80 @@ for (int i = 10; i >= 0; i -= 2) {}      // 10, 8, 6, 4, 2
 IntStream.iterate(4, i -> i - 1).limit(5) // 4, 3, 2, 1, 0
 ```
 
-#### complex
+### Boolean
+
+#### literal
 
 ```java
-// Java has no built-in complex numbers; use a class or library
-class Complex {
-    double re, im;
-    Complex(double re, double im) { this.re = re; this.im = im; }
-    Complex add(Complex o) { return new Complex(re + o.re, im + o.im); }
-    Complex mul(Complex o) {
-        return new Complex(re * o.re - im * o.im, re * o.im + im * o.re);
-    }
+boolean t = true;
+boolean f = false;
+```
+
+#### negation
+
+```java
+!true           // false
+```
+
+#### logical and
+
+```java
+true && false   // false
+```
+
+#### logical or
+
+```java
+true || false   // true
+```
+
+#### truthy and falsy values
+
+```java
+// Java has no truthiness — only boolean works in conditions.
+1 != 0                      // explicit check for integer
+!s.isEmpty()                // explicit check for string
+!list.isEmpty()             // explicit check for list
+```
+
+#### conversion
+
+```java
+1 != 0                     // to Boolean
+Boolean.toString(true)     // "true"
+Boolean.parseBoolean("true") // true
+```
+
+### None / null
+
+Java reference types can be null; `Optional<T>` models absence.
+
+#### literal
+
+```java
+String x = null;
+Optional<String> y = Optional.empty();
+Optional<Integer> z = Optional.of(5);
+```
+
+#### null check
+
+```java
+if (x != null) {
+    // ...
 }
-var z = new Complex(1.0, 2.0);
+x == null
 ```
 
-#### random
+#### optional access
 
 ```java
-new Random().nextInt(1, 7)   // 1..6
-Math.random()                // 0.0..1.0
+Optional.ofNullable(x).map(String::length).orElse(0)
+x != null ? x.length() : 0
+Optional.ofNullable(x).ifPresent(v -> { /* ... */ })
 ```
+
+## Composite types
 
 ### String
 
@@ -204,78 +306,67 @@ String.format("%10s", s)    // right justify
 String.format("%-10s", s)   // left justify
 ```
 
-### Boolean
-
-#### literal
+#### format
 
 ```java
-boolean t = true;
-boolean f = false;
+String.format("Hello, %s!", name)
+String.format("%.2f", 3.14159)   // "3.14"
+String.format("%05d", 42)        // "00042"
 ```
 
-#### negation
+### Complex
+#### operations
 
 ```java
-!true           // false
-```
-
-#### logical and
-
-```java
-true && false   // false
-```
-
-#### logical or
-
-```java
-true || false   // true
-```
-
-#### truthy and falsy values
-
-```java
-// Java has no truthiness — only boolean works in conditions.
-1 != 0                      // explicit check for integer
-!s.isEmpty()                // explicit check for string
-!list.isEmpty()             // explicit check for list
-```
-
-#### conversion
-
-```java
-1 != 0                     // to Boolean
-Boolean.toString(true)     // "true"
-Boolean.parseBoolean("true") // true
-```
-
-### None / null
-
-Java reference types can be null; `Optional<T>` models absence.
-
-#### literal
-
-```java
-String x = null;
-Optional<String> y = Optional.empty();
-Optional<Integer> z = Optional.of(5);
-```
-
-#### null check
-
-```java
-if (x != null) {
-    // ...
+// Java has no built-in complex numbers; use a class or library
+class Complex {
+    double re, im;
+    Complex(double re, double im) { this.re = re; this.im = im; }
+    Complex add(Complex o) { return new Complex(re + o.re, im + o.im); }
+    Complex mul(Complex o) {
+        return new Complex(re * o.re - im * o.im, re * o.im + im * o.re);
+    }
 }
-x == null
+var z = new Complex(1.0, 2.0);
 ```
 
-#### optional access
+### Date
+#### now
 
 ```java
-Optional.ofNullable(x).map(String::length).orElse(0)
-x != null ? x.length() : 0
-Optional.ofNullable(x).ifPresent(v -> { /* ... */ })
+import java.time.LocalDate;
+LocalDate.now()
 ```
+#### format
+
+```java
+LocalDate.now().format(DateTimeFormatter.ISO_DATE)
+```
+### Datetime
+#### now
+
+```java
+import java.time.LocalDateTime;
+LocalDateTime.now()
+```
+#### format
+
+```java
+LocalDateTime.now().format(DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss"))
+```
+### Decimal
+#### literal
+
+```java
+import java.math.BigDecimal;
+new BigDecimal("0.1").add(new BigDecimal("0.2"))
+```
+#### precision
+
+```java
+new BigDecimal("1").divide(new BigDecimal("7"), 6, RoundingMode.HALF_UP)
+```
+## Type system
 
 ### type hints
 
@@ -322,6 +413,7 @@ List<List<Integer>> matrix = List.of(List.of(1, 2), List.of(3, 4));
 Map<String, Integer> ages = Map.of("Alice", 30, "Bob", 25);
 ```
 
+### Type operations
 #### type alias
 
 ```java
@@ -329,20 +421,25 @@ Map<String, Integer> ages = Map.of("Alice", 30, "Bob", 25);
 class Vector extends ArrayList<Double> { }
 ```
 
-#### protocol / interface
+#### union
 
 ```java
-interface Speaker {
-    String speak();
-}
-
-class Dog implements Speaker {
-    @Override public String speak() { return "Woof!"; }
-}
-
-static String makeSound(Speaker s) { return s.speak(); }
+// No union types — sealed interfaces (Java 17+)
+sealed interface A permits B, C {}
+record B(int x) implements A {}
+record C(String s) implements A {}
 ```
+#### intersection
 
+```java
+// Intersections in generic bounds
+<T extends CharSequence & Comparable<T>> T pick(T a, T b)
+```
+#### literal types
+
+```java
+// No literal types
+```
 ## Memory model
 
 Java stores primitives by value and objects on the heap, accessed through references. There are no raw pointers, and the JVM garbage collector reclaims unreachable objects.
@@ -763,6 +860,17 @@ class Animal { }
 class Dog extends Animal { }
 ```
 
+#### multiple inheritance
+
+```java
+class A {}
+class B {}
+// class C extends A, B {}   // error — single inheritance
+interface X { void x(); }
+interface Y { void y(); }
+class C extends A implements X, Y {}
+```
+
 #### override
 
 ```java
@@ -812,16 +920,18 @@ abstract class Animal {
 }
 ```
 
-#### interface
+#### protocol / interface
 
 ```java
-interface Speakable {
+interface Speaker {
     String speak();
 }
 
-class Dog implements Speakable {
+class Dog implements Speaker {
     @Override public String speak() { return "Woof!"; }
 }
+
+static String makeSound(Speaker s) { return s.speak(); }
 ```
 
 #### data class
@@ -892,6 +1002,29 @@ class Dog {
 }
 ```
 
+### Interface & trait
+
+Java uses `interface` (with default methods since Java 8) for the trait role; there is no `trait` keyword.
+#### definition
+
+```java
+interface Speakable {
+    String speak();
+}
+
+class Dog implements Speakable {
+    @Override public String speak() { return "Woof!"; }
+}
+```
+
+#### default method
+
+```java
+interface Speaker {
+    String speak();
+    default String greet() { return speak(); } // default method
+}
+```
 ### Enum
 
 #### definition
@@ -1268,3 +1401,9 @@ Stream.iterate(new long[]{0, 1}, p -> new long[]{p[1], p[0] + p[1]})
     .limit(10)
     .toList();   // [0, 1, 1, 2, 3, 5, 8, 13, 21, 34]
 ```
+
+
+
+
+
+
