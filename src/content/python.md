@@ -1424,8 +1424,188 @@ list(islice(fib(), 10))
 # [0, 1, 1, 2, 3, 5, 8, 13, 21, 34]
 ```
 
+## Modules & Imports
 
+### Import
 
+#### import
 
+```python
+import math
+```
 
+#### from import
+
+```python
+from math import sqrt, pi
+```
+
+#### alias
+
+```python
+import numpy as np
+```
+
+### Export
+
+#### export
+
+```python
+__all__ = ["public_fn"]   # limit wildcard imports
+```
+
+### Package manager
+
+#### manifest
+
+```python
+pyproject.toml   # or requirements.txt
+```
+
+#### install
+
+```python
+pip install requests
+```
+
+## Metaprogramming & Reflection
+
+### Annotations
+
+#### annotation
+
+```python
+def logged(fn):
+    def wrapper(*a, **k):
+        print("calling", fn.__name__)
+        return fn(*a, **k)
+    return wrapper
+
+@logged
+def f(): ...
+```
+
+### Introspection
+
+#### type name
+
+```python
+type(x).__name__
+```
+
+#### members
+
+```python
+dir(obj)
+vars(obj)
+```
+
+### Macros
+
+#### macro
+
+```python
+# No macros — use decorators or metaclasses
+```
+
+### Eval
+
+#### eval
+
+```python
+eval("1 + 2")   # 3
+```
+
+## Concurrency & Async
+
+### Threads & coroutines
+
+#### thread
+
+```python
+import threading
+threading.Thread(target=f).start()
+```
+
+### Async / await
+
+#### async await
+
+```python
+import asyncio
+
+async def f():
+    await asyncio.sleep(1)
+    return "done"
+
+asyncio.run(f())
+```
+
+### Channels / queues
+
+#### channel
+
+```python
+import queue
+q = queue.Queue()
+q.put(1)
+q.get()
+```
+
+### Mutex / lock
+
+#### mutex
+
+```python
+import threading
+lock = threading.Lock()
+with lock:
+    ...
+```
+
+## Generics & Templates
+
+### Generic function
+
+#### function
+
+```python
+# Before 3.12
+from typing import TypeVar
+T = TypeVar("T")
+def identity(x: T) -> T:
+    return x
+
+# 3.12+ (PEP 695)
+def identity[T](x: T) -> T:
+    return x
+```
+
+### Generic class
+
+#### class
+
+```python
+# Before 3.12
+from typing import Generic, TypeVar
+T = TypeVar("T")
+class Box(Generic[T]):
+    def __init__(self, value: T): self.value = value
+
+# 3.12+ (PEP 695)
+class Box[T]:
+    def __init__(self, value: T): self.value = value
+```
+
+### Constraints / bounds
+
+#### constraint
+
+```python
+# Before 3.12
+T = TypeVar("T", bound=Number)
+
+# 3.12+ (PEP 695)
+def f[T: Number](x: T): ...
+```
 

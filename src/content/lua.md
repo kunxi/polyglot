@@ -1424,8 +1424,148 @@ for i = 1, 10 do print(it()) end
 -- 0, 1, 1, 2, 3, 5, 8, 13, 21, 34
 ```
 
+## Modules & Imports
 
+### Import
 
+#### import
 
+```lua
+local m = require("module")
+```
 
+#### from import
+
+```lua
+local sqrt = math.sqrt   -- no selective require
+```
+
+#### alias
+
+```lua
+local m = require("module")   -- local name is the alias
+```
+
+### Export
+
+#### export
+
+```lua
+return { public_fn = public_fn }   -- module returns a table
+```
+
+### Package manager
+
+#### manifest
+
+```lua
+*.rockspec   # LuaRocks
+```
+
+#### install
+
+```lua
+luarocks install luasocket
+```
+
+## Metaprogramming & Reflection
+
+### Annotations
+
+#### annotation
+
+```lua
+-- No decorators — wrap functions manually
+```
+
+### Introspection
+
+#### type name
+
+```lua
+type(x)   -- "number", "string", "table", ...
+```
+
+#### members
+
+```lua
+for k, v in pairs(t) do print(k, v) end
+```
+
+### Macros
+
+#### macro
+
+```lua
+-- No macros
+```
+
+### Eval
+
+#### eval
+
+```lua
+load("return 1 + 2")()   -- 3
+```
+
+## Concurrency & Async
+
+### Threads & coroutines
+
+#### thread
+
+```lua
+local co = coroutine.create(f)
+coroutine.resume(co)
+```
+
+### Async / await
+
+#### async await
+
+```lua
+-- No async/await — use coroutines
+```
+
+### Channels / queues
+
+#### channel
+
+```lua
+-- No channels — use tables + coroutines
+```
+
+### Mutex / lock
+
+#### mutex
+
+```lua
+-- No threads — single OS thread (use Lua Lanes for parallelism)
+```
+
+## Generics & Templates
+
+### Generic function
+
+#### function
+
+```lua
+-- Dynamically typed — any value already works
+```
+
+### Generic class
+
+#### class
+
+```lua
+-- No generics — tables are dynamically typed
+```
+
+### Constraints / bounds
+
+#### constraint
+
+```lua
+-- No constraints — duck typing
+```
 

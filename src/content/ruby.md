@@ -1370,8 +1370,153 @@ fib.first(10)
 # [0, 1, 1, 2, 3, 5, 8, 13, 21, 34]
 ```
 
+## Modules & Imports
 
+### Import
 
+#### import
 
+```ruby
+require "json"
+```
 
+#### from import
+
+```ruby
+# No selective import — require loads the whole file
+```
+
+#### alias
+
+```ruby
+# No import alias — bind to a local constant instead
+```
+
+### Export
+
+#### export
+
+```ruby
+# Everything is public; use private_constant to hide
+```
+
+### Package manager
+
+#### manifest
+
+```ruby
+Gemfile   # Bundler
+```
+
+#### install
+
+```ruby
+bundle add json   # or: gem install json
+```
+
+## Metaprogramming & Reflection
+
+### Annotations
+
+#### annotation
+
+```ruby
+# No decorators — use prepend modules or method hooks
+```
+
+### Introspection
+
+#### type name
+
+```ruby
+x.class.name
+```
+
+#### members
+
+```ruby
+obj.methods
+obj.instance_variables
+```
+
+### Macros
+
+#### macro
+
+```ruby
+# No macros — use class_eval / define_method
+```
+
+### Eval
+
+#### eval
+
+```ruby
+eval("1 + 2")   # 3
+```
+
+## Concurrency & Async
+
+### Threads & coroutines
+
+#### thread
+
+```ruby
+Thread.new { puts "hi" }.join
+```
+
+### Async / await
+
+#### async await
+
+```ruby
+# No async/await — use fibers (Ruby 3+) or the async gem
+```
+
+### Channels / queues
+
+#### channel
+
+```ruby
+require "thread"
+q = Queue.new
+q << 1
+q.pop
+```
+
+### Mutex / lock
+
+#### mutex
+
+```ruby
+require "thread"
+m = Mutex.new
+m.synchronize { ... }
+```
+
+## Generics & Templates
+
+### Generic function
+
+#### function
+
+```ruby
+# Dynamically typed — any object already works
+```
+
+### Generic class
+
+#### class
+
+```ruby
+# No generics — classes are not parameterized
+```
+
+### Constraints / bounds
+
+#### constraint
+
+```ruby
+# No constraints — duck typing
+```
 

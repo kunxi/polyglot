@@ -1490,8 +1490,157 @@ fib().take(10).collect::<Vec<_>>()
 // [0, 1, 1, 2, 3, 5, 8, 13, 21, 34]
 ```
 
+## Modules & Imports
 
+### Import
 
+#### import
 
+```rust
+use std::collections::HashMap;
+```
 
+#### from import
+
+```rust
+use std::collections::{HashMap, HashSet};
+```
+
+#### alias
+
+```rust
+use std::collections::HashMap as Map;
+```
+
+### Export
+
+#### export
+
+```rust
+pub fn f() {}   // pub makes it visible
+pub use crate::m::Thing;   // re-export
+```
+
+### Package manager
+
+#### manifest
+
+```rust
+Cargo.toml
+```
+
+#### install
+
+```rust
+cargo add serde
+```
+
+## Metaprogramming & Reflection
+
+### Annotations
+
+#### annotation
+
+```rust
+#[derive(Debug, Clone)]
+struct Point { x: i32, y: i32 }
+```
+
+### Introspection
+
+#### type name
+
+```rust
+std::any::type_name::<T>()
+```
+
+#### members
+
+```rust
+// No runtime reflection — use traits or serde
+```
+
+### Macros
+
+#### macro
+
+```rust
+macro_rules! sq {
+    ($x:expr) => { $x * $x };
+}
+sq!(4)   // 16
+```
+
+### Eval
+
+#### eval
+
+```rust
+// No eval
+```
+
+## Concurrency & Async
+
+### Threads & coroutines
+
+#### thread
+
+```rust
+std::thread::spawn(|| println!("hi"));
+```
+
+### Async / await
+
+#### async await
+
+```rust
+async fn f() -> i32 { 1 }
+let x = f().await;   // run inside an executor (tokio/async-std)
+```
+
+### Channels / queues
+
+#### channel
+
+```rust
+let (tx, rx) = std::sync::mpsc::channel();
+tx.send(1).unwrap();
+let v = rx.recv().unwrap();
+```
+
+### Mutex / lock
+
+#### mutex
+
+```rust
+let m = Mutex::new(0);
+let mut g = m.lock().unwrap();
+*g += 1;
+```
+
+## Generics & Templates
+
+### Generic function
+
+#### function
+
+```rust
+fn identity<T>(x: T) -> T { x }
+```
+
+### Generic class
+
+#### class
+
+```rust
+struct Box<T> { value: T }
+```
+
+### Constraints / bounds
+
+#### constraint
+
+```rust
+fn f<T: Clone + Default>(x: T) -> T { x.clone() }
+```
 
