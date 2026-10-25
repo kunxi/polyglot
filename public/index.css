@@ -10,7 +10,7 @@ body {
     linear-gradient(90deg, rgba(46, 224, 108, 0.06) 1px, transparent 1px),
     #0b0e0b;
   background-size: 44px 44px;
-  color: #3ddc7a;
+  color: #e8e8e8;
   line-height: 1.6;
 }
 
@@ -20,7 +20,7 @@ body {
   padding: 2rem 1rem;
 }
 h1 { font-size: 1.75rem; margin-bottom: 0.25rem; }
-.subtitle { color: #2b8a50; margin-bottom: 2rem; }
+.subtitle { color: #b0b0b0; margin-bottom: 2rem; }
 .page-title {
   font-family: Georgia, 'Times New Roman', serif;
   font-size: clamp(2.5rem, 7vw, 4.5rem);
@@ -37,12 +37,12 @@ h1 { font-size: 1.75rem; margin-bottom: 0.25rem; }
   font-style: italic;
   font-weight: 400;
   font-size: 0.55em;
-  color: #2b8a50;
+  color: #b0b0b0;
   margin: 0 0.25em;
 }
 .lang-highlights {
   margin: 0 0 2rem;
-  color: #2b8a50;
+  color: #b0b0b0;
 }
 .lang-highlights p {
   margin: 0 0 0.4rem;
@@ -50,6 +50,7 @@ h1 { font-size: 1.75rem; margin-bottom: 0.25rem; }
 h2 {
   font-family: Garamond, 'Iowan Old Style', 'Adobe Garamond Pro', Palatino, 'Palatino Linotype', Georgia, 'Times New Roman', serif;
   font-size: 1.9rem;
+  color: #5cff9d;
   font-weight: 700;
   letter-spacing: -0.01em;
   margin: 3rem 0 1.25rem;
@@ -62,7 +63,7 @@ h3 {
   font-weight: 600;
   text-transform: uppercase;
   letter-spacing: 0.06em;
-  color: #2b8a50;
+  color: #b0b0b0;
   margin: 2.25rem 0 0.75rem;
 }
 
@@ -167,7 +168,7 @@ h3 {
   display: block;
   padding: 0.4rem 0.7rem;
   border-radius: 8px;
-  color: #3ddc7a;
+  color: #e8e8e8;
   text-decoration: none;
   font-size: 0.9rem;
 }
@@ -196,7 +197,7 @@ th {
   font-weight: 600;
   text-align: left;
   font-size: 0.75rem;
-  color: #2b8a50;
+  color: #b0b0b0;
   text-transform: uppercase;
   letter-spacing: 0.04em;
 }
@@ -206,7 +207,7 @@ th:first-child { width: 16%; }
   font-weight: 500;
   white-space: nowrap;
   font-size: 0.8rem;
-  color: #2b8a50;
+  color: #b0b0b0;
 }
 .col-label:empty { background: #0d120d; }
 td pre {
@@ -239,9 +240,7 @@ pre code.hljs,
 }
 
 /* Terminal-green code (override highlight.js theme) */
-.hljs,
-.hljs * {
-  color: #3ddc7a !important;
+.hljs {
   background: transparent !important;
 }
 
@@ -250,7 +249,7 @@ pre code.hljs,
 .back-link {
   display: inline-block;
   margin-bottom: 1.5rem;
-  color: #2b8a50;
+  color: #b0b0b0;
   text-decoration: none;
 }
 .back-link:hover {
@@ -266,7 +265,7 @@ pre code.hljs,
   color: inherit;
 }
 .toc-h2s {
-  color: #2b8a50;
+  color: #b0b0b0;
   font-size: 0.85rem;
   margin: 0 0 0.25rem 0;
 }
@@ -333,7 +332,7 @@ pre code.hljs,
 }
 
 .helper {
-  color: #2b8a50;
+  color: #b0b0b0;
   margin: 0 0 2rem;
 }
 
