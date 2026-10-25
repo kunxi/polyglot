@@ -13,6 +13,14 @@ const logos: Record<string, string> = Object.fromEntries(
 ---
 
 <Layout title="I know this, I want to learn that. — Polyglot">
+  <Fragment slot="head">
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Inter:wght@400;700&display=swap"
+      rel="stylesheet"
+    />
+  </Fragment>
   <main class="home" data-langs={JSON.stringify(languages)} data-logos={JSON.stringify(logos)} id="app">
     <h1 class="sentence">
       I know <span class="slot" id="slot-0" data-index="0"></span>,<br />
@@ -23,7 +31,7 @@ const logos: Record<string, string> = Object.fromEntries(
 
     <div class="pool" id="pool" aria-label="Available languages"></div>
 
-    <a id="go" class="go" aria-disabled="true">Let's go</a>
+    <a id="go" class="go" aria-disabled="true">Get Started <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12h14"></path><path d="m12 5 7 7-7 7"></path></svg></a>
   </main>
 
   <script is:inline>
@@ -59,7 +67,6 @@ const logos: Record<string, string> = Object.fromEntries(
         slots.forEach((lang, i) => {
           const slot = document.getElementById("slot-" + i);
           slot.dataset.lang = lang || "";
-          slot.classList.toggle("filled", !!lang);
           slot.innerHTML = lang
             ? `<span class="slot-text" draggable="true" data-lang="${lang}">${cap(lang)}</span>`
             : "";

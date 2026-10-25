@@ -1,7 +1,16 @@
+:root {
+  color-scheme: dark;
+}
+
 body {
   font-family: system-ui, -apple-system, sans-serif;
   margin: 0;
-  color: #1a1a1a;
+  background:
+    linear-gradient(rgba(46, 224, 108, 0.06) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(46, 224, 108, 0.06) 1px, transparent 1px),
+    #0b0e0b;
+  background-size: 44px 44px;
+  color: #3ddc7a;
   line-height: 1.6;
 }
 
@@ -11,14 +20,14 @@ body {
   padding: 2rem 1rem;
 }
 h1 { font-size: 1.75rem; margin-bottom: 0.25rem; }
-.subtitle { color: #666; margin-bottom: 2rem; }
+.subtitle { color: #2b8a50; margin-bottom: 2rem; }
 .page-title {
   font-family: Georgia, 'Times New Roman', serif;
   font-size: clamp(2.5rem, 7vw, 4.5rem);
   line-height: 1.05;
   letter-spacing: -0.02em;
   font-weight: 700;
-  color: #161616;
+  color: #5cff9d;
   margin: 0 0 1.5rem;
 }
 .page-title .lang {
@@ -28,12 +37,12 @@ h1 { font-size: 1.75rem; margin-bottom: 0.25rem; }
   font-style: italic;
   font-weight: 400;
   font-size: 0.55em;
-  color: #9a9a9a;
+  color: #2b8a50;
   margin: 0 0.25em;
 }
 .lang-highlights {
   margin: 0 0 2rem;
-  color: #555;
+  color: #2b8a50;
 }
 .lang-highlights p {
   margin: 0 0 0.4rem;
@@ -45,7 +54,7 @@ h2 {
   letter-spacing: -0.01em;
   margin: 3rem 0 1.25rem;
   padding-bottom: 0.5rem;
-  border-bottom: 1px solid #e4e4e4;
+  border-bottom: 1px solid #1d3a29;
 }
 h3 {
   font-family: ui-monospace, SFMono-Regular, Menlo, Consolas, 'Liberation Mono', monospace;
@@ -53,7 +62,7 @@ h3 {
   font-weight: 600;
   text-transform: uppercase;
   letter-spacing: 0.06em;
-  color: #555;
+  color: #2b8a50;
   margin: 2.25rem 0 0.75rem;
 }
 
@@ -67,7 +76,7 @@ h3 {
   align-items: center;
   gap: 0.5rem;
   padding-bottom: 0.5rem;
-  border-bottom: 1px solid #e4e4e4;
+  border-bottom: 1px solid #1d3a29;
   user-select: none;
 }
 .topic > summary::-webkit-details-marker {
@@ -75,7 +84,7 @@ h3 {
 }
 .topic > summary::before {
   content: "▸";
-  color: #666;
+  color: #2ee06c;
   font-size: 1.6em;
   line-height: 1;
   flex: none;
@@ -135,21 +144,21 @@ h3 {
   background: none;
   border-left: 12px solid transparent;
   border-right: 12px solid transparent;
-  border-top: 10px solid #555;
+  border-top: 10px solid #2ee06c;
   cursor: pointer;
 }
 .menu-toggle:hover {
-  border-top-color: #111;
+  border-top-color: #5cff9d;
 }
 .toc-dropdown {
   position: absolute;
   top: 100%;
   right: 0;
   display: none;
-  background: #fff;
-  border: 1px solid #eee;
+  background: #11170f;
+  border: 1px solid #1d3a29;
   border-radius: 12px;
-  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.12);
+  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.5);
   padding: 0.5rem;
   min-width: 200px;
   text-align: left;
@@ -158,12 +167,12 @@ h3 {
   display: block;
   padding: 0.4rem 0.7rem;
   border-radius: 8px;
-  color: #222;
+  color: #3ddc7a;
   text-decoration: none;
   font-size: 0.9rem;
 }
 .toc-dropdown a:hover {
-  background: #f4f4f4;
+  background: #1a2418;
 }
 .toc-trigger:hover .toc-dropdown,
 .toc-trigger:focus-within .toc-dropdown {
@@ -178,16 +187,16 @@ table {
 }
 th, td {
   padding: 0.12rem 0.35rem;
-  border: 1px solid #e0e0e0;
+  border: 1px solid #1d3a29;
   vertical-align: top;
   font-size: 0.83rem;
 }
 th {
-  background: #f5f5f5;
+  background: #0f150f;
   font-weight: 600;
   text-align: left;
   font-size: 0.75rem;
-  color: #666;
+  color: #2b8a50;
   text-transform: uppercase;
   letter-spacing: 0.04em;
 }
@@ -197,9 +206,9 @@ th:first-child { width: 16%; }
   font-weight: 500;
   white-space: nowrap;
   font-size: 0.8rem;
-  color: #444;
+  color: #2b8a50;
 }
-.col-label:empty { background: #fafafa; }
+.col-label:empty { background: #0d120d; }
 td pre {
   margin: 0;
   font-size: 0.7rem;
@@ -216,7 +225,7 @@ td pre code.hljs {
 }
 td code {
   font-size: 0.82rem;
-  background: #f0f0f0;
+  background: #141b14;
   padding: 0.05em 0.2em;
   border-radius: 2px;
 }
@@ -229,12 +238,19 @@ pre code.hljs,
   line-height: 1.25;
 }
 
+/* Terminal-green code (override highlight.js theme) */
+.hljs,
+.hljs * {
+  color: #3ddc7a !important;
+  background: transparent !important;
+}
+
 
 /* TOC */
 .back-link {
   display: inline-block;
   margin-bottom: 1.5rem;
-  color: #555;
+  color: #2b8a50;
   text-decoration: none;
 }
 .back-link:hover {
@@ -250,7 +266,7 @@ pre code.hljs,
   color: inherit;
 }
 .toc-h2s {
-  color: #888;
+  color: #2b8a50;
   font-size: 0.85rem;
   margin: 0 0 0.25rem 0;
 }
@@ -283,24 +299,24 @@ pre code.hljs,
 }
 
 .sentence {
-  font-family: Garamond, 'Iowan Old Style', 'Adobe Garamond Pro', Palatino, 'Palatino Linotype', Georgia, 'Times New Roman', serif;
+  font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
   font-size: clamp(2.5rem, 7vw, 4.5rem);
   line-height: 1.3;
   letter-spacing: -0.02em;
   font-weight: 700;
-  color: #161616;
-  margin: 0 auto 1.5rem;
+  color: rgb(250, 250, 250);
+  align-self: flex-start;
+  margin: 0 0 1.5rem 3rem;
   text-align: left;
-  transform: translateX(-2rem);
 }
 
 .slot {
   display: inline-block;
   font-family: ui-monospace, SFMono-Regular, Menlo, Consolas, 'Liberation Mono', monospace;
-  width: 6ch;
+  min-width: 6ch;
   line-height: 1;
   margin: 0 0.15em;
-  border-bottom: 2px solid #c9c9c9;
+  border-bottom: 2px solid #2ee06c;
   vertical-align: baseline;
   text-align: center;
 }
@@ -309,20 +325,15 @@ pre code.hljs,
   content: "\00a0";
 }
 
-.slot.filled {
-  border-bottom: none;
-}
-
 .slot-text {
   font-family: ui-monospace, SFMono-Regular, Menlo, Consolas, 'Liberation Mono', monospace;
   font-weight: 700;
-  color: #6c63ff;
+  color: #5cff9d;
   white-space: nowrap;
-  border-bottom: 2px solid #c9c9c9;
 }
 
 .helper {
-  color: #888;
+  color: #2b8a50;
   margin: 0 0 2rem;
 }
 
@@ -339,15 +350,15 @@ pre code.hljs,
   display: inline-flex;
   align-items: center;
   gap: 0.4em;
-  border: none;
+  border: 1px solid #2ee06c;
   border-radius: 12px;
   cursor: grab;
   font-family: ui-monospace, SFMono-Regular, Menlo, Consolas, 'Liberation Mono', monospace;
   font-size: 1.1rem;
   font-weight: 600;
-  background: #f0f0f0;
-  color: #222;
-  padding: 0.4rem 0.9rem;
+  background: transparent;
+  color: #3ddc7a;
+  padding: 0.4rem 0.7rem;
 }
 
 .chip-logo {
@@ -357,7 +368,9 @@ pre code.hljs,
 }
 
 .lang-chip:hover {
-  background: #e8e8e8;
+  background: #ffffff;
+  border-color: #5cff9d;
+  color: #0b0e0b;
 }
 
 .lang-chip:active {
@@ -365,25 +378,40 @@ pre code.hljs,
 }
 
 .go {
-  display: inline-block;
-  min-width: 180px;
-  padding: 0.85rem 1.6rem;
-  border-radius: 999px;
-  background: #e2e2e2;
-  color: #9a9a9a;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.75rem;
+  height: 2.75rem;
+  padding: 0 2rem;
+  border: 1px solid #2ee06c;
+  border-radius: 6px;
+  background: rgba(46, 224, 108, 0.07);
+  color: #3ddc7a;
+  font-family: ui-monospace, SFMono-Regular, Menlo, Consolas, 'Liberation Mono', monospace;
+  font-size: 0.875rem;
+  font-weight: 500;
+  white-space: nowrap;
   text-decoration: none;
-  font-weight: 700;
   pointer-events: none;
-  transition: background 0.15s, color 0.15s, transform 0.15s;
+  transition: background 0.15s, color 0.15s, border-color 0.15s, transform 0.15s;
 }
 
 .go.ready {
-  background: #6c63ff;
-  color: #fff;
+  border-style: solid;
+  border-color: #2ee06c;
+  background: #2ee06c;
+  color: #06130a;
   pointer-events: auto;
 }
 
 .go.ready:hover {
-  background: #5a50f0;
-  transform: translateY(-1px);
+  background: #2bc965;
+  transform: scale(1.05);
+}
+
+.go svg {
+  width: 1rem;
+  height: 1rem;
+  flex: none;
 }
