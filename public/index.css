@@ -372,6 +372,10 @@ pre code.hljs,
   color: #0b0e0b;
 }
 
+.lang-chip:hover .chip-logo[src$="rust.svg"] {
+  filter: invert(1);
+}
+
 .lang-chip:active {
   cursor: grabbing;
 }
