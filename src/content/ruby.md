@@ -1,5 +1,7 @@
 # Ruby
 
+Ruby is a dynamically typed language with a generational garbage collector. It offers native threads and fibers, and is known for rich metaprogramming through modules and mixins.
+
 ## Primitive types
 
 Ruby's `Integer` is arbitrary precision (no fixed-width types) and `Float` is an IEEE-754 double; there are no signed/unsigned keywords, and padding/alignment is handled by the VM.

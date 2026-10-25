@@ -1,5 +1,7 @@
 # Swift
 
+Swift uses Automatic Reference Counting instead of a garbage collector and favors value types such as structs and enums. Concurrency is handled with async/await and actors.
+
 ## Primitive types
 
 Swift's fixed-width integers (`Int8` through `Int64`, `UInt8` through `UInt64`) map to hardware with signed/unsigned variants; `Int` is 64-bit on 64-bit platforms. Padding/alignment follows the platform ABI.

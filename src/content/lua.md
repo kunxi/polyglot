@@ -1,5 +1,7 @@
 # Lua
 
+Lua is a lightweight, embeddable language with a tracing garbage collector. It is single-threaded by design and uses coroutines for cooperative concurrency.
+
 ## Primitive types
 
 Lua numbers are a single `number` type: 64-bit integers (5.3+) or doubles, with no fixed-width signed/unsigned types and no explicit alignment control.

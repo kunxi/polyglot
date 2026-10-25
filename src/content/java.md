@@ -1,5 +1,7 @@
 # Java
 
+Java runs on the JVM with automatic garbage collection. It supports OS threads, and recent releases add virtual threads for lightweight concurrency.
+
 ## Primitive types
 
 Java's `byte`(8), `short`(16), `int`(32), `long`(64) and `float`/`double` are fixed hardware primitives (signed only); wrapper classes (`Integer`, `Long`) box them, and alignment is JVM-managed.

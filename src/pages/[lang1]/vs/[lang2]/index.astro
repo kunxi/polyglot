@@ -39,6 +39,7 @@ const disp = (s: string) => {
   if (s === "typescript") return "TypeScript";
   return s;
 };
+
 const contentDir = "src/content";
 
 const metaTree = parseSections(fs.readFileSync(`${contentDir}/meta.md`, "utf-8"));
@@ -49,6 +50,9 @@ validateLanguage(tree1, metaTree, lang1);
 validateLanguage(tree2, metaTree, lang2);
 
 const blocks = renderComparison(metaTree, tree1, tree2);
+
+const highlight1 = tree1.children.find((c) => c.level === 1)?.content ?? "";
+const highlight2 = tree2.children.find((c) => c.level === 1)?.content ?? "";
 
 const topics: { heading: string; intro?: Block["intro"]; blocks: Block[] }[] = [];
 for (const block of blocks) {
@@ -66,7 +70,7 @@ for (const block of blocks) {
   <Fragment slot="head">
     <link
       rel="stylesheet"
-      href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.11.1/styles/github.min.css"
+      href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.11.1/styles/github-dark.min.css"
     />
     <script
       is:inline
@@ -130,6 +134,10 @@ for (const block of blocks) {
       <span class="vs">vs</span>
       <span class="lang">{disp(lang2)}</span>
     </h1>
+    <div class="lang-highlights">
+      <div set:html={renderMD(highlight1)} />
+      <div set:html={renderMD(highlight2)} />
+    </div>
     {
       topics.map((topic) => (
         <details id={slugify(topic.heading)} class="topic" open>

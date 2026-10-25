@@ -1,5 +1,7 @@
 # Python
 
+Python is an interpreted language whose garbage collector combines reference counting with cycle detection. The global interpreter lock limits true parallelism, so concurrency is usually handled with asyncio or threads.
+
 ## Primitive types
 
 Python's `int` and `float` map to C primitives underneath but are exposed as arbitrary-precision `int` and IEEE-754 `float` objects; there are no fixed-width signed/unsigned types, and padding/alignment is handled by the interpreter.
