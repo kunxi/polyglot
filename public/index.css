@@ -31,6 +31,13 @@ h1 { font-size: 1.75rem; margin-bottom: 0.25rem; }
   color: #9a9a9a;
   margin: 0 0.25em;
 }
+.lang-highlights {
+  margin: 0 0 2rem;
+  color: #555;
+}
+.lang-highlights p {
+  margin: 0 0 0.4rem;
+}
 h2 {
   font-family: Garamond, 'Iowan Old Style', 'Adobe Garamond Pro', Palatino, 'Palatino Linotype', Georgia, 'Times New Roman', serif;
   font-size: 1.9rem;
@@ -283,12 +290,14 @@ pre code.hljs,
   font-weight: 700;
   color: #161616;
   margin: 0 auto 1.5rem;
+  text-align: left;
+  transform: translateX(-2rem);
 }
 
 .slot {
   display: inline-block;
   font-family: ui-monospace, SFMono-Regular, Menlo, Consolas, 'Liberation Mono', monospace;
-  min-width: 6ch;
+  width: 6ch;
   line-height: 1;
   margin: 0 0.15em;
   border-bottom: 2px solid #c9c9c9;
@@ -300,11 +309,16 @@ pre code.hljs,
   content: "\00a0";
 }
 
+.slot.filled {
+  border-bottom: none;
+}
+
 .slot-text {
   font-family: ui-monospace, SFMono-Regular, Menlo, Consolas, 'Liberation Mono', monospace;
   font-weight: 700;
   color: #6c63ff;
   white-space: nowrap;
+  border-bottom: 2px solid #c9c9c9;
 }
 
 .helper {

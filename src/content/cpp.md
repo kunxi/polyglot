@@ -1,5 +1,7 @@
 # C++
 
+C++ gives direct control over memory, typically managed with RAII and smart pointers rather than a garbage collector. Templates provide generic programming, and native threads handle concurrency.
+
 ## Primitive types
 
 C++ primitive widths are implementation-defined: `short`>=16, `int`>=16, `long`>=32, `long long`>=64 bits, signed/unsigned by keyword; use `alignof`/`alignas` for layout and `<cstdint>` (`int32_t`, `uint64_t`) for fixed widths.

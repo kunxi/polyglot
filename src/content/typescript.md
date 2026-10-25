@@ -1,5 +1,7 @@
 # TypeScript
 
+TypeScript is a typed superset of JavaScript running on a garbage-collected engine. Asynchronous work uses promises and async/await, with parallelism available through worker threads.
+
 ## Primitive types
 
 TypeScript's `number` is an IEEE-754 double (no separate `int`/`long`); `bigint` gives arbitrary precision. There are no fixed-width signed/unsigned types, and alignment is handled by the JS engine.

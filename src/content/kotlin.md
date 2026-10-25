@@ -1,5 +1,7 @@
 # Kotlin
 
+Kotlin runs on the Java Virtual Machine, where memory is reclaimed automatically by a garbage collector. Null safety is enforced by the type system, and concurrency is expressed with lightweight coroutines.
+
 ## Primitive types
 
 Kotlin's `Byte`, `Short`, `Int`, `Long` (plus unsigned `UByte` through `ULong`) and `Float`/`Double` map directly to JVM hardware primitives; `Int` and `Long` are 32/64-bit signed, and padding/alignment is handled by the JVM.

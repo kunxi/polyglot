@@ -15,9 +15,8 @@ const logos: Record<string, string> = Object.fromEntries(
 <Layout title="I know this, I want to learn that. — Polyglot">
   <main class="home" data-langs={JSON.stringify(languages)} data-logos={JSON.stringify(logos)} id="app">
     <h1 class="sentence">
-      I know <span class="slot" id="slot-0" data-index="0"></span>, I want to<br
-      />
-      learn <span class="slot" id="slot-1" data-index="1"></span>
+      I know <span class="slot" id="slot-0" data-index="0"></span>,<br />
+      I want to learn <span class="slot" id="slot-1" data-index="1"></span>
     </h1>
 
     <p class="helper">Drag a language into each blank, or click one.</p>
@@ -60,6 +59,7 @@ const logos: Record<string, string> = Object.fromEntries(
         slots.forEach((lang, i) => {
           const slot = document.getElementById("slot-" + i);
           slot.dataset.lang = lang || "";
+          slot.classList.toggle("filled", !!lang);
           slot.innerHTML = lang
             ? `<span class="slot-text" draggable="true" data-lang="${lang}">${cap(lang)}</span>`
             : "";

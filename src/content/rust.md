@@ -1,5 +1,7 @@
 # Rust
 
+Rust has no garbage collector; an ownership and borrow-checking system enforces memory safety at compile time. Its concurrency model extends that ownership to prevent data races.
+
 ## Primitive types
 
 Rust's fixed-width types (`i8`/`u8` through `i128`/`u128`, plus `isize`/`usize`) map to hardware with an explicit signed/unsigned choice; `repr(C)` controls padding/alignment, and `size_of`/`align_of` inspect layout.
