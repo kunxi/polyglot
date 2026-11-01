@@ -1,10 +1,14 @@
 # Kotlin
 
-## Primitive types
+## Types
 
-### Number
+### Primitive types
 
-#### integer
+Kotlin primitive types overview.
+
+#### Number
+
+##### integer
 
 ```kotlin
 val a = 42
@@ -12,7 +16,7 @@ val b = -7
 val c = "42".toInt()
 ```
 
-#### float
+##### float
 
 ```kotlin
 val x = 3.14
@@ -20,124 +24,98 @@ val y = 1.5e-3
 val z = "3.14".toDouble()
 ```
 
-#### arithmetic
+##### arithmetic
 
 ```kotlin
-a + b      // addition
-a - b      // subtraction
-a * b      // multiplication
-a / b      // integer division if both int
-a.toDouble() / b   // force float division
-a % b      // modulo
+a + b
+a - b
+a * b
+a / b
 ```
 
-### String
+#### Boolean
 
-#### literal
-
-```kotlin
-val s = "hello"
-val s = """
-    multiline
-    string
-""".trimIndent()
-```
-
-#### length
-
-```kotlin
-s.length
-```
-
-#### access
-
-```kotlin
-s[0]        // first char
-s.last()    // last char
-```
-
-### Boolean
-
-#### literal
+##### literal
 
 ```kotlin
 val t = true
 val f = false
 ```
 
-#### negation
+##### negation
 
 ```kotlin
-!true           // false
+!true
 ```
 
-#### logical and
+##### logical and
 
 ```kotlin
-true && false   // false
+true && false
 ```
 
-## Collections
+## Collections & Iterators
 
-Kotlin's collections (`List`, `Map`, `Set`) are immutable by default; use the mutable variants to add or update.
+### Collections
 
-### List
+Kotlin collections overview — immutable.
 
-#### literal
+#### List
+
+##### literal
 
 ```kotlin
 val a = listOf(1, 2, 3)
 ```
 
-#### size
+##### size
 
 ```kotlin
 a.size
 ```
 
-#### lookup
+##### lookup
 
 ```kotlin
-a[0]       // first element
-a.last()   // last element
+a[0]
+a.last()
 ```
 
-### Dictionary
+#### Dictionary
 
-#### literal
+##### literal
 
 ```kotlin
 val d = mapOf('t' to 1, 'f' to 0)
 ```
 
-#### size
+##### size
 
 ```kotlin
 d.size
 ```
 
-#### lookup
+##### lookup
 
 ```kotlin
-d['t']  // may return null
-d.get('t')  // may return null
+d['t']
 ```
 
-### Set
+#### Set
 
-#### literal
+##### literal
 
 ```kotlin
 val s = setOf(1, 2, 3)
 ```
 
-#### size
+##### size
 
 ```kotlin
 s.size
 ```
 
-#### add
+##### add
 
 ```kotlin
 val s = mutableSetOf(1, 2, 3)

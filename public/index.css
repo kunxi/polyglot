@@ -58,6 +58,15 @@ h2 {
   border-bottom: 1px solid #1d3a29;
 }
 h3 {
+  font-family: Garamond, 'Iowan Old Style', 'Adobe Garamond Pro', Palatino, 'Palatino Linotype', Georgia, 'Times New Roman', serif;
+  font-size: 1.5rem;
+  font-weight: 700;
+  letter-spacing: -0.01em;
+  color: #e8e8e8;
+  margin: 2.5rem 0 1rem;
+}
+
+h4 {
   font-family: ui-monospace, SFMono-Regular, Menlo, Consolas, 'Liberation Mono', monospace;
   font-size: 0.95rem;
   font-weight: 600;

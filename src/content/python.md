@@ -2,12 +2,13 @@
 
 Python is an interpreted language whose garbage collector combines reference counting with cycle detection. The global interpreter lock limits true parallelism, so concurrency is usually handled with asyncio or threads.
 
-## Primitive types
+## Types
+### Primitive types
 
 Python's `int` and `float` map to C primitives underneath but are exposed as arbitrary-precision `int` and IEEE-754 `float` objects; there are no fixed-width signed/unsigned types, and padding/alignment is handled by the interpreter.
-### Number
+#### Number
 
-#### integer
+##### integer
 
 ```python
 a = 42
@@ -15,7 +16,7 @@ b = -7
 c = int('42')
 ```
 
-#### integer overflow
+##### integer overflow
 
 ```python
 # Python integers are arbitrary precision — no overflow
@@ -25,7 +26,7 @@ print(big)
 1e308 * 10   # inf
 ```
 
-#### float
+##### float
 
 ```python
 x = 3.14
@@ -33,7 +34,7 @@ y = 1.5e-3
 z = float('3.14')
 ```
 
-#### arithmetic
+##### arithmetic
 
 ```python
 a + b      # addition
@@ -45,7 +46,7 @@ a % b      # modulo
 a ** b     # exponentiation
 ```
 
-#### min max abs
+##### min max abs
 
 ```python
 min(a, b)
@@ -53,7 +54,7 @@ max(a, b)
 abs(-42)
 ```
 
-#### random
+##### random
 
 ```python
 import random
@@ -61,39 +62,39 @@ random.randint(1, 6)
 random.uniform(0, 1)
 ```
 
-### Integer types
+#### Integer types
 
-#### short
+##### short
 
 ```python
 # No short — int is arbitrary precision
 ```
 
-#### long
+##### long
 
 ```python
 # No long — int is arbitrary precision
 ```
 
-#### long long
+##### long long
 
 ```python
 # No long long — int is arbitrary precision
 ```
 
-#### unsigned
+##### unsigned
 
 ```python
 # No unsigned integer types
 ```
 
-#### signed
+##### signed
 
 ```python
 i = -42   # signed by nature
 ```
 
-#### struct
+##### struct
 
 ```python
 import struct
@@ -101,13 +102,13 @@ struct.pack("<bI", 1, 2)          # pack byte + int (little-endian)
 struct.unpack("<bI", b"\x01\x02\x00\x00\x00")
 ```
 
-#### divmod
+##### divmod
 
 ```python
 q, r = divmod(13, 5)   # q = 2, r = 3
 ```
 
-#### rounding
+##### rounding
 
 ```python
 round(3.14)         # 3
@@ -115,7 +116,7 @@ round(3.14, 1)      # 3.1
 int(3.9)            # 3 (truncates)
 ```
 
-#### range
+##### range
 
 ```python
 range(5)          # 0, 1, 2, 3, 4
@@ -124,7 +125,7 @@ range(0, 10, 2)   # 0, 2, 4, 6, 8
 list(range(3))    # [0, 1, 2]
 ```
 
-#### descending range
+##### descending range
 
 ```python
 range(4, -1, -1)     # 4, 3, 2, 1, 0
@@ -132,34 +133,34 @@ range(10, 0, -2)     # 10, 8, 6, 4, 2
 list(reversed(range(5)))  # [4, 3, 2, 1, 0]
 ```
 
-### Boolean
+#### Boolean
 
-#### literal
+##### literal
 
 ```python
 t = True
 f = False
 ```
 
-#### negation
+##### negation
 
 ```python
 not True        # False
 ```
 
-#### logical and
+##### logical and
 
 ```python
 True and False  # False
 ```
 
-#### logical or
+##### logical or
 
 ```python
 True or False   # True
 ```
 
-#### truthy and falsy values
+##### truthy and falsy values
 
 ```python
 bool(0)         # False
@@ -170,7 +171,7 @@ bool([])        # False
 bool(None)      # False
 ```
 
-#### conversion
+##### conversion
 
 ```python
 bool(1)         # True
@@ -178,17 +179,17 @@ int(True)       # 1
 str(True)       # 'True'
 ```
 
-### None / null
+#### None / null
 
 `None` is a singleton; all uninitialized variables in Python may hold any type or `None` at any time — no compile-time null safety.
 
-#### literal
+##### literal
 
 ```python
 x = None
 ```
 
-#### null check
+##### null check
 
 ```python
 if x is None:
@@ -197,18 +198,18 @@ if x is not None:
     ...
 ```
 
-#### optional access
+##### optional access
 
 ```python
 if x is not None:
     x.do_something()
 ```
 
-## Composite types
+### Composite types
 
-### String
+#### String
 
-#### literal
+##### literal
 
 ```python
 s = "hello"
@@ -217,20 +218,20 @@ s = """multiline
 string"""
 ```
 
-#### length
+##### length
 
 ```python
 len(s)
 ```
 
-#### access
+##### access
 
 ```python
 s[0]        # first char
 s[-1]       # last char
 ```
 
-#### slice
+##### slice
 
 ```python
 s[1:3]      # exclusive end
@@ -238,14 +239,14 @@ s[::2]      # every other char
 s[::-1]     # reversed
 ```
 
-#### concatenation
+##### concatenation
 
 ```python
 s + " world"
 " ".join(["hello", "world"])
 ```
 
-#### interpolation
+##### interpolation
 
 ```python
 f"Hello, {name}"
@@ -253,7 +254,7 @@ f"Hello, {name}"
 "Hello, %s" % name
 ```
 
-#### search
+##### search
 
 ```python
 "hello" in s
@@ -263,14 +264,14 @@ s.startswith("he")
 s.endswith("lo")
 ```
 
-#### split and join
+##### split and join
 
 ```python
 s.split(",")
 "-".join(["a", "b", "c"])
 ```
 
-#### trim
+##### trim
 
 ```python
 s.strip()
@@ -278,7 +279,7 @@ s.lstrip()
 s.rstrip()
 ```
 
-#### case
+##### case
 
 ```python
 s.upper()
@@ -287,14 +288,14 @@ s.capitalize()
 s.title()
 ```
 
-#### replace
+##### replace
 
 ```python
 s.replace("old", "new")
 s.replace("old", "new", 1)   # first occurrence only
 ```
 
-#### justify
+##### justify
 
 ```python
 s.ljust(10)          # left justify, pad to width 10
@@ -303,7 +304,7 @@ s.center(10)         # center
 s.zfill(5)           # pad with leading zeros
 ```
 
-#### format
+##### format
 
 ```python
 "Hello, %s!" % name
@@ -312,8 +313,8 @@ f"{x:.2f}"          # "3.14"
 "{:05d}".format(42) # "00042"
 ```
 
-### Complex
-#### operations
+#### Complex
+##### operations
 
 ```python
 z = 1 + 2j
@@ -326,55 +327,55 @@ z1 + z2
 z1 * z2
 ```
 
-### Date
-#### now
+#### Date
+##### now
 
 ```python
 from datetime import date
 print(date.today())  # 2026-10-13
 ```
-#### format
+##### format
 
 ```python
 d = date.today()
 d.strftime("%Y-%m-%d")
 d.isoformat()
 ```
-### Datetime
-#### now
+#### Datetime
+##### now
 
 ```python
 from datetime import datetime
 print(datetime.now())
 ```
-#### format
+##### format
 
 ```python
 dt = datetime.now()
 dt.strftime("%Y-%m-%d %H:%M:%S")
 dt.isoformat()
 ```
-### Decimal
-#### literal
+#### Decimal
+##### literal
 
 ```python
 from decimal import Decimal
 Decimal("0.1") + Decimal("0.2")  # 0.3 (exact)
 ```
-#### precision
+##### precision
 
 ```python
 from decimal import Decimal, getcontext
 getcontext().prec = 6
 Decimal(1) / Decimal(7)  # 0.142857
 ```
-## Type system
+### Type system
 
-### type hints
+#### type hints
 
 Python type hints are optional and not enforced at runtime.
 
-#### variable
+##### variable
 
 ```python
 name: str = "Alice"
@@ -382,7 +383,7 @@ age: int = 30
 scores: list[int] = [1, 2, 3]
 ```
 
-#### nullable
+##### nullable
 
 ```python
 name: str | None = None       # Python 3.10+
@@ -390,7 +391,7 @@ from typing import Optional
 name: Optional[str] = None     # pre-3.10
 ```
 
-#### function
+##### function
 
 ```python
 def greet(name: str) -> str:
@@ -402,7 +403,7 @@ def divide(a: int, b: int) -> float | None:
     return a / b
 ```
 
-#### list of elements
+##### list of elements
 
 ```python
 names: list[str] = ["Alice", "Bob"]
@@ -410,14 +411,14 @@ scores: list[int] = [1, 2, 3]
 matrix: list[list[int]] = [[1, 2], [3, 4]]
 ```
 
-#### dict
+##### dict
 
 ```python
 ages: dict[str, int] = {"Alice": 30, "Bob": 25}
 ```
 
-### Type operations
-#### type alias
+#### Type operations
+##### type alias
 
 ```python
 Vector = list[float]
@@ -425,7 +426,7 @@ def scale(scalar: float, v: Vector) -> Vector:
     return [scalar * x for x in v]
 ```
 
-#### union
+##### union
 
 ```python
 from typing import Union
@@ -434,7 +435,7 @@ val = "five"
 # Python 3.10+
 val: int | str = 5
 ```
-#### intersection
+##### intersection
 
 ```python
 # No native intersection — use multiple inheritance or Protocol
@@ -442,20 +443,20 @@ class A: pass
 class B: pass
 class AB(A, B): pass
 ```
-#### literal types
+##### literal types
 
 ```python
 from typing import Literal
 Color = Literal["red", "green", "blue"]
 c: Color = "red"
 ```
-## Memory model
+### Memory model
 
 Python stores everything — including integers — as objects on the heap, and names bind to those objects. Assignment copies the reference, not the object; `int`, `str`, and `tuple` are immutable, while `list` and `dict` are shared by reference. There are no pointers.
 
-### Memory
+#### Memory
 
-#### value vs reference
+##### value vs reference
 
 ```python
 # Immutable types (int, str, tuple) behave like values
@@ -467,7 +468,7 @@ y = x          # same list
 y.append(3)    # x is also [1, 2, 3]
 ```
 
-#### pointer / reference
+##### pointer / reference
 
 ```python
 # No pointers — every name is a reference to an object
@@ -476,14 +477,14 @@ y = x
 y is x          # True
 ```
 
-#### ownership / borrowing
+##### ownership / borrowing
 
 ```python
 # No ownership or borrowing — garbage collected (refcounting)
 del x           # decrements the reference count
 ```
 
-#### copy vs move
+##### copy vs move
 
 ```python
 import copy
@@ -492,7 +493,7 @@ b = a.copy()          # shallow copy
 c = copy.deepcopy(a)  # deep copy
 ```
 
-#### immutability
+##### immutability
 
 ```python
 t = (1, 2, 3)        # tuple, immutable
@@ -500,11 +501,12 @@ s = frozenset([1, 2, 3])
 d = {1: 'a'}         # dict, mutable
 ```
 
-## Control Flow
+## Statements
+### Control Flow
 
-### if
+#### if
 
-#### basic
+##### basic
 
 ```python
 if x > 0:
@@ -515,13 +517,13 @@ else:
     print("zero")
 ```
 
-#### ternary
+##### ternary
 
 ```python
 s = "positive" if x > 0 else "not positive"
 ```
 
-#### as expression
+##### as expression
 
 ```python
 # Python has no if-expression block —
@@ -529,9 +531,9 @@ s = "positive" if x > 0 else "not positive"
 n = 1 if ok else 0
 ```
 
-### match / when
+#### match / when
 
-#### basic
+##### basic
 
 ```python
 match x:
@@ -543,7 +545,7 @@ match x:
         return "other"
 ```
 
-#### guard
+##### guard
 
 ```python
 match point:
@@ -553,7 +555,7 @@ match point:
         return f"({x}, {y})"
 ```
 
-#### destructuring
+##### destructuring
 
 ```python
 match cmd:
@@ -563,37 +565,37 @@ match cmd:
         return "stop"
 ```
 
-#### exhaustiveness
+##### exhaustiveness
 
 ```python
 # Python does not enforce exhaustiveness.
 # The wildcard _ case is the safest fallback.
 ```
 
-### for
+#### for
 
-#### basic
+##### basic
 
 ```python
 for item in items:
     print(item)
 ```
 
-#### with index
+##### with index
 
 ```python
 for i, item in enumerate(items):
     print(i, item)
 ```
 
-#### range loop
+##### range loop
 
 ```python
 for i in range(10):
     print(i)
 ```
 
-#### break & continue
+##### break & continue
 
 ```python
 for x in items:
@@ -604,7 +606,7 @@ for x in items:
     print(x)
 ```
 
-#### for else
+##### for else
 
 ```python
 for item in items:
@@ -615,9 +617,9 @@ else:
     print("not found")
 ```
 
-### while
+#### while
 
-#### basic
+##### basic
 
 ```python
 while x > 0:
@@ -625,7 +627,7 @@ while x > 0:
     x -= 1
 ```
 
-#### break & continue
+##### break & continue
 
 ```python
 while True:
@@ -637,7 +639,7 @@ while True:
     print(x)
 ```
 
-#### do while
+##### do while
 
 ```python
 # Python has no do-while. Simulate with while True + break:
@@ -647,9 +649,9 @@ while True:
         break
 ```
 
-### Exception
+#### Exception
 
-#### try / except
+##### try / except
 
 ```python
 try:
@@ -660,7 +662,7 @@ except (TypeError, ValueError) as e:
     print(f"error: {e}")
 ```
 
-#### finally
+##### finally
 
 ```python
 try:
@@ -670,7 +672,7 @@ finally:
     f.close()
 ```
 
-#### else
+##### else
 
 ```python
 try:
@@ -681,14 +683,14 @@ else:
     print(f"result is {result}")
 ```
 
-#### raise
+##### raise
 
 ```python
 raise ValueError("invalid value")
 raise  # re-raise current exception
 ```
 
-#### custom exception
+##### custom exception
 
 ```python
 class MyError(Exception):
@@ -697,7 +699,7 @@ class MyError(Exception):
 raise MyError("something went wrong")
 ```
 
-#### context manager
+##### context manager
 
 ```python
 with open("file.txt") as f:
@@ -705,27 +707,27 @@ with open("file.txt") as f:
 # file auto-closed
 ```
 
-## Functions
+### Functions
 
-### Function
+#### Function
 
 Python does not support function overloading by signature — only the last definition wins. Use default parameters, `*args`, or `@singledispatch` instead.
 
-#### definition
+##### definition
 
 ```python
 def greet(name):
     return f"Hello, {name}"
 ```
 
-#### default parameters
+##### default parameters
 
 ```python
 def greet(name, greeting="Hello"):
     return f"{greeting}, {name}"
 ```
 
-#### overloading
+##### overloading
 
 ```python
 # No true overloading — use singledispatch
@@ -744,7 +746,7 @@ def _(arg: str) -> str:
     return f"str: {arg}"
 ```
 
-#### varargs
+##### varargs
 
 ```python
 def sum_all(*args):
@@ -755,7 +757,7 @@ def print_kwargs(**kwargs):
         print(f"{k}={v}")
 ```
 
-#### keyword arguments
+##### keyword arguments
 
 ```python
 def configure(host="localhost", port=8080, debug=False):
@@ -764,7 +766,7 @@ def configure(host="localhost", port=8080, debug=False):
 configure(port=3000, debug=True)
 ```
 
-#### return
+##### return
 
 ```python
 def divide(a, b):
@@ -773,23 +775,23 @@ def divide(a, b):
     return a / b
 ```
 
-#### callable check
+##### callable check
 
 ```python
 callable(greet)      # True
 callable(42)         # False
 ```
 
-### Lambda
+#### Lambda
 
-#### basic
+##### basic
 
 ```python
 square = lambda x: x * x
 add = lambda a, b: a + b
 ```
 
-#### as argument
+##### as argument
 
 ```python
 # lambdas should be pure — avoid side effects
@@ -799,7 +801,7 @@ list(map(lambda x: x * 2, nums))
 list(filter(lambda x: x > 2, nums))
 ```
 
-#### receiver
+##### receiver
 
 ```python
 # Python has no lambda receiver concept.
@@ -815,11 +817,12 @@ class Builder:
         return self
 ```
 
-## Classes
+## Classes & Interfaces
+### Classes
 
-### Class
+#### Class
 
-#### definition
+##### definition
 
 ```python
 class Dog:
@@ -827,34 +830,34 @@ class Dog:
         self.name = name
 ```
 
-#### constructor
+##### constructor
 
 ```python
 def __init__(self, name):
     self.name = name
 ```
 
-#### instantiation
+##### instantiation
 
 ```python
 dog = Dog('Fido')
 ```
 
-#### attributes
+##### attributes
 
 ```python
 self.name = name      # instance attribute
 Dog.species = 'canine'  # class attribute
 ```
 
-#### method
+##### method
 
 ```python
 def bark(self):
     return 'Woof!'
 ```
 
-#### inheritance
+##### inheritance
 
 ```python
 class Animal:
@@ -864,7 +867,7 @@ class Dog(Animal):
     pass
 ```
 
-#### multiple inheritance
+##### multiple inheritance
 
 ```python
 class A:
@@ -881,7 +884,7 @@ B.f(C())         # "B"
 super(A, C()).f()  # "B"  (next after A in the MRO)
 ```
 
-#### override
+##### override
 
 ```python
 class Dog(Animal):
@@ -889,7 +892,7 @@ class Dog(Animal):
         return 'Woof!'
 ```
 
-#### super
+##### super
 
 ```python
 class Dog(Animal):
@@ -897,7 +900,7 @@ class Dog(Animal):
         super().__init__(name)
 ```
 
-#### class method
+##### class method
 
 ```python
 @classmethod
@@ -905,7 +908,7 @@ def from_birthyear(cls, birthyear):
     return cls(2025 - birthyear)
 ```
 
-#### static method
+##### static method
 
 ```python
 @staticmethod
@@ -913,7 +916,7 @@ def is_canine(name):
     return name in ('dog', 'wolf')
 ```
 
-#### abstract
+##### abstract
 
 ```python
 from abc import ABC, abstractmethod
@@ -924,7 +927,7 @@ class Animal(ABC):
         pass
 ```
 
-#### protocol / interface
+##### protocol / interface
 
 ```python
 from typing import Protocol
@@ -940,7 +943,7 @@ def make_sound(s: Speaker) -> str:
     return s.speak()
 ```
 
-#### data class
+##### data class
 
 ```python
 from dataclasses import dataclass
@@ -951,14 +954,14 @@ class Dog:
     age: int
 ```
 
-#### equality
+##### equality
 
 ```python
 def __eq__(self, other):
     return self.name == other.name
 ```
 
-#### string representation
+##### string representation
 
 ```python
 def __str__(self):
@@ -968,7 +971,7 @@ def __repr__(self):
     return f'Dog({self.name!r})'
 ```
 
-#### sealed class
+##### sealed class
 
 ```python
 # Python 3.12+ has a typing.sealed decorator
@@ -981,7 +984,7 @@ class Success(Result): ...
 class Failure(Result): ...
 ```
 
-#### private
+##### private
 
 ```python
 class Dog:
@@ -990,7 +993,7 @@ class Dog:
         self.__mangled = 1  # name-mangled to _Dog__mangled
 ```
 
-#### protected
+##### protected
 
 ```python
 class Animal:
@@ -1002,24 +1005,24 @@ class Dog(Animal):
         return self._name
 ```
 
-#### public
+##### public
 
 ```python
 class Dog:
     name = "Fido"   # everything is public by default
 ```
 
-### Interface & trait
+#### Interface & trait
 
 Python has no `interface` or `trait` keyword — `Protocol` (structural typing) and ABCs with abstract methods fill the role.
-#### definition
+##### definition
 
 ```python
 # Python uses duck typing — no formal interface.
 # ABCs with abstract methods are the closest equivalent.
 ```
 
-#### default method
+##### default method
 
 ```python
 from abc import ABC, abstractmethod
@@ -1028,9 +1031,9 @@ class Speaker(ABC):
     def speak(self): ...
     def greet(self): return self.speak()  # default method
 ```
-### Enum
+#### Enum
 
-#### definition
+##### definition
 
 ```python
 from enum import Enum
@@ -1041,7 +1044,7 @@ class Color(Enum):
     AMBER = 3
 ```
 
-#### auto value
+##### auto value
 
 ```python
 from enum import Enum, auto
@@ -1052,7 +1055,7 @@ class Color(Enum):
     AMBER = auto()
 ```
 
-#### access
+##### access
 
 ```python
 Color.RED           # <Color.RED: 1>
@@ -1060,20 +1063,20 @@ Color.RED.name      # 'RED'
 Color.RED.value     # 1
 ```
 
-#### iteration
+##### iteration
 
 ```python
 list(Color)         # [<Color.RED: 1>, ...]
 ```
 
-#### lookup
+##### lookup
 
 ```python
 Color['RED']        # <Color.RED: 1>
 Color(1)            # <Color.RED: 1>
 ```
 
-#### match
+##### match
 
 ```python
 match color:
@@ -1085,7 +1088,7 @@ match color:
         return 'caution'
 ```
 
-#### enum with data
+##### enum with data
 
 ```python
 class Planet(Enum):
@@ -1097,43 +1100,44 @@ class Planet(Enum):
         self.radius = radius
 ```
 
-## Collections
+## Collections & Iterators
+### Collections
 
-### List
+#### List
 
-#### literal
+##### literal
 
 ```python
 a = [1, 2, 3]
 ```
 
-#### size
+##### size
 
 ```python
 len(a)
 ```
 
-#### lookup
+##### lookup
 
 ```python
 a[0]  # first element
 a[-1] # last element
 ```
 
-#### update
+##### update
 
 ```python
 a[0] = 10
 a.append(4)
 ```
 
-#### is element present
+##### is element present
 
 ```python
 3 in a
 ```
 
-#### delete
+##### delete
 
 ```python
 del a[0]        # by index
@@ -1141,61 +1145,61 @@ a.pop()         # last element
 a.remove(3)     # by value, raises ValueError if absent
 ```
 
-#### merge
+##### merge
 
 ```python
 a + [4, 5]
 a.extend([4, 5])
 ```
 
-#### slice
+##### slice
 
 ```python
 a[1:3]          # exclusive, elements at index 1 and 2
 a[::2]          # every other element
 ```
 
-#### reversed
+##### reversed
 
 ```python
 a[::-1]         # reversed slice
 list(reversed(a))
 ```
 
-#### map
+##### map
 
 ```python
 [x * 2 for x in a]
 ```
 
-#### filter
+##### filter
 
 ```python
 [x for x in a if x > 0]
 ```
 
-### Dictionary
+#### Dictionary
 
-#### literal
+##### literal
 
 ```python
 d = {'t': 1, 'f': 0}
 ```
 
-#### size
+##### size
 
 ```python
 len(d)
 ```
 
-#### lookup
+##### lookup
 
 ```python
 d['t']  # may raise KeyError
 d.get('foo')  # returns None
 ```
 
-#### update
+##### update
 
 ```python
 d['u'] = -1
@@ -1203,21 +1207,21 @@ d['u'] = -1
 d.update(u=-1)
 ```
 
-#### is key present
+##### is key present
 
 ```python
 'y' in d
 d.__contains__('y')
 ```
 
-#### delete
+##### delete
 ```python
 del d['t']  # may raise KeyError
 v = d.pop('t')  # may raise KeyError
 v = d.pop('t', None)  # returns None if t is absent
 ```
 
-#### from array of pairs
+##### from array of pairs
 
 ```python
 a = [['a', 1], ['b', 2], ['c', 3]]
@@ -1227,20 +1231,20 @@ a = ['a', 1, 'b', 2, 'c', 3]
 d = dict(zip(a[::2], a[1::2]))
 ```
 
-#### merge
+##### merge
 
 ```python
 d.update({'a': 1, 'b': 2})
 d.udpate(a=1, b=2)
 ```
 
-#### invert
+##### invert
 
 ```python
 to_sym = {v: k for k, v in d.items()}
 ```
 
-#### keys and values as arrays
+##### keys and values as arrays
 
 `keys()` and `values()` return iterators
 in Python 3 and lists in Python 2
@@ -1250,33 +1254,33 @@ list(d.keys())
 list(d.values())
 ```
 
-### Set
+#### Set
 
-#### literal
+##### literal
 
 ```python
 s = {1, 2, 3}
 ```
 
-#### size
+##### size
 
 ```python
 len(s)
 ```
 
-#### add
+##### add
 
 ```python
 s.add(4)
 ```
 
-#### is element present
+##### is element present
 
 ```python
 3 in s
 ```
 
-#### delete
+##### delete
 
 ```python
 s.remove(3)     # raises KeyError if absent
@@ -1284,14 +1288,14 @@ s.discard(3)    # no error if absent
 s.pop()         # removes and returns arbitrary element
 ```
 
-#### from array
+##### from array
 
 ```python
 a = [1, 2, 3, 2]
 s = set(a)      # {1, 2, 3}
 ```
 
-#### merge
+##### merge
 
 ```python
 s | {4, 5}           # union
@@ -1301,31 +1305,31 @@ s ^ {2, 3, 4}        # symmetric difference
 s.update({4, 5})     # in-place union
 ```
 
-## Iterator and generator
+### Iterator and generator
 
-### Iterator
+#### Iterator
 
-#### chain
+##### chain
 
 ```python
 from itertools import chain
 list(chain('abc', 'de'))   # ['a', 'b', 'c', 'd', 'e']
 ```
 
-#### take
+##### take
 
 ```python
 from itertools import islice
 list(islice(range(1, 10), 4))       # [1, 2, 3, 4]
 ```
 
-#### drop
+##### drop
 
 ```python
 list(islice(range(1, 10), 3, None))  # [4, 5, 6, 7, 8, 9]
 ```
 
-#### head
+##### head
 
 ```python
 from itertools import islice
@@ -1333,21 +1337,21 @@ list(islice(range(1, 10), 3))        # [1, 2, 3]
 ```
 
 
-#### takewhile
+##### takewhile
 
 ```python
 from itertools import takewhile
 list(takewhile(lambda x: x < 3, [1, 2, 3, 1, 2]))  # [1, 2]
 ```
 
-#### dropwhile
+##### dropwhile
 
 ```python
 from itertools import dropwhile
 list(dropwhile(lambda x: x < 3, [1, 2, 3, 1, 2]))  # [3, 1, 2]
 ```
 
-#### zip
+##### zip
 
 ```python
 list(zip('abc', '123'))
@@ -1358,14 +1362,14 @@ list(zip_longest('ab', '123', fillvalue='-'))
 # [('a', '1'), ('b', '2'), ('-', '3')]
 ```
 
-#### enumerate
+##### enumerate
 
 ```python
 for i, item in enumerate(['a', 'b', 'c'], start=1):
     print(i, item)                # 1 a, 2 b, 3 c
 ```
 
-#### flatten
+##### flatten
 
 ```python
 from itertools import chain
@@ -1374,7 +1378,7 @@ def flatten(nested):
 list(flatten([[1, 2], [3, 4]]))   # [1, 2, 3, 4]
 ```
 
-#### count
+##### count
 
 ```python
 from itertools import count
@@ -1382,7 +1386,7 @@ next(count(10))        # 10
 next(count(10, 2))     # 10, then 12, 14, ...
 ```
 
-#### cycle
+##### cycle
 
 ```python
 from itertools import cycle
@@ -1390,7 +1394,7 @@ colors = cycle(['red', 'green', 'blue'])
 [next(colors) for _ in range(5)]   # ['red', 'green', 'blue', 'red', 'green']
 ```
 
-#### chunked
+##### chunked
 
 ```python
 # Python 3.12+ has itertools.batched
@@ -1398,7 +1402,7 @@ from itertools import batched
 list(batched('ABCDEFG', 3))        # [('A', 'B', 'C'), ('D', 'E', 'F'), ('G',)]
 ```
 
-#### groupby
+##### groupby
 
 ```python
 from itertools import groupby
@@ -1411,7 +1415,7 @@ for state, cities in groupby(data, key=lambda x: x[1]):
 # NY [('NYC', 'NY'), ('Buffalo', 'NY')]
 ```
 
-#### generator
+##### generator
 
 ```python
 def fib():
@@ -1610,4 +1614,5 @@ T = TypeVar("T", bound=Number)
 # 3.12+ (PEP 695)
 def f[T: Number](x: T): ...
 ```
+
 

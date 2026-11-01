@@ -2,12 +2,13 @@
 
 Kotlin runs on the Java Virtual Machine, where memory is reclaimed automatically by a garbage collector. Null safety is enforced by the type system, and concurrency is expressed with lightweight coroutines.
 
-## Primitive types
+## Types
+### Primitive types
 
 Kotlin's `Byte`, `Short`, `Int`, `Long` (plus unsigned `UByte` through `ULong`) and `Float`/`Double` map directly to JVM hardware primitives; `Int` and `Long` are 32/64-bit signed, and padding/alignment is handled by the JVM.
-### Number
+#### Number
 
-#### integer
+##### integer
 
 ```kotlin
 val a = 42
@@ -15,7 +16,7 @@ val b = -7
 val c = "42".toInt()
 ```
 
-#### integer overflow
+##### integer overflow
 
 ```kotlin
 // Kotlin (JVM) integers wrap silently on overflow
@@ -24,7 +25,7 @@ val y = x + 1            // -2147483648 (wraps silently)
 val z = Math.addExact(x, 1)  // throws ArithmeticException
 ```
 
-#### float
+##### float
 
 ```kotlin
 val x = 3.14
@@ -32,7 +33,7 @@ val y = 1.5e-3
 val z = "3.14".toDouble()
 ```
 
-#### arithmetic
+##### arithmetic
 
 ```kotlin
 a + b      // addition
@@ -44,7 +45,7 @@ a / b.toDouble()   // force float division
 a % b      // modulo
 ```
 
-#### min max abs
+##### min max abs
 
 ```kotlin
 minOf(a, b)
@@ -52,52 +53,52 @@ maxOf(a, b)
 abs(-42)
 ```
 
-#### random
+##### random
 
 ```kotlin
 (1..6).random()
 (0.0..1.0).random()
 ```
 
-### Integer types
+#### Integer types
 
-#### short
+##### short
 
 ```kotlin
 val s: Short = 42   // 16-bit signed
 ```
 
-#### long
+##### long
 
 ```kotlin
 val l: Long = 42L   // 64-bit signed
 ```
 
-#### long long
+##### long long
 
 ```kotlin
 // No long long — Long is 64-bit
 ```
 
-#### unsigned
+##### unsigned
 
 ```kotlin
 val u: UInt = 42u   // unsigned: UByte..ULong
 ```
 
-#### signed
+##### signed
 
 ```kotlin
 val i: Int = -42   // signed by default
 ```
 
-#### struct
+##### struct
 
 ```kotlin
 data class Packed(val a: Byte, val b: Int)   // layout is JVM-managed
 ```
 
-#### divmod
+##### divmod
 
 ```kotlin
 // Kotlin doesn't have divmod, use explicit pair
@@ -107,7 +108,7 @@ val r = a % b
 fun divmod(a: Int, b: Int) = Pair(a / b, a % b)
 ```
 
-#### rounding
+##### rounding
 
 ```kotlin
 3.14.roundToInt()    // 3
@@ -115,7 +116,7 @@ fun divmod(a: Int, b: Int) = Pair(a / b, a % b)
 "%.1f".format(3.14)   // "3.1"
 ```
 
-#### range
+##### range
 
 ```kotlin
 0..4                 // 0, 1, 2, 3, 4 (inclusive)
@@ -126,7 +127,7 @@ fun divmod(a: Int, b: Int) = Pair(a / b, a % b)
 (0..2).toList()      // [0, 1, 2]
 ```
 
-#### descending range
+##### descending range
 
 ```kotlin
 4 downTo 0           // 4, 3, 2, 1, 0 (inclusive)
@@ -134,34 +135,34 @@ fun divmod(a: Int, b: Int) = Pair(a / b, a % b)
 (4 downTo 0).reversed()  // 0, 1, 2, 3, 4
 ```
 
-### Boolean
+#### Boolean
 
-#### literal
+##### literal
 
 ```kotlin
 val t = true
 val f = false
 ```
 
-#### negation
+##### negation
 
 ```kotlin
 !true           // false
 ```
 
-#### logical and
+##### logical and
 
 ```kotlin
 true && false   // false
 ```
 
-#### logical or
+##### logical or
 
 ```kotlin
 true || false   // true
 ```
 
-#### truthy and falsy values
+##### truthy and falsy values
 
 ```kotlin
 // Kotlin has no implicit truthiness convention.
@@ -171,25 +172,25 @@ true || false   // true
 listOf<Int>().isEmpty()     // explicit check for list
 ```
 
-#### conversion
+##### conversion
 
 ```kotlin
 1 != 0              // to Boolean
 true.toString()     // "true"
 ```
 
-### None / null
+#### None / null
 
 Kotlin enforces null safety at compile time: `String` and `String?`
 are different types.
 
-#### literal
+##### literal
 
 ```kotlin
 val x: String? = null
 ```
 
-#### null check
+##### null check
 
 ```kotlin
 if (x != null) {
@@ -197,7 +198,7 @@ if (x != null) {
 }
 ```
 
-#### optional access
+##### optional access
 
 ```kotlin
 x?.length           // safe call, returns null if x is null
@@ -206,11 +207,11 @@ x!!.length          // force unwrap, throws if null
 x?.let { ... }      // execute block only if non-null
 ```
 
-## Composite types
+### Composite types
 
-### String
+#### String
 
-#### literal
+##### literal
 
 ```kotlin
 val s = "hello"
@@ -220,41 +221,41 @@ val s = """
 """.trimIndent()
 ```
 
-#### length
+##### length
 
 ```kotlin
 s.length
 ```
 
-#### access
+##### access
 
 ```kotlin
 s[0]        // first char
 s.last()    // last char
 ```
 
-#### slice
+##### slice
 
 ```kotlin
 s.substring(1, 3)    // exclusive end
 s.slice(0..2 step 2)
 ```
 
-#### concatenation
+##### concatenation
 
 ```kotlin
 s + " world"
 listOf("hello", "world").joinToString(" ")
 ```
 
-#### interpolation
+##### interpolation
 
 ```kotlin
 "Hello, $name"
 "Hello, ${name.length}"
 ```
 
-#### search
+##### search
 
 ```kotlin
 "hello" in s
@@ -263,14 +264,14 @@ s.startsWith("he")
 s.endsWith("lo")
 ```
 
-#### split and join
+##### split and join
 
 ```kotlin
 s.split(",")
 listOf("a", "b", "c").joinToString("-")
 ```
 
-#### trim
+##### trim
 
 ```kotlin
 s.trim()
@@ -278,7 +279,7 @@ s.trimStart()
 s.trimEnd()
 ```
 
-#### case
+##### case
 
 ```kotlin
 s.uppercase()
@@ -286,14 +287,14 @@ s.lowercase()
 s.replaceFirstChar { it.uppercase() }
 ```
 
-#### replace
+##### replace
 
 ```kotlin
 s.replace("old", "new")
 s.replaceFirst("old", "new")  // first occurrence only
 ```
 
-#### justify
+##### justify
 
 ```kotlin
 s.padStart(10)        // right justify
@@ -301,7 +302,7 @@ s.padEnd(10)          // left justify
 "%10s".format(s)       // right justify
 ```
 
-#### format
+##### format
 
 ```kotlin
 "Hello, %s!".format(name)
@@ -309,8 +310,8 @@ String.format("value: %.2f", 3.14159)   // "value: 3.14"
 "%05d".format(42)                       // "00042"
 ```
 
-### Complex
-#### operations
+#### Complex
+##### operations
 
 ```kotlin
 // Kotlin has no built-in complex numbers.
@@ -326,49 +327,49 @@ data class Complex(val re: Double, val im: Double) {
 val z = Complex(1.0, 2.0)
 ```
 
-### Date
-#### now
+#### Date
+##### now
 
 ```kotlin
 import java.time.LocalDate
 LocalDate.now()   // 2026-10-13
 ```
-#### format
+##### format
 
 ```kotlin
 LocalDate.now().format(DateTimeFormatter.ISO_DATE)
 ```
-### Datetime
-#### now
+#### Datetime
+##### now
 
 ```kotlin
 import java.time.LocalDateTime
 LocalDateTime.now()
 ```
-#### format
+##### format
 
 ```kotlin
 LocalDateTime.now().format(DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss"))
 ```
-### Decimal
-#### literal
+#### Decimal
+##### literal
 
 ```kotlin
 import java.math.BigDecimal
 BigDecimal("0.1").add(BigDecimal("0.2"))  // 0.3
 ```
-#### precision
+##### precision
 
 ```kotlin
 BigDecimal("1").divide(BigDecimal("7"), 6, RoundingMode.HALF_UP)  // 0.142857
 ```
-## Type system
+### Type system
 
-### type hints
+#### type hints
 
 Kotlin type hints are part of the language and enforced at compile time.
 
-#### variable
+##### variable
 
 ```kotlin
 val name: String = "Alice"
@@ -376,13 +377,13 @@ var age: Int = 30
 val scores: List<Int> = listOf(1, 2, 3)
 ```
 
-#### nullable
+##### nullable
 
 ```kotlin
 val name: String? = null
 ```
 
-#### function
+##### function
 
 ```kotlin
 fun greet(name: String): String {
@@ -395,7 +396,7 @@ fun divide(a: Int, b: Int): Double? {
 }
 ```
 
-#### list of elements
+##### list of elements
 
 ```kotlin
 val names: List<String> = listOf("Alice", "Bob")
@@ -403,14 +404,14 @@ val scores: List<Int> = listOf(1, 2, 3)
 val matrix: List<List<Int>> = listOf(listOf(1, 2), listOf(3, 4))
 ```
 
-#### dict
+##### dict
 
 ```kotlin
 val ages: Map<String, Int> = mapOf("Alice" to 30, "Bob" to 25)
 ```
 
-### Type operations
-#### type alias
+#### Type operations
+##### type alias
 
 ```kotlin
 typealias Vector = List<Double>
@@ -419,7 +420,7 @@ fun scale(scalar: Double, v: Vector): Vector {
 }
 ```
 
-#### union
+##### union
 
 ```kotlin
 // No union types — use sealed classes
@@ -427,24 +428,24 @@ sealed class A
 data class B(val x: Int) : A()
 data class C(val s: String) : A()
 ```
-#### intersection
+##### intersection
 
 ```kotlin
 // Intersections only in generic bounds
 fun <T> pick(x: T) where T : CharSequence, T : Comparable<T> = x
 ```
-#### literal types
+##### literal types
 
 ```kotlin
 // No literal types — use enums or sealed classes
 ```
-## Memory model
+### Memory model
 
 Kotlin runs on the JVM: `Int`, `Double`, and `Boolean` compile to JVM primitives (`int`, `double`, `boolean`) and are passed by value; objects live on the heap behind references. The compiler auto-boxes primitives to wrappers (`Int` → `Integer`) when an object is required, e.g. for nullable `Int?` or generic `List<Int>`. There are no raw pointers, and memory is reclaimed by the garbage collector.
 
-### Memory
+#### Memory
 
-#### value vs reference
+##### value vs reference
 
 ```kotlin
 val a = 1
@@ -454,7 +455,7 @@ val y = x        // same list reference
 y.add(3)         // x is also [1, 2, 3]
 ```
 
-#### pointer / reference
+##### pointer / reference
 
 ```kotlin
 // No raw pointers — object references only
@@ -463,13 +464,13 @@ val y = x        // same reference
 y === x          // true
 ```
 
-#### ownership / borrowing
+##### ownership / borrowing
 
 ```kotlin
 // No ownership/borrowing — garbage collected
 ```
 
-#### copy vs move
+##### copy vs move
 
 ```kotlin
 data class Point(val x: Int, val y: Int)
@@ -477,18 +478,19 @@ val p = Point(1, 2)
 val q = p.copy()   // value copy
 ```
 
-#### immutability
+##### immutability
 
 ```kotlin
 val list = listOf(1, 2, 3)   // immutable
 val map = mapOf("a" to 1)
 ```
 
-## Control Flow
+## Statements
+### Control Flow
 
-### if
+#### if
 
-#### basic
+##### basic
 
 ```kotlin
 if (x > 0) {
@@ -500,13 +502,13 @@ if (x > 0) {
 }
 ```
 
-#### ternary
+##### ternary
 
 ```kotlin
 val s = if (x > 0) "positive" else "not positive"
 ```
 
-#### as expression
+##### as expression
 
 ```kotlin
 // if is an expression in Kotlin — returns a value
@@ -522,9 +524,9 @@ val grade = if (score >= 90) {
 }
 ```
 
-### match / when
+#### match / when
 
-#### basic
+##### basic
 
 ```kotlin
 when (x) {
@@ -534,7 +536,7 @@ when (x) {
 }
 ```
 
-#### guard
+##### guard
 
 ```kotlin
 when {
@@ -544,7 +546,7 @@ when {
 }
 ```
 
-#### destructuring
+##### destructuring
 
 ```kotlin
 when (cmd) {
@@ -554,7 +556,7 @@ when (cmd) {
 }
 ```
 
-#### exhaustiveness
+##### exhaustiveness
 
 ```kotlin
 // Compiler checks exhaustiveness for sealed classes
@@ -568,9 +570,9 @@ when (cmd) {   // no else needed — all cases covered
 }
 ```
 
-### for
+#### for
 
-#### basic
+##### basic
 
 ```kotlin
 for (item in items) {
@@ -578,7 +580,7 @@ for (item in items) {
 }
 ```
 
-#### with index
+##### with index
 
 ```kotlin
 for ((i, item) in items.withIndex()) {
@@ -586,7 +588,7 @@ for ((i, item) in items.withIndex()) {
 }
 ```
 
-#### range loop
+##### range loop
 
 ```kotlin
 for (i in 0..9) {
@@ -594,7 +596,7 @@ for (i in 0..9) {
 }
 ```
 
-#### break & continue
+##### break & continue
 
 ```kotlin
 for (x in items) {
@@ -604,7 +606,7 @@ for (x in items) {
 }
 ```
 
-#### for else
+##### for else
 
 ```kotlin
 // Kotlin has no for-else. Use a flag or any/none:
@@ -612,9 +614,9 @@ val found = items.any { it == target }
 if (!found) println("not found")
 ```
 
-### while
+#### while
 
-#### basic
+##### basic
 
 ```kotlin
 while (x > 0) {
@@ -623,7 +625,7 @@ while (x > 0) {
 }
 ```
 
-#### break & continue
+##### break & continue
 
 ```kotlin
 while (true) {
@@ -634,7 +636,7 @@ while (true) {
 }
 ```
 
-#### do while
+##### do while
 
 ```kotlin
 do {
@@ -643,9 +645,9 @@ do {
 } while (x > 0)
 ```
 
-### Exception
+#### Exception
 
-#### try / except
+##### try / except
 
 ```kotlin
 try {
@@ -657,7 +659,7 @@ try {
 }
 ```
 
-#### finally
+##### finally
 
 ```kotlin
 try {
@@ -668,7 +670,7 @@ try {
 }
 ```
 
-#### else
+##### else
 
 ```kotlin
 // Kotlin has no try-else. Just put the code after try.
@@ -680,13 +682,13 @@ try {
 }
 ```
 
-#### raise
+##### raise
 
 ```kotlin
 throw IllegalArgumentException("invalid value")
 ```
 
-#### custom exception
+##### custom exception
 
 ```kotlin
 class MyError(message: String) : Exception(message)
@@ -694,7 +696,7 @@ class MyError(message: String) : Exception(message)
 throw MyError("something went wrong")
 ```
 
-#### context manager
+##### context manager
 
 ```kotlin
 // use() — Kotlin's equivalent of Python's with
@@ -704,11 +706,11 @@ File("file.txt").bufferedReader().use { reader ->
 // reader auto-closed
 ```
 
-## Functions
+### Functions
 
-### Function
+#### Function
 
-#### definition
+##### definition
 
 ```kotlin
 fun greet(name: String): String {
@@ -716,7 +718,7 @@ fun greet(name: String): String {
 }
 ```
 
-#### default parameters
+##### default parameters
 
 ```kotlin
 fun greet(name: String, greeting: String = "Hello"): String {
@@ -724,14 +726,14 @@ fun greet(name: String, greeting: String = "Hello"): String {
 }
 ```
 
-#### overloading
+##### overloading
 
 ```kotlin
 fun stringify(arg: Int): String = "int: $arg"
 fun stringify(arg: String): String = "str: $arg"
 ```
 
-#### varargs
+##### varargs
 
 ```kotlin
 fun sumAll(vararg args: Int): Int {
@@ -743,7 +745,7 @@ fun printAll(vararg args: Any) {
 }
 ```
 
-#### keyword arguments
+##### keyword arguments
 
 ```kotlin
 fun configure(host: String = "localhost",
@@ -753,7 +755,7 @@ fun configure(host: String = "localhost",
 configure(host = "example.com", port = 3000, debug = true)
 ```
 
-#### return
+##### return
 
 ```kotlin
 fun divide(a: Int, b: Int): Double? {
@@ -762,16 +764,16 @@ fun divide(a: Int, b: Int): Double? {
 }
 ```
 
-#### callable check
+##### callable check
 
 ```kotlin
 ::greet.isCallable      // true
 42::isCallable          // error — Int is not callable
 ```
 
-### Lambda
+#### Lambda
 
-#### basic
+##### basic
 
 ```kotlin
 val square: (Int) -> Int = { x -> x * x }
@@ -779,7 +781,7 @@ val square = { x: Int -> x * x }
 val add = { a: Int, b: Int -> a + b }
 ```
 
-#### as argument
+##### as argument
 
 ```kotlin
 listOf(1, 2, 3).map { it * 2 }
@@ -793,7 +795,7 @@ val doubler: (Int) -> Int = { it * 2 }
 nums.map(doubler)
 ```
 
-#### receiver
+##### receiver
 
 ```kotlin
 // lambda with receiver: this refers to the object
@@ -822,17 +824,18 @@ with(sb) {
 }
 ```
 
-## Classes
+## Classes & Interfaces
+### Classes
 
-### Class
+#### Class
 
-#### definition
+##### definition
 
 ```kotlin
 class Dog(val name: String)
 ```
 
-#### constructor
+##### constructor
 
 ```kotlin
 class Dog(val name: String)      // primary constructor
@@ -845,13 +848,13 @@ class Dog {
 }
 ```
 
-#### instantiation
+##### instantiation
 
 ```kotlin
 val dog = Dog("Fido")
 ```
 
-#### attributes
+##### attributes
 
 ```kotlin
 class Dog(val name: String) {     // val: read-only property
@@ -859,7 +862,7 @@ class Dog(val name: String) {     // val: read-only property
 }
 ```
 
-#### method
+##### method
 
 ```kotlin
 fun bark(): String {
@@ -867,7 +870,7 @@ fun bark(): String {
 }
 ```
 
-#### inheritance
+##### inheritance
 
 ```kotlin
 open class Animal
@@ -875,7 +878,7 @@ open class Animal
 class Dog : Animal()
 ```
 
-#### multiple inheritance
+##### multiple inheritance
 
 ```kotlin
 // No multiple class inheritance — a class has one parent
@@ -889,7 +892,7 @@ interface Y { fun y() }
 class C : A(), X, Y
 ```
 
-#### override
+##### override
 
 ```kotlin
 open class Animal {
@@ -901,7 +904,7 @@ class Dog : Animal() {
 }
 ```
 
-#### super
+##### super
 
 ```kotlin
 class Dog(name: String) : Animal(name) {
@@ -911,7 +914,7 @@ class Dog(name: String) : Animal(name) {
 }
 ```
 
-#### class method
+##### class method
 
 ```kotlin
 class Dog(val name: String) {
@@ -922,7 +925,7 @@ class Dog(val name: String) {
 }
 ```
 
-#### static method
+##### static method
 
 ```kotlin
 class Dog(val name: String) {
@@ -934,7 +937,7 @@ class Dog(val name: String) {
 }
 ```
 
-#### abstract
+##### abstract
 
 ```kotlin
 abstract class Animal {
@@ -942,7 +945,7 @@ abstract class Animal {
 }
 ```
 
-#### protocol / interface
+##### protocol / interface
 
 ```kotlin
 interface Speaker {
@@ -956,13 +959,13 @@ class Dog : Speaker {
 fun makeSound(s: Speaker): String = s.speak()
 ```
 
-#### data class
+##### data class
 
 ```kotlin
 data class Dog(val name: String, val age: Int)
 ```
 
-#### equality
+##### equality
 
 ```kotlin
 // data class provides equals() automatically
@@ -973,7 +976,7 @@ class Dog(val name: String) {
 }
 ```
 
-#### string representation
+##### string representation
 
 ```kotlin
 // data class provides toString() automatically
@@ -983,7 +986,7 @@ class Dog(val name: String) {
 }
 ```
 
-#### sealed class
+##### sealed class
 
 ```kotlin
 sealed class Result
@@ -998,7 +1001,7 @@ fun handle(r: Result) = when (r) {
 }
 ```
 
-#### private
+##### private
 
 ```kotlin
 class Dog {
@@ -1007,7 +1010,7 @@ class Dog {
 }
 ```
 
-#### protected
+##### protected
 
 ```kotlin
 open class Animal {
@@ -1020,7 +1023,7 @@ class Dog : Animal() {
 }
 ```
 
-#### public
+##### public
 
 ```kotlin
 class Dog {
@@ -1028,10 +1031,10 @@ class Dog {
 }
 ```
 
-### Interface & trait
+#### Interface & trait
 
 Kotlin uses `interface` (with default methods) for the trait role; there is no separate `trait` keyword.
-#### definition
+##### definition
 
 ```kotlin
 interface Speakable {
@@ -1043,7 +1046,7 @@ class Dog : Speakable {
 }
 ```
 
-#### default method
+##### default method
 
 ```kotlin
 interface Speaker {
@@ -1051,9 +1054,9 @@ interface Speaker {
     fun greet() = speak()   // default method
 }
 ```
-### Enum
+#### Enum
 
-#### definition
+##### definition
 
 ```kotlin
 enum class Color {
@@ -1061,14 +1064,14 @@ enum class Color {
 }
 ```
 
-#### auto value
+##### auto value
 
 ```kotlin
 // enum entries are values by default, no auto() needed
 enum class Color { RED, GREEN, AMBER }
 ```
 
-#### access
+##### access
 
 ```kotlin
 Color.RED           // enum entry
@@ -1076,20 +1079,20 @@ Color.RED.name      // "RED"
 Color.RED.ordinal   // 0
 ```
 
-#### iteration
+##### iteration
 
 ```kotlin
 Color.entries.toList()   // [RED, GREEN, AMBER]
 ```
 
-#### lookup
+##### lookup
 
 ```kotlin
 Color.valueOf("RED")     // Color.RED, throws if absent
 enumValues<Color>().find { it.name == "RED" }
 ```
 
-#### match
+##### match
 
 ```kotlin
 when (color) {
@@ -1099,7 +1102,7 @@ when (color) {
 }
 ```
 
-#### enum with data
+##### enum with data
 
 ```kotlin
 enum class Planet(val mass: Double, val radius: Double) {
@@ -1108,30 +1111,31 @@ enum class Planet(val mass: Double, val radius: Double) {
 }
 ```
 
-## Collections
+## Collections & Iterators
+### Collections
 
-### List
+#### List
 
-#### literal
+##### literal
 
 ```kotlin
 val a = listOf(1, 2, 3)
 ```
 
-#### size
+##### size
 
 ```kotlin
 a.size
 ```
 
-#### lookup
+##### lookup
 
 ```kotlin
 a[0]       // first element
 a.last()   // last element
 ```
 
-#### update
+##### update
 
 ```kotlin
 val a = mutableListOf(1, 2, 3)
@@ -1139,28 +1143,28 @@ a[0] = 10
 a.add(4)
 ```
 
-#### is element present
+##### is element present
 
 ```kotlin
 3 in a
 a.contains(3)
 ```
 
-#### delete
+##### delete
 
 ```kotlin
 a.removeAt(0)   // by index
 a.remove(3)     // by value, returns false if absent
 ```
 
-#### merge
+##### merge
 
 ```kotlin
 a + listOf(4, 5)
 a.addAll(listOf(4, 5))
 ```
 
-#### slice
+##### slice
 
 ```kotlin
 a.slice(1..2)   // inclusive: elements at index 1 and 2
@@ -1168,49 +1172,49 @@ a.slice(1..<3)   // exlusive: elements at index 1 and 2
 a.slice(0..a.lastIndex step 2)
 ```
 
-#### reversed
+##### reversed
 
 ```kotlin
 a.reversed()
 a.asReversed()  // view, no copy
 ```
 
-#### map
+##### map
 
 ```kotlin
 a.map { it * 2 }
 ```
 
-#### filter
+##### filter
 
 ```kotlin
 a.filter { it > 0 }
 ```
 
-### Dictionary
+#### Dictionary
 
 `Map<K, V>` is not an inheritor of the Collection interface; however, it's a Kotlin collection type as well
 
-#### literal
+##### literal
 
 ```kotlin
 val d = mapOf('t' to 1, 'f' to 0)
 ```
 
-#### size
+##### size
 
 ```kotlin
 d.size
 ```
 
-#### lookup
+##### lookup
 
 ```kotlin
 d['t']  // may return null
 d.get('t')  // may return null
 ```
 
-#### update
+##### update
 ```kotlin
 val d = mutalbleMapOf('t' to 1, 'f' to 0)
 
@@ -1218,20 +1222,20 @@ d['u'] = -1
 d.put('u', -1)
 ``` 
 
-#### is key present
+##### is key present
 
 ```kotlin
 'c' in d
 d.contains('c')
 ```
 
-#### delete
+##### delete
 
 ```kotlin
 v = d.remove('t')  // return None if t is absent
 ```
 
-#### from array of pairs
+##### from array of pairs
 
 ```kotlin
 val keys = listOf('t', 'f')
@@ -1239,64 +1243,64 @@ val values = listOf(1, 0)
 val d = (keys zip values).map { it.first to it.second }.toMap()
 ```
 
-#### merge
+##### merge
 
 ```kotlin
 d.putAll(mapOf('u' to -1))
 ```
 
-#### invert
+##### invert
 
 ```kotlin
 d.map { it.value to it.key }.toMap()
 ```
 
-#### keys and values as arrays
+##### keys and values as arrays
 
 `keys` and `values` returns the set of keys and values respectively.
 
-### Set
+#### Set
 
-#### literal
+##### literal
 
 ```kotlin
 val s = setOf(1, 2, 3)
 ```
 
-#### size
+##### size
 
 ```kotlin
 s.size
 ```
 
-#### add
+##### add
 
 ```kotlin
 val s = mutableSetOf(1, 2, 3)
 s.add(4)
 ```
 
-#### is element present
+##### is element present
 
 ```kotlin
 3 in s
 s.contains(3)
 ```
 
-#### delete
+##### delete
 
 ```kotlin
 s.remove(3)     // returns false if absent
 ```
 
-#### from array
+##### from array
 
 ```kotlin
 val a = listOf(1, 2, 3, 2)
 val s = a.toSet()     // {1, 2, 3}
 ```
 
-#### merge
+##### merge
 
 ```kotlin
 s + setOf(4, 5)            // union
@@ -1305,11 +1309,11 @@ s - setOf(2)               // difference
 s.addAll(listOf(4, 5))     // in-place union
 ```
 
-## Iterator and generator
+### Iterator and generator
 
-### Iterator
+#### Iterator
 
-#### chain
+##### chain
 
 ```kotlin
 sequenceOf("abc", "de")
@@ -1317,26 +1321,26 @@ sequenceOf("abc", "de")
   .toList()
 ```
 
-#### take
+##### take
 
 ```kotlin
 val s = (1..10).asSequence()
 s.take(4).toList()           // [1, 2, 3, 4]
 ```
 
-#### drop
+##### drop
 
 ```kotlin
 s.drop(3).toList()           // [4, 5, 6, 7, 8, 9, 10]
 ```
 
-#### head
+##### head
 
 ```kotlin
 s.take(3).toList()           // [1, 2, 3]
 ```
 
-#### takewhile
+##### takewhile
 
 ```kotlin
 sequenceOf(1, 2, 3, 1, 2)
@@ -1344,7 +1348,7 @@ sequenceOf(1, 2, 3, 1, 2)
     .toList()                 // [1, 2]
 ```
 
-#### dropwhile
+##### dropwhile
 
 ```kotlin
 sequenceOf(1, 2, 3, 1, 2)
@@ -1352,7 +1356,7 @@ sequenceOf(1, 2, 3, 1, 2)
     .toList()                 // [3, 1, 2]
 ```
 
-#### zip
+##### zip
 
 ```kotlin
 listOf('a', 'b', 'c').zip(listOf('1', '2', '3'))
@@ -1361,7 +1365,7 @@ listOf('a', 'b', 'c').zip(listOf('1', '2', '3'))
 // No bulitin zipLongest equivalent 
 ```
 
-#### enumerate
+##### enumerate
 
 ```kotlin
 listOf('a', 'b', 'c').withIndex().forEach { (i, item) ->
@@ -1369,21 +1373,21 @@ listOf('a', 'b', 'c').withIndex().forEach { (i, item) ->
 }
 ```
 
-#### flatten
+##### flatten
 
 ```kotlin
 listOf(listOf(1, 2), listOf(3, 4)).flatten()
 // [1, 2, 3, 4]
 ```
 
-#### count
+##### count
 
 ```kotlin
 generateSequence(10) { it + 1 }      // 10, 11, 12, ...
 generateSequence(10) { it + 2 }      // 10, 12, 14, ...
 ```
 
-#### cycle
+##### cycle
 
 ```kotlin
 // Kotlin has no built-in cycle — generate a repeating sequence
@@ -1394,14 +1398,14 @@ generateSequence(0) { (it + 1) % colors.size }
     .toList()  // [red, green, blue, red, green]
 ```
 
-#### chunked
+##### chunked
 
 ```kotlin
 "ABCDEFG".toList().chunked(3)
 // [[A, B, C], [D, E, F], [G]]
 ```
 
-#### groupby
+##### groupby
 
 ```kotlin
 data class City(val name: String, val state: String)
@@ -1416,7 +1420,7 @@ cities.groupBy { it.state }
 // NY [City(name=NYC, state=NY), City(name=Buffalo, state=NY)]
 ```
 
-#### generator
+##### generator
 
 ```kotlin
 fun fib() = sequence {
@@ -1591,4 +1595,5 @@ class Box<T>(val value: T)
 ```kotlin
 fun <T : Number> f(x: T) {}   // upper bound
 ```
+
 

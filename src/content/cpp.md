@@ -2,12 +2,13 @@
 
 C++ gives direct control over memory, typically managed with RAII and smart pointers rather than a garbage collector. Templates provide generic programming, and native threads handle concurrency.
 
-## Primitive types
+## Types
+### Primitive types
 
 C++ primitive widths are implementation-defined: `short`>=16, `int`>=16, `long`>=32, `long long`>=64 bits, signed/unsigned by keyword; use `alignof`/`alignas` for layout and `<cstdint>` (`int32_t`, `uint64_t`) for fixed widths.
-### Number
+#### Number
 
-#### integer
+##### integer
 
 ```cpp
 int a = 42;
@@ -16,7 +17,7 @@ int c = std::stoi("42");
 long long big = 1000000000000LL;
 ```
 
-#### integer overflow
+##### integer overflow
 
 ```cpp
 // Signed overflow is undefined behavior; unsigned wraps
@@ -25,7 +26,7 @@ x + 1;                    // 0 (unsigned wraps)
 // Use -fsanitize=undefined to catch signed overflow at runtime
 ```
 
-#### float
+##### float
 
 ```cpp
 double x = 3.14;
@@ -33,7 +34,7 @@ double y = 1.5e-3;
 double z = std::stod("3.14");
 ```
 
-#### arithmetic
+##### arithmetic
 
 ```cpp
 a + b      // addition
@@ -44,7 +45,7 @@ double(a) / b   // force float division
 a % b      // modulo
 ```
 
-#### min max abs
+##### min max abs
 
 ```cpp
 std::min(a, b)
@@ -53,7 +54,7 @@ std::abs(-42)
 std::clamp(a, 0, 10)
 ```
 
-#### random
+##### random
 
 ```cpp
 #include <random>
@@ -64,39 +65,39 @@ std::uniform_real_distribution<double> rdist(0.0, 1.0);
 rdist(rng);
 ```
 
-### Integer types
+#### Integer types
 
-#### short
+##### short
 
 ```cpp
 short s = 42;   // >=16-bit signed
 ```
 
-#### long
+##### long
 
 ```cpp
 long l = 42L;   // >=32-bit signed
 ```
 
-#### long long
+##### long long
 
 ```cpp
 long long ll = 42LL;   // >=64-bit signed
 ```
 
-#### unsigned
+##### unsigned
 
 ```cpp
 unsigned int u = 42u;
 ```
 
-#### signed
+##### signed
 
 ```cpp
 signed int i = -42;   // signed is the default
 ```
 
-#### struct
+##### struct
 
 ```cpp
 struct __attribute__((packed)) Packed {
@@ -106,7 +107,7 @@ struct __attribute__((packed)) Packed {
 // or: #pragma pack(push, 1)
 ```
 
-#### divmod
+##### divmod
 
 ```cpp
 int q = a / b;
@@ -114,7 +115,7 @@ int r = a % b;
 auto [q, r] = std::div(a, b);   // std::div_t with quot and rem
 ```
 
-#### rounding
+##### rounding
 
 ```cpp
 std::round(3.14);        // 3.0
@@ -123,7 +124,7 @@ std::floor(3.14);        // 3.0
 std::format("{:.1f}", 3.14); // "3.1" (C++20)
 ```
 
-#### range
+##### range
 
 ```cpp
 for (int i : std::views::iota(0, 5)) {}  // 0..4 (exclusive)
@@ -131,41 +132,41 @@ for (int i : std::views::iota(2, 5)) {}  // 2, 3, 4
 for (int i : std::views::iota(0, 9) | std::views::stride(2)) {} // 0, 2, 4, 6, 8
 ```
 
-#### descending range
+##### descending range
 
 ```cpp
 for (int i = 4; i >= 0; --i) {}        // 4, 3, 2, 1, 0
 for (int i : std::views::iota(0, 11) | std::views::reverse) {} // 10..0
 ```
 
-### Boolean
+#### Boolean
 
-#### literal
+##### literal
 
 ```cpp
 bool t = true;
 bool f = false;
 ```
 
-#### negation
+##### negation
 
 ```cpp
 !true           // false
 ```
 
-#### logical and
+##### logical and
 
 ```cpp
 true && false   // false
 ```
 
-#### logical or
+##### logical or
 
 ```cpp
 true || false   // true
 ```
 
-#### truthy and falsy values
+##### truthy and falsy values
 
 ```cpp
 // C++ converts to bool implicitly, but write explicit checks
@@ -174,18 +175,18 @@ true || false   // true
 !vec.empty()                // explicit check for vector
 ```
 
-#### conversion
+##### conversion
 
 ```cpp
 1 != 0              // to Boolean
 std::to_string(true) // "1"  (use "true"/"false" via stream)
 ```
 
-### None / null
+#### None / null
 
 C++ uses `nullptr` and `std::optional<T>`.
 
-#### literal
+##### literal
 
 ```cpp
 int* p = nullptr;
@@ -193,7 +194,7 @@ std::optional<int> x = std::nullopt;
 std::optional<int> y = 5;
 ```
 
-#### null check
+##### null check
 
 ```cpp
 if (p != nullptr) { /* ... */ }
@@ -201,7 +202,7 @@ x.has_value()
 if (x) { /* x has a value */ }
 ```
 
-#### optional access
+##### optional access
 
 ```cpp
 x.value_or(0)      // provide default
@@ -210,11 +211,11 @@ x.value()          // throws std::bad_optional_access if empty
 x->member          // member access
 ```
 
-## Composite types
+### Composite types
 
-### String
+#### String
 
-#### literal
+##### literal
 
 ```cpp
 std::string s = "hello";
@@ -224,14 +225,14 @@ multiline
 string)";
 ```
 
-#### length
+##### length
 
 ```cpp
 s.size()
 s.length()
 ```
 
-#### access
+##### access
 
 ```cpp
 s[0]          // first char
@@ -239,14 +240,14 @@ s.front()     // first char
 s.back()      // last char
 ```
 
-#### slice
+##### slice
 
 ```cpp
 s.substr(1, 2)   // 2 chars from index 1
 s.substr(2)      // from index 2 to end
 ```
 
-#### concatenation
+##### concatenation
 
 ```cpp
 s + " world"
@@ -254,14 +255,14 @@ s.append(" world")
 std::string("hello") + " world"
 ```
 
-#### interpolation
+##### interpolation
 
 ```cpp
 std::format("Hello, {}", name)            // C++20
 std::format("Hello, {}", name.size())
 ```
 
-#### search
+##### search
 
 ```cpp
 s.find("lo")            // returns index or std::string::npos
@@ -270,7 +271,7 @@ s.starts_with("he")     // C++20
 s.ends_with("lo")       // C++20
 ```
 
-#### split and join
+##### split and join
 
 ```cpp
 // No built-in split — tokenize with a loop or views::split
@@ -282,7 +283,7 @@ std::string joined;
 for (auto& w : words) joined += (joined.empty() ? "" : "-") + w;
 ```
 
-#### trim
+##### trim
 
 ```cpp
 auto trim = [](std::string s) {
@@ -292,28 +293,28 @@ auto trim = [](std::string s) {
 };
 ```
 
-#### case
+##### case
 
 ```cpp
 std::transform(s.begin(), s.end(), s.begin(), ::toupper);
 std::transform(s.begin(), s.end(), s.begin(), ::tolower);
 ```
 
-#### replace
+##### replace
 
 ```cpp
 s.replace(s.find("old"), 3, "new")   // first occurrence
 // replace all via loop or std::regex_replace
 ```
 
-#### justify
+##### justify
 
 ```cpp
 std::format("{:>10}", s)    // right justify
 std::format("{:<10}", s)    // left justify
 ```
 
-#### format
+##### format
 
 ```cpp
 std::format("Hello, {}!", name)      // C++20
@@ -321,8 +322,8 @@ std::format("{:.2f}", 3.14159)       // "3.14"
 std::printf("%05d\n", 42);           // "00042"
 ```
 
-### Complex
-#### operations
+#### Complex
+##### operations
 
 ```cpp
 #include <complex>
@@ -336,49 +337,49 @@ z + c
 z * c
 ```
 
-### Date
-#### now
+#### Date
+##### now
 
 ```cpp
 #include <chrono>
 auto now = std::chrono::system_clock::now();
 ```
-#### format
+##### format
 
 ```cpp
 // C++20 chrono formatting
 std::format("{:%Y-%m-%d}", std::chrono::system_clock::now())
 ```
-### Datetime
-#### now
+#### Datetime
+##### now
 
 ```cpp
 std::chrono::system_clock::now()
 ```
-#### format
+##### format
 
 ```cpp
 std::format("{:%Y-%m-%d %H:%M:%S}", std::chrono::system_clock::now())
 ```
-### Decimal
-#### literal
+#### Decimal
+##### literal
 
 ```cpp
 // No built-in decimal — use Boost.Multiprecision
 boost::multiprecision::cpp_dec_float_50 d("0.1");
 ```
-#### precision
+##### precision
 
 ```cpp
 // cpp_dec_float_50 keeps 50 decimal digits by default
 ```
-## Type system
+### Type system
 
-### type hints
+#### type hints
 
 C++ is statically typed; types are mandatory.
 
-#### variable
+##### variable
 
 ```cpp
 std::string name = "Alice";
@@ -386,13 +387,13 @@ int age = 30;
 std::vector<int> scores = {1, 2, 3};
 ```
 
-#### nullable
+##### nullable
 
 ```cpp
 std::optional<std::string> name = std::nullopt;
 ```
 
-#### function
+##### function
 
 ```cpp
 std::string greet(const std::string& name) {
@@ -405,7 +406,7 @@ std::optional<double> divide(int a, int b) {
 }
 ```
 
-#### list of elements
+##### list of elements
 
 ```cpp
 std::vector<std::string> names = {"Alice", "Bob"};
@@ -413,14 +414,14 @@ std::vector<int> scores = {1, 2, 3};
 std::vector<std::vector<int>> matrix = {{1, 2}, {3, 4}};
 ```
 
-#### dict
+##### dict
 
 ```cpp
 std::unordered_map<std::string, int> ages = {{"Alice", 30}, {"Bob", 25}};
 ```
 
-### Type operations
-#### type alias
+#### Type operations
+##### type alias
 
 ```cpp
 using Vector = std::vector<double>;
@@ -431,31 +432,31 @@ auto scale(double scalar, const Vector& v) {
 }
 ```
 
-#### union
+##### union
 
 ```cpp
 #include <variant>
 std::variant<int, std::string> v = 5;
 ```
-#### intersection
+##### intersection
 
 ```cpp
 // Concepts with multiple requirements (C++20)
 template <class T> requires std::integral<T> && std::copyable<T>
 void f(T t);
 ```
-#### literal types
+##### literal types
 
 ```cpp
 // No literal types
 ```
-## Memory model
+### Memory model
 
 C++ gives explicit control over storage. Values live on the stack or heap; use pointers (`T*`) or references (`T&`) for indirection, and smart pointers (`std::unique_ptr`, `std::shared_ptr`) for ownership. Expressions have lvalue/rvalue categories, and move semantics transfer resources.
 
-### Memory
+#### Memory
 
-#### value vs reference
+##### value vs reference
 
 ```cpp
 int a = 1;
@@ -465,7 +466,7 @@ std::vector<int> y = x;       // copy (value semantics)
 y.push_back(3);               // x unchanged
 ```
 
-#### pointer / reference
+##### pointer / reference
 
 ```cpp
 int x = 5;
@@ -474,7 +475,7 @@ int& r = x;                   // reference
 std::unique_ptr<int> up = std::make_unique<int>(5);
 ```
 
-#### ownership / borrowing
+##### ownership / borrowing
 
 ```cpp
 // RAII + smart pointers express ownership
@@ -482,7 +483,7 @@ std::unique_ptr<int> u = std::make_unique<int>(5);   // unique ownership
 std::shared_ptr<int> s = std::make_shared<int>(5);   // shared ownership
 ```
 
-#### copy vs move
+##### copy vs move
 
 ```cpp
 std::vector<int> a = {1, 2};
@@ -490,18 +491,19 @@ std::vector<int> b = a;             // copy
 std::vector<int> c = std::move(a);  // move — a is emptied
 ```
 
-#### immutability
+##### immutability
 
 ```cpp
 const int x = 5;
 const std::vector<int> v = {1, 2, 3};
 ```
 
-## Control Flow
+## Statements
+### Control Flow
 
-### if
+#### if
 
-#### basic
+##### basic
 
 ```cpp
 if (x > 0) {
@@ -513,22 +515,22 @@ if (x > 0) {
 }
 ```
 
-#### ternary
+##### ternary
 
 ```cpp
 std::string s = x > 0 ? "positive" : "not positive";
 ```
 
-#### as expression
+##### as expression
 
 ```cpp
 // The ternary is the expression form
 int n = ok ? 1 : 0;
 ```
 
-### match / when
+#### match / when
 
-#### basic
+##### basic
 
 ```cpp
 switch (x) {
@@ -538,7 +540,7 @@ switch (x) {
 }
 ```
 
-#### guard
+##### guard
 
 ```cpp
 // C++ has no guarded cases — use if/else chains
@@ -547,7 +549,7 @@ if (x < 0) return "negative";
 return "zero";
 ```
 
-#### destructuring
+##### destructuring
 
 ```cpp
 // C++17 structured bindings destructure pairs/tuples/structs
@@ -556,7 +558,7 @@ struct Point { int x; int y; };
 auto [x, y] = Point{1, 2};
 ```
 
-#### exhaustiveness
+##### exhaustiveness
 
 ```cpp
 // C++ doesn't enforce exhaustiveness — add default or -Wswitch
@@ -568,9 +570,9 @@ switch (color) {
 }
 ```
 
-### for
+#### for
 
-#### basic
+##### basic
 
 ```cpp
 for (const auto& item : items) {
@@ -578,7 +580,7 @@ for (const auto& item : items) {
 }
 ```
 
-#### with index
+##### with index
 
 ```cpp
 for (size_t i = 0; i < items.size(); ++i) {
@@ -588,14 +590,14 @@ for (size_t i = 0; i < items.size(); ++i) {
 for (auto [i, item] : items | std::views::enumerate) { }
 ```
 
-#### range loop
+##### range loop
 
 ```cpp
 for (int i = 0; i < 10; ++i) { }
 for (int i : std::views::iota(0, 10)) { }
 ```
 
-#### break & continue
+##### break & continue
 
 ```cpp
 for (int x : items) {
@@ -605,7 +607,7 @@ for (int x : items) {
 }
 ```
 
-#### for else
+##### for else
 
 ```cpp
 // C++ has no for-else. Use any_of or a flag:
@@ -613,9 +615,9 @@ bool found = std::ranges::any_of(items, [&](int x) { return x == target; });
 if (!found) std::cout << "not found\n";
 ```
 
-### while
+#### while
 
-#### basic
+##### basic
 
 ```cpp
 while (x > 0) {
@@ -624,7 +626,7 @@ while (x > 0) {
 }
 ```
 
-#### break & continue
+##### break & continue
 
 ```cpp
 while (true) {
@@ -635,7 +637,7 @@ while (true) {
 }
 ```
 
-#### do while
+##### do while
 
 ```cpp
 do {
@@ -644,9 +646,9 @@ do {
 } while (x > 0);
 ```
 
-### Exception
+#### Exception
 
-#### try / except
+##### try / except
 
 ```cpp
 try {
@@ -656,7 +658,7 @@ try {
 }
 ```
 
-#### finally
+##### finally
 
 ```cpp
 // C++ has no finally — use RAII (destructors run on scope exit)
@@ -666,7 +668,7 @@ try {
 }
 ```
 
-#### else
+##### else
 
 ```cpp
 // C++ has no try-else; run the success path after the try
@@ -678,14 +680,14 @@ try {
 }
 ```
 
-#### raise
+##### raise
 
 ```cpp
 throw std::runtime_error("invalid value");
 throw std::logic_error("unrecoverable error");
 ```
 
-#### custom exception
+##### custom exception
 
 ```cpp
 class MyError : public std::exception {
@@ -698,7 +700,7 @@ public:
 throw MyError("something went wrong");
 ```
 
-#### context manager
+##### context manager
 
 ```cpp
 // RAII replaces context managers — resources close on scope exit
@@ -711,11 +713,11 @@ std::stringstream content;
 }
 ```
 
-## Functions
+### Functions
 
-### Function
+#### Function
 
-#### definition
+##### definition
 
 ```cpp
 std::string greet(const std::string& name) {
@@ -723,7 +725,7 @@ std::string greet(const std::string& name) {
 }
 ```
 
-#### default parameters
+##### default parameters
 
 ```cpp
 std::string greet(const std::string& name,
@@ -732,14 +734,14 @@ std::string greet(const std::string& name,
 }
 ```
 
-#### overloading
+##### overloading
 
 ```cpp
 std::string stringify(int arg) { return "int: " + std::to_string(arg); }
 std::string stringify(const std::string& arg) { return "str: " + arg; }
 ```
 
-#### varargs
+##### varargs
 
 ```cpp
 int sum_all(std::initializer_list<int> args) {
@@ -750,7 +752,7 @@ int sum_all(std::initializer_list<int> args) {
 sum_all({1, 2, 3});
 ```
 
-#### keyword arguments
+##### keyword arguments
 
 ```cpp
 // C++ has no keyword arguments — use a struct
@@ -762,7 +764,7 @@ struct Config {
 Config c{.host = "example.com", .port = 3000, .debug = true}; // C++20
 ```
 
-#### return
+##### return
 
 ```cpp
 std::optional<double> divide(int a, int b) {
@@ -771,7 +773,7 @@ std::optional<double> divide(int a, int b) {
 }
 ```
 
-#### callable check
+##### callable check
 
 ```cpp
 // Use type traits to check callability
@@ -779,16 +781,16 @@ static_assert(std::is_invocable_v<decltype(greet), const std::string&>);
 std::function<std::string(const std::string&)> f = greet;
 ```
 
-### Lambda
+#### Lambda
 
-#### basic
+##### basic
 
 ```cpp
 auto square = [](int x) { return x * x; };
 auto add = [](int a, int b) { return a + b; };
 ```
 
-#### as argument
+##### as argument
 
 ```cpp
 std::vector<int> out;
@@ -797,7 +799,7 @@ std::transform(nums.begin(), nums.end(), std::back_inserter(out),
 std::ranges::sort(nums, [](int a, int b) { return a > b; });
 ```
 
-#### receiver
+##### receiver
 
 ```cpp
 // Capture the receiver with this or [&]
@@ -809,11 +811,12 @@ Builder b;
 b.append("Hello").append(" ").append("World");
 ```
 
-## Classes
+## Classes & Interfaces
+### Classes
 
-### Class
+#### Class
 
-#### definition
+##### definition
 
 ```cpp
 class Dog {
@@ -821,7 +824,7 @@ class Dog {
 };
 ```
 
-#### constructor
+##### constructor
 
 ```cpp
 class Dog {
@@ -831,13 +834,13 @@ public:
 };
 ```
 
-#### instantiation
+##### instantiation
 
 ```cpp
 Dog dog("Fido");
 ```
 
-#### attributes
+##### attributes
 
 ```cpp
 class Dog {
@@ -846,7 +849,7 @@ class Dog {
 };
 ```
 
-#### method
+##### method
 
 ```cpp
 class Dog {
@@ -855,14 +858,14 @@ public:
 };
 ```
 
-#### inheritance
+##### inheritance
 
 ```cpp
 class Animal { };
 class Dog : public Animal { };
 ```
 
-#### multiple inheritance
+##### multiple inheritance
 
 ```cpp
 class A { public: int a; };
@@ -876,7 +879,7 @@ class R : virtual public Base {};
 class D : public L, public R {};   // one Base subobject
 ```
 
-#### override
+##### override
 
 ```cpp
 class Animal {
@@ -889,7 +892,7 @@ public:
 };
 ```
 
-#### super
+##### super
 
 ```cpp
 class Dog : public Animal {
@@ -900,7 +903,7 @@ public:
 };
 ```
 
-#### class method
+##### class method
 
 ```cpp
 class Dog {
@@ -911,7 +914,7 @@ public:
 };
 ```
 
-#### static method
+##### static method
 
 ```cpp
 class Dog {
@@ -922,7 +925,7 @@ public:
 };
 ```
 
-#### abstract
+##### abstract
 
 ```cpp
 class Animal {
@@ -932,7 +935,7 @@ public:
 };
 ```
 
-#### protocol / interface
+##### protocol / interface
 
 ```cpp
 class Speaker {
@@ -949,7 +952,7 @@ public:
 std::string make_sound(const Speaker& s) { return s.speak(); }
 ```
 
-#### data class
+##### data class
 
 ```cpp
 // C++20 defaulted comparisons make a value-like struct
@@ -960,7 +963,7 @@ struct Dog {
 };
 ```
 
-#### equality
+##### equality
 
 ```cpp
 struct Dog {
@@ -969,7 +972,7 @@ struct Dog {
 };
 ```
 
-#### string representation
+##### string representation
 
 ```cpp
 struct Dog {
@@ -980,13 +983,13 @@ struct Dog {
 };
 ```
 
-#### sealed class
+##### sealed class
 
 ```cpp
 class Result final { /* cannot be subclassed */ };
 ```
 
-#### private
+##### private
 
 ```cpp
 class Dog {
@@ -995,7 +998,7 @@ class Dog {
 };
 ```
 
-#### protected
+##### protected
 
 ```cpp
 class Animal {
@@ -1010,7 +1013,7 @@ public:
 };
 ```
 
-#### public
+##### public
 
 ```cpp
 class Dog {
@@ -1019,10 +1022,10 @@ public:
 };
 ```
 
-### Interface & trait
+#### Interface & trait
 
 C++ has no `trait`/`interface` keyword — pure-virtual abstract classes and C++20 `concept`s fill the role.
-#### definition
+##### definition
 
 ```cpp
 class Speakable {
@@ -1037,7 +1040,7 @@ public:
 };
 ```
 
-#### default method
+##### default method
 
 ```cpp
 struct Speaker {
@@ -1045,9 +1048,9 @@ struct Speaker {
     std::string greet() { return speak(); } // default method
 };
 ```
-### Enum
+#### Enum
 
-#### definition
+##### definition
 
 ```cpp
 enum class Color {
@@ -1055,7 +1058,7 @@ enum class Color {
 };
 ```
 
-#### auto value
+##### auto value
 
 ```cpp
 // enum class values get auto underlying ints
@@ -1063,14 +1066,14 @@ enum class Color { Red, Green, Amber };
 static_cast<int>(Color::Amber)   // 2
 ```
 
-#### access
+##### access
 
 ```cpp
 Color::Red
 static_cast<int>(Color::Red)     // 0
 ```
 
-#### iteration
+##### iteration
 
 ```cpp
 // enum classes aren't iterable by default — keep a constexpr array
@@ -1078,7 +1081,7 @@ constexpr Color ALL[] = {Color::Red, Color::Green, Color::Amber};
 for (Color c : ALL) { }
 ```
 
-#### lookup
+##### lookup
 
 ```cpp
 std::optional<Color> from_name(const std::string& s) {
@@ -1089,7 +1092,7 @@ std::optional<Color> from_name(const std::string& s) {
 }
 ```
 
-#### match
+##### match
 
 ```cpp
 switch (color) {
@@ -1099,7 +1102,7 @@ switch (color) {
 }
 ```
 
-#### enum with data
+##### enum with data
 
 ```cpp
 enum class Planet {
@@ -1112,25 +1115,26 @@ const std::map<Planet, PlanetData> data = {
 };
 ```
 
-## Collections
+## Collections & Iterators
+### Collections
 
-### List
+#### List
 
 `std::vector<T>` is the default dynamic list.
 
-#### literal
+##### literal
 
 ```cpp
 std::vector<int> a = {1, 2, 3};
 ```
 
-#### size
+##### size
 
 ```cpp
 a.size()
 ```
 
-#### lookup
+##### lookup
 
 ```cpp
 a[0]        // first element
@@ -1139,21 +1143,21 @@ a.back()    // last element
 a.at(0)     // bounds-checked
 ```
 
-#### update
+##### update
 
 ```cpp
 a[0] = 10;
 a.push_back(4);
 ```
 
-#### is element present
+##### is element present
 
 ```cpp
 std::ranges::find(a, 3) != a.end()
 std::ranges::contains(a, 3)   // C++23
 ```
 
-#### delete
+##### delete
 
 ```cpp
 a.erase(a.begin());          // by index
@@ -1161,7 +1165,7 @@ a.pop_back();                // last element
 std::erase(a, 3);            // by value (C++20)
 ```
 
-#### merge
+##### merge
 
 ```cpp
 a.insert(a.end(), {4, 5});
@@ -1169,48 +1173,48 @@ std::vector<int> b = {4, 5};
 a.insert(a.end(), b.begin(), b.end());
 ```
 
-#### slice
+##### slice
 
 ```cpp
 std::vector<int> sub(a.begin() + 1, a.begin() + 3);  // elements at index 1, 2
 ```
 
-#### reversed
+##### reversed
 
 ```cpp
 std::ranges::reverse(a);            // in place
 for (int x : a | std::views::reverse) { }
 ```
 
-#### map
+##### map
 
 ```cpp
 auto out = a | std::views::transform([](int x) { return x * 2; });
 ```
 
-#### filter
+##### filter
 
 ```cpp
 auto out = a | std::views::filter([](int x) { return x > 0; });
 ```
 
-### Dictionary
+#### Dictionary
 
 `std::map` / `std::unordered_map` for key-value storage.
 
-#### literal
+##### literal
 
 ```cpp
 std::unordered_map<char, int> d = {{'t', 1}, {'f', 0}};
 ```
 
-#### size
+##### size
 
 ```cpp
 d.size()
 ```
 
-#### lookup
+##### lookup
 
 ```cpp
 d['t']         // inserts 0 if absent
@@ -1218,48 +1222,48 @@ d.at('t')      // throws std::out_of_range if absent
 d.find('t')    // iterator, end() if absent
 ```
 
-#### update
+##### update
 
 ```cpp
 d['u'] = -1;
 d.insert_or_assign('u', -1);
 ```
 
-#### is key present
+##### is key present
 
 ```cpp
 d.contains('c')    // C++20
 d.count('c') > 0
 ```
 
-#### delete
+##### delete
 
 ```cpp
 d.erase('t')       // 0 if absent
 ```
 
-#### from array of pairs
+##### from array of pairs
 
 ```cpp
 std::vector<std::pair<char, int>> pairs = {{'t', 1}, {'f', 0}};
 std::unordered_map<char, int> d(pairs.begin(), pairs.end());
 ```
 
-#### merge
+##### merge
 
 ```cpp
 std::unordered_map<char, int> other = {{'u', -1}};
 d.insert(other.begin(), other.end());
 ```
 
-#### invert
+##### invert
 
 ```cpp
 std::unordered_map<int, char> inverted;
 for (auto& [k, v] : d) inverted[v] = k;
 ```
 
-#### keys and values as arrays
+##### keys and values as arrays
 
 ```cpp
 std::vector<char> keys;
@@ -1270,49 +1274,49 @@ for (auto& [k, v] : d) {
 }
 ```
 
-### Set
+#### Set
 
 `std::set` / `std::unordered_set`.
 
-#### literal
+##### literal
 
 ```cpp
 std::unordered_set<int> s = {1, 2, 3};
 ```
 
-#### size
+##### size
 
 ```cpp
 s.size()
 ```
 
-#### add
+##### add
 
 ```cpp
 s.insert(4);
 ```
 
-#### is element present
+##### is element present
 
 ```cpp
 s.contains(3)    // C++20
 s.count(3) > 0
 ```
 
-#### delete
+##### delete
 
 ```cpp
 s.erase(3);      // 0 if absent
 ```
 
-#### from array
+##### from array
 
 ```cpp
 std::vector<int> a = {1, 2, 3, 2};
 std::unordered_set<int> s(a.begin(), a.end());   // {1, 2, 3}
 ```
 
-#### merge
+##### merge
 
 ```cpp
 s.insert(other.begin(), other.end());          // union
@@ -1320,50 +1324,50 @@ std::erase_if(s, [&](int x) { return !other.contains(x); }); // intersection
 std::erase_if(s, [&](int x) { return other.contains(x); });  // difference
 ```
 
-## Iterator and generator
+### Iterator and generator
 
-### Iterator
+#### Iterator
 
-#### chain
+##### chain
 
 ```cpp
 for (char c : std::views::concat("abc"sv, "de"sv)) { }   // C++26
 // or join two views manually
 ```
 
-#### take
+##### take
 
 ```cpp
 for (int i : std::views::iota(1) | std::views::take(4)) { }   // 1..4
 ```
 
-#### drop
+##### drop
 
 ```cpp
 for (int i : std::views::iota(1) | std::views::drop(3) | std::views::take(7)) { } // 4..10
 ```
 
-#### head
+##### head
 
 ```cpp
 for (int i : std::views::iota(1) | std::views::take(3)) { }   // 1, 2, 3
 ```
 
-#### takewhile
+##### takewhile
 
 ```cpp
 std::vector v = {1, 2, 3, 1, 2};
 for (int x : v | std::views::take_while([](int x) { return x < 3; })) { } // 1, 2
 ```
 
-#### dropwhile
+##### dropwhile
 
 ```cpp
 std::vector v = {1, 2, 3, 1, 2};
 for (int x : v | std::views::drop_while([](int x) { return x < 3; })) { } // 3, 1, 2
 ```
 
-#### zip
+##### zip
 
 ```cpp
 // C++23 views::zip
@@ -1372,7 +1376,7 @@ for (auto [a, b] : std::views::zip(std::array{'a','b','c'}, std::array{'1','2','
 }
 ```
 
-#### enumerate
+##### enumerate
 
 ```cpp
 // C++23 views::enumerate
@@ -1381,21 +1385,21 @@ for (auto [i, item] : std::views::enumerate(items)) {
 }
 ```
 
-#### flatten
+##### flatten
 
 ```cpp
 std::vector<std::vector<int>> nested = {{1, 2}, {3, 4}};
 for (int x : nested | std::views::join) { }   // 1, 2, 3, 4
 ```
 
-#### count
+##### count
 
 ```cpp
 for (int i : std::views::iota(10) | std::views::take(2)) { }        // 10, 11
 for (int i : std::views::iota(10) | std::views::stride(2) | std::views::take(3)) { } // 10, 12, 14
 ```
 
-#### cycle
+##### cycle
 
 ```cpp
 std::vector colors = {"red", "green", "blue"};
@@ -1403,7 +1407,7 @@ for (auto& c : std::views::repeat(colors) | std::views::join | std::views::take(
 // red, green, blue, red, green
 ```
 
-#### chunked
+##### chunked
 
 ```cpp
 std::string s = "ABCDEFG";
@@ -1411,7 +1415,7 @@ for (auto chunk : s | std::views::chunk(3)) { }   // C++23
 // "ABC", "DEF", "G"
 ```
 
-#### groupby
+##### groupby
 
 ```cpp
 std::vector cities = {std::pair{"NYC", "NY"}, {"LA", "CA"}, {"SF", "CA"}, {"Buffalo", "NY"}};
@@ -1421,7 +1425,7 @@ for (auto group : cities | std::views::chunk_by([](auto& a, auto& b) {
 })) { }
 ```
 
-#### generator
+##### generator
 
 ```cpp
 #include <generator>   // C++23
@@ -1585,4 +1589,5 @@ template <typename T> struct Box { T value; };
 ```cpp
 template <std::integral T> T f(T x) { return x; }   // C++20 concept
 ```
+
 

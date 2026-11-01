@@ -2,12 +2,13 @@
 
 Rust has no garbage collector; an ownership and borrow-checking system enforces memory safety at compile time. Its concurrency model extends that ownership to prevent data races.
 
-## Primitive types
+## Types
+### Primitive types
 
 Rust's fixed-width types (`i8`/`u8` through `i128`/`u128`, plus `isize`/`usize`) map to hardware with an explicit signed/unsigned choice; `repr(C)` controls padding/alignment, and `size_of`/`align_of` inspect layout.
-### Number
+#### Number
 
-#### integer
+##### integer
 
 ```rust
 let a: i32 = 42;
@@ -15,7 +16,7 @@ let b: i32 = -7;
 let c: i32 = "42".parse().unwrap();
 ```
 
-#### integer overflow
+##### integer overflow
 
 ```rust
 // Rust: overflow wraps in release, panics in debug
@@ -26,7 +27,7 @@ let c = x.checked_add(1);    // None
 // plain `x + 1` panics in debug builds
 ```
 
-#### float
+##### float
 
 ```rust
 let x: f64 = 3.14;
@@ -34,7 +35,7 @@ let y: f64 = 1.5e-3;
 let z: f64 = "3.14".parse().unwrap();
 ```
 
-#### arithmetic
+##### arithmetic
 
 ```rust
 a + b      // addition
@@ -45,7 +46,7 @@ a as f64 / b as f64  // force float division
 a % b      // modulo
 ```
 
-#### min max abs
+##### min max abs
 
 ```rust
 a.min(b)
@@ -54,7 +55,7 @@ a.max(b)
 a.clamp(0, 10)
 ```
 
-#### random
+##### random
 
 ```rust
 // Requires the rand crate
@@ -63,46 +64,46 @@ rand::thread_rng().gen_range(1..=6);
 rand::thread_rng().gen_range(0.0..1.0);
 ```
 
-### Integer types
+#### Integer types
 
-#### short
+##### short
 
 ```rust
 let s: i16 = 42;   // 16-bit signed
 ```
 
-#### long
+##### long
 
 ```rust
 let l: i64 = 42;   // 64-bit signed
 ```
 
-#### long long
+##### long long
 
 ```rust
 let l: i128 = 42;  // 128-bit signed (widest fixed)
 ```
 
-#### unsigned
+##### unsigned
 
 ```rust
 let u: u32 = 42;   // unsigned
 ```
 
-#### signed
+##### signed
 
 ```rust
 let i: i32 = -42;  // signed via i32
 ```
 
-#### struct
+##### struct
 
 ```rust
 #[repr(C, packed)]
 struct Packed { a: u8, b: u32 }   // packed — no padding between fields
 ```
 
-#### divmod
+##### divmod
 
 ```rust
 // Rust has no divmod; use tuple destructuring
@@ -111,7 +112,7 @@ let r = a % b;
 let (q, r) = (a / b, a % b);
 ```
 
-#### rounding
+##### rounding
 
 ```rust
 3.14_f64.round();    // 3.0
@@ -120,7 +121,7 @@ let (q, r) = (a / b, a % b);
 format!("{:.1}", 3.14); // "3.1"
 ```
 
-#### range
+##### range
 
 ```rust
 0..5                 // 0, 1, 2, 3, 4 (exclusive)
@@ -130,41 +131,41 @@ format!("{:.1}", 3.14); // "3.1"
 (0..5).collect::<Vec<_>>()  // [0, 1, 2, 3, 4]
 ```
 
-#### descending range
+##### descending range
 
 ```rust
 (0..=4).rev().collect::<Vec<_>>()          // [4, 3, 2, 1, 0]
 (0..=10).rev().step_by(2).collect::<Vec<_>>() // [10, 8, 6, 4, 2]
 ```
 
-### Boolean
+#### Boolean
 
-#### literal
+##### literal
 
 ```rust
 let t = true;
 let f = false;
 ```
 
-#### negation
+##### negation
 
 ```rust
 !true           // false
 ```
 
-#### logical and
+##### logical and
 
 ```rust
 true && false   // false
 ```
 
-#### logical or
+##### logical or
 
 ```rust
 true || false   // true
 ```
 
-#### truthy and falsy values
+##### truthy and falsy values
 
 ```rust
 // Rust has no implicit truthiness — only bool works in conditions.
@@ -173,7 +174,7 @@ true || false   // true
 !vec.is_empty()            // explicit check for list
 ```
 
-#### conversion
+##### conversion
 
 ```rust
 1 != 0                    // to Boolean
@@ -181,18 +182,18 @@ true.to_string()          // "true"
 "true".parse::<bool>()    // Ok(true)
 ```
 
-### None / null
+#### None / null
 
 Rust has no null; absence is modeled with `Option<T>`.
 
-#### literal
+##### literal
 
 ```rust
 let x: Option<i32> = None;
 let y: Option<i32> = Some(5);
 ```
 
-#### null check
+##### null check
 
 ```rust
 if let Some(v) = x {
@@ -202,7 +203,7 @@ x.is_some()
 x.is_none()
 ```
 
-#### optional access
+##### optional access
 
 ```rust
 x.map(|v| v.abs())      // Option<i32>
@@ -211,11 +212,11 @@ x.expect("must exist")  // panic with message if None
 x?                      // propagate None in Option-returning fn
 ```
 
-## Composite types
+### Composite types
 
-### String
+#### String
 
-#### literal
+##### literal
 
 ```rust
 let s = "hello";
@@ -225,21 +226,21 @@ multiline
 string"#;
 ```
 
-#### length
+##### length
 
 ```rust
 s.len()              // bytes
 s.chars().count()    // characters
 ```
 
-#### access
+##### access
 
 ```rust
 s.chars().nth(0)     // Option<char> first char
 s.as_bytes()[0]      // first byte
 ```
 
-#### slice
+##### slice
 
 ```rust
 &s[1..3]             // byte slice, exclusive end
@@ -247,7 +248,7 @@ s.as_bytes()[0]      // first byte
 s.get(1..3)          // Option<&str>, safe on char boundaries
 ```
 
-#### concatenation
+##### concatenation
 
 ```rust
 format!("{} world", s)
@@ -255,7 +256,7 @@ s.to_owned() + " world"
 vec!["hello", "world"].join(" ")
 ```
 
-#### interpolation
+##### interpolation
 
 ```rust
 format!("Hello, {name}")
@@ -263,7 +264,7 @@ format!("Hello, {}", name)
 format!("Hello, {}", name.len())
 ```
 
-#### search
+##### search
 
 ```rust
 s.contains("hello")
@@ -272,14 +273,14 @@ s.starts_with("he")
 s.ends_with("lo")
 ```
 
-#### split and join
+##### split and join
 
 ```rust
 s.split(',')
 ["a", "b", "c"].join("-")
 ```
 
-#### trim
+##### trim
 
 ```rust
 s.trim()
@@ -287,21 +288,21 @@ s.trim_start()
 s.trim_end()
 ```
 
-#### case
+##### case
 
 ```rust
 s.to_uppercase()
 s.to_lowercase()
 ```
 
-#### replace
+##### replace
 
 ```rust
 s.replace("old", "new")
 s.replacen("old", "new", 1)   // first occurrence only
 ```
 
-#### justify
+##### justify
 
 ```rust
 format!("{s:>10}")   // right justify
@@ -309,7 +310,7 @@ format!("{s:<10}")   // left justify
 format!("{s:^10}")   // center
 ```
 
-#### format
+##### format
 
 ```rust
 format!("Hello, {}!", name)
@@ -317,8 +318,8 @@ format!("{:.2}", 3.14159)   // "3.14"
 format!("{:05}", 42)        // "00042"
 ```
 
-### Complex
-#### operations
+#### Complex
+##### operations
 
 ```rust
 // Rust has no built-in complex numbers.
@@ -334,52 +335,52 @@ z + c
 z * c
 ```
 
-### Date
-#### now
+#### Date
+##### now
 
 ```rust
 // chrono crate
 use chrono::Local;
 Local::now().date_naive()
 ```
-#### format
+##### format
 
 ```rust
 Local::now().date_naive().format("%Y-%m-%d").to_string()
 ```
-### Datetime
-#### now
+#### Datetime
+##### now
 
 ```rust
 use chrono::Local;
 Local::now()
 ```
-#### format
+##### format
 
 ```rust
 Local::now().format("%Y-%m-%d %H:%M:%S").to_string()
 ```
-### Decimal
-#### literal
+#### Decimal
+##### literal
 
 ```rust
 // rust_decimal crate
 use rust_decimal::Decimal;
 Decimal::new(3, 1) + Decimal::new(2, 1) // 0.5
 ```
-#### precision
+##### precision
 
 ```rust
 // rust_decimal keeps a fixed scale; use rounding for division
 Decimal::new(1, 0).checked_div(Decimal::new(7, 0))
 ```
-## Type system
+### Type system
 
-### type hints
+#### type hints
 
 Rust types are mandatory and enforced at compile time.
 
-#### variable
+##### variable
 
 ```rust
 let name: String = "Alice".to_string();
@@ -387,13 +388,13 @@ let mut age: i32 = 30;
 let scores: Vec<i32> = vec![1, 2, 3];
 ```
 
-#### nullable
+##### nullable
 
 ```rust
 let name: Option<String> = None;
 ```
 
-#### function
+##### function
 
 ```rust
 fn greet(name: &str) -> String {
@@ -406,7 +407,7 @@ fn divide(a: i32, b: i32) -> Option<f64> {
 }
 ```
 
-#### list of elements
+##### list of elements
 
 ```rust
 let names: Vec<String> = vec!["Alice".into(), "Bob".into()];
@@ -414,7 +415,7 @@ let scores: Vec<i32> = vec![1, 2, 3];
 let matrix: Vec<Vec<i32>> = vec![vec![1, 2], vec![3, 4]];
 ```
 
-#### dict
+##### dict
 
 ```rust
 use std::collections::HashMap;
@@ -423,8 +424,8 @@ ages.insert("Alice".into(), 30);
 ages.insert("Bob".into(), 25);
 ```
 
-### Type operations
-#### type alias
+#### Type operations
+##### type alias
 
 ```rust
 type Vector = Vec<f64>;
@@ -433,30 +434,30 @@ fn scale(scalar: f64, v: &Vector) -> Vector {
 }
 ```
 
-#### union
+##### union
 
 ```rust
 // enums are sum types (tagged unions)
 enum A { B(i32), C(String) }
 ```
-#### intersection
+##### intersection
 
 ```rust
 // trait-bound intersections
 fn f<T: Clone + Default>(x: T) -> T { x.clone() }
 ```
-#### literal types
+##### literal types
 
 ```rust
 // No literal types; use const generics or enums
 ```
-## Memory model
+### Memory model
 
 Rust has no garbage collector. Values are owned and moved by default; `&T` and `&mut T` borrow without taking ownership, and the borrow checker enforces lifetimes. `Copy` types duplicate their bits, while other types move.
 
-### Memory
+#### Memory
 
-#### value vs reference
+##### value vs reference
 
 ```rust
 let a = 5;
@@ -465,7 +466,7 @@ let x = vec![1, 2];
 let y = x;          // x is moved, can't use x afterward
 ```
 
-#### pointer / reference
+##### pointer / reference
 
 ```rust
 let mut x = 5;
@@ -474,7 +475,7 @@ let m = &mut x;     // mutable reference
 *m += 1;
 ```
 
-#### ownership / borrowing
+##### ownership / borrowing
 
 ```rust
 fn take(v: Vec<i32>) {}      // takes ownership
@@ -484,7 +485,7 @@ borrow(&v);
 take(v);            // v moved here
 ```
 
-#### copy vs move
+##### copy vs move
 
 ```rust
 let a = 5;
@@ -494,7 +495,7 @@ let v2 = v1.clone();   // explicit deep copy
 let v3 = v1;           // move
 ```
 
-#### immutability
+##### immutability
 
 ```rust
 let x = 5;        // immutable by default
@@ -502,11 +503,12 @@ let mut y = 5;    // mutable
 y += 1;
 ```
 
-## Control Flow
+## Statements
+### Control Flow
 
-### if
+#### if
 
-#### basic
+##### basic
 
 ```rust
 if x > 0 {
@@ -518,13 +520,13 @@ if x > 0 {
 }
 ```
 
-#### ternary
+##### ternary
 
 ```rust
 let s = if x > 0 { "positive" } else { "not positive" };
 ```
 
-#### as expression
+##### as expression
 
 ```rust
 // if is an expression in Rust — it returns a value
@@ -539,9 +541,9 @@ let grade = if score >= 90 {
 };
 ```
 
-### match / when
+#### match / when
 
-#### basic
+##### basic
 
 ```rust
 match x {
@@ -551,7 +553,7 @@ match x {
 }
 ```
 
-#### guard
+##### guard
 
 ```rust
 match x {
@@ -561,7 +563,7 @@ match x {
 }
 ```
 
-#### destructuring
+##### destructuring
 
 ```rust
 match cmd {
@@ -571,7 +573,7 @@ match cmd {
 }
 ```
 
-#### exhaustiveness
+##### exhaustiveness
 
 ```rust
 // The compiler checks exhaustiveness for enums
@@ -586,9 +588,9 @@ match cmd {   // no wildcard needed — all cases covered
 }
 ```
 
-### for
+#### for
 
-#### basic
+##### basic
 
 ```rust
 for item in &items {
@@ -596,7 +598,7 @@ for item in &items {
 }
 ```
 
-#### with index
+##### with index
 
 ```rust
 for (i, item) in items.iter().enumerate() {
@@ -604,7 +606,7 @@ for (i, item) in items.iter().enumerate() {
 }
 ```
 
-#### range loop
+##### range loop
 
 ```rust
 for i in 0..10 {
@@ -612,7 +614,7 @@ for i in 0..10 {
 }
 ```
 
-#### break & continue
+##### break & continue
 
 ```rust
 for x in &items {
@@ -622,7 +624,7 @@ for x in &items {
 }
 ```
 
-#### for else
+##### for else
 
 ```rust
 // Rust has no for-else. Use any/none or a flag:
@@ -630,9 +632,9 @@ let found = items.iter().any(|x| *x == target);
 if !found { println!("not found"); }
 ```
 
-### while
+#### while
 
-#### basic
+##### basic
 
 ```rust
 while x > 0 {
@@ -641,7 +643,7 @@ while x > 0 {
 }
 ```
 
-#### break & continue
+##### break & continue
 
 ```rust
 loop {
@@ -652,7 +654,7 @@ loop {
 }
 ```
 
-#### do while
+##### do while
 
 ```rust
 // Rust has no do-while. Use loop + break:
@@ -662,11 +664,11 @@ loop {
 }
 ```
 
-### Exception
+#### Exception
 
 Rust models errors with `Result<T, E>`.
 
-#### try / except
+##### try / except
 
 ```rust
 match divide(1, 0) {
@@ -678,7 +680,7 @@ match divide(1, 0) {
 let result = divide(1, 0)?;
 ```
 
-#### finally
+##### finally
 
 ```rust
 // Rust has no finally. Use RAII (Drop) to guarantee cleanup:
@@ -688,7 +690,7 @@ let result = divide(1, 0)?;
 }
 ```
 
-#### else
+##### else
 
 ```rust
 // Rust has no try-else. Run the success path after the result:
@@ -698,14 +700,14 @@ match compute() {
 }
 ```
 
-#### raise
+##### raise
 
 ```rust
 return Err("invalid value".to_string());
 panic!("unrecoverable error");
 ```
 
-#### custom exception
+##### custom exception
 
 ```rust
 #[derive(Debug)]
@@ -718,7 +720,7 @@ fn fail() -> Result<(), MyError> {
 }
 ```
 
-#### context manager
+##### context manager
 
 ```rust
 // RAII replaces context managers — resources close on drop
@@ -730,11 +732,11 @@ File::open("file.txt")?.read_to_string(&mut content)?;
 // file auto-closed when the handle goes out of scope
 ```
 
-## Functions
+### Functions
 
-### Function
+#### Function
 
-#### definition
+##### definition
 
 ```rust
 fn greet(name: &str) -> String {
@@ -742,7 +744,7 @@ fn greet(name: &str) -> String {
 }
 ```
 
-#### default parameters
+##### default parameters
 
 ```rust
 // Rust has no default parameters — use Option or a builder
@@ -752,7 +754,7 @@ fn greet(name: &str, greeting: Option<&str>) -> String {
 }
 ```
 
-#### overloading
+##### overloading
 
 ```rust
 // Rust has no overloading by signature — use traits or distinct names
@@ -760,7 +762,7 @@ fn stringify_int(arg: i32) -> String { format!("int: {arg}") }
 fn stringify_str(arg: &str) -> String { format!("str: {arg}") }
 ```
 
-#### varargs
+##### varargs
 
 ```rust
 // Rust has no varargs — pass a slice or use a macro
@@ -770,7 +772,7 @@ fn sum_all(args: &[i32]) -> i32 {
 sum_all(&[1, 2, 3]);
 ```
 
-#### keyword arguments
+##### keyword arguments
 
 ```rust
 // Rust has no keyword arguments — use a struct or builder
@@ -782,7 +784,7 @@ struct Config {
 let c = Config { host: "example.com".into(), port: 3000, debug: true };
 ```
 
-#### return
+##### return
 
 ```rust
 fn divide(a: i32, b: i32) -> Option<f64> {
@@ -791,7 +793,7 @@ fn divide(a: i32, b: i32) -> Option<f64> {
 }
 ```
 
-#### callable check
+##### callable check
 
 ```rust
 // Rust has no callable() — functions are typed
@@ -799,16 +801,16 @@ let f = greet as fn(&str) -> String;   // function pointer
 // Closures implement Fn/FnMut/FnOnce
 ```
 
-### Lambda
+#### Lambda
 
-#### basic
+##### basic
 
 ```rust
 let square = |x: i32| x * x;
 let add = |a: i32, b: i32| a + b;
 ```
 
-#### as argument
+##### as argument
 
 ```rust
 vec![1, 2, 3].iter().map(|x| x * 2).collect::<Vec<_>>();
@@ -820,7 +822,7 @@ fn apply<F>(f: F, n: i32) -> i32 where F: Fn(i32) -> i32 {
 }
 ```
 
-#### receiver
+##### receiver
 
 ```rust
 // Rust closures have no receiver. Method chaining is the closest analogue:
@@ -830,13 +832,14 @@ let result = vec![1, 2, 3]
     .sum::<i32>();
 ```
 
-## Classes
+## Classes & Interfaces
+### Classes
 
 Rust uses structs, traits, and enums instead of classes.
 
-### Class
+#### Class
 
-#### definition
+##### definition
 
 ```rust
 struct Dog {
@@ -844,7 +847,7 @@ struct Dog {
 }
 ```
 
-#### constructor
+##### constructor
 
 ```rust
 impl Dog {
@@ -854,14 +857,14 @@ impl Dog {
 }
 ```
 
-#### instantiation
+##### instantiation
 
 ```rust
 let dog = Dog::new("Fido".to_string());
 let dog = Dog { name: "Fido".to_string() };
 ```
 
-#### attributes
+##### attributes
 
 ```rust
 struct Dog {
@@ -873,7 +876,7 @@ impl Dog {
 }
 ```
 
-#### method
+##### method
 
 ```rust
 impl Dog {
@@ -883,7 +886,7 @@ impl Dog {
 }
 ```
 
-#### inheritance
+##### inheritance
 
 ```rust
 // Rust has no inheritance — use composition and traits
@@ -892,7 +895,7 @@ struct Dog;
 impl Animal for Dog {}
 ```
 
-#### multiple inheritance
+##### multiple inheritance
 
 ```rust
 // No class inheritance — compose behaviors with traits
@@ -907,7 +910,7 @@ A::f(&c);
 B::f(&c);
 ```
 
-#### override
+##### override
 
 ```rust
 trait Animal {
@@ -920,7 +923,7 @@ impl Animal for Dog {
 }
 ```
 
-#### super
+##### super
 
 ```rust
 trait Animal {
@@ -935,7 +938,7 @@ impl Animal for Dog {
 }
 ```
 
-#### class method
+##### class method
 
 ```rust
 impl Dog {
@@ -945,7 +948,7 @@ impl Dog {
 }
 ```
 
-#### static method
+##### static method
 
 ```rust
 impl Dog {
@@ -955,7 +958,7 @@ impl Dog {
 }
 ```
 
-#### abstract
+##### abstract
 
 ```rust
 trait Animal {
@@ -963,7 +966,7 @@ trait Animal {
 }
 ```
 
-#### protocol / interface
+##### protocol / interface
 
 ```rust
 trait Speaker {
@@ -982,7 +985,7 @@ fn make_sound(s: &impl Speaker) -> String {
 }
 ```
 
-#### data class
+##### data class
 
 ```rust
 #[derive(Debug, Clone, PartialEq)]
@@ -992,7 +995,7 @@ struct Dog {
 }
 ```
 
-#### equality
+##### equality
 
 ```rust
 #[derive(PartialEq)]
@@ -1008,7 +1011,7 @@ impl PartialEq for Dog {
 }
 ```
 
-#### string representation
+##### string representation
 
 ```rust
 #[derive(Debug)]
@@ -1024,7 +1027,7 @@ impl std::fmt::Display for Dog {
 }
 ```
 
-#### sealed class
+##### sealed class
 
 ```rust
 // Rust models closed sets with enums instead of sealed classes
@@ -1041,7 +1044,7 @@ fn handle(r: Result) -> String {
 }
 ```
 
-#### private
+##### private
 
 ```rust
 struct Dog {
@@ -1052,7 +1055,7 @@ impl Dog {
 }
 ```
 
-#### protected
+##### protected
 
 ```rust
 // Rust has no protected — only private (module scope) and public
@@ -1064,7 +1067,7 @@ mod animal {
 }
 ```
 
-#### public
+##### public
 
 ```rust
 pub struct Dog {
@@ -1072,10 +1075,10 @@ pub struct Dog {
 }
 ```
 
-### Interface & trait
+#### Interface & trait
 
 Rust has no `interface` keyword — `trait` provides shared behavior, with default methods and blanket implementations.
-#### definition
+##### definition
 
 ```rust
 trait Speakable {
@@ -1088,7 +1091,7 @@ impl Speakable for Dog {
 }
 ```
 
-#### default method
+##### default method
 
 ```rust
 trait Speaker {
@@ -1096,9 +1099,9 @@ trait Speaker {
     fn greet(&self) -> String { self.speak() } // default method
 }
 ```
-### Enum
+#### Enum
 
-#### definition
+##### definition
 
 ```rust
 enum Color {
@@ -1108,7 +1111,7 @@ enum Color {
 }
 ```
 
-#### auto value
+##### auto value
 
 ```rust
 #[repr(u8)]
@@ -1122,14 +1125,14 @@ Color::Red as u8   // 0
 Color::Amber as u8 // 2
 ```
 
-#### access
+##### access
 
 ```rust
 Color::Red
 Color::Red as u8       // 0 (with #[repr(u8)])
 ```
 
-#### iteration
+##### iteration
 
 ```rust
 // Rust enums aren't iterable by default — keep a const list
@@ -1137,7 +1140,7 @@ const ALL: [Color; 3] = [Color::Red, Color::Green, Color::Amber];
 ALL.iter().collect::<Vec<_>>();
 ```
 
-#### lookup
+##### lookup
 
 ```rust
 fn from_name(s: &str) -> Option<Color> {
@@ -1150,7 +1153,7 @@ fn from_name(s: &str) -> Option<Color> {
 }
 ```
 
-#### match
+##### match
 
 ```rust
 match color {
@@ -1160,7 +1163,7 @@ match color {
 }
 ```
 
-#### enum with data
+##### enum with data
 
 ```rust
 enum Planet {
@@ -1170,23 +1173,24 @@ enum Planet {
 let mercury = Planet::Mercury(3.303e23, 2.4397e6);
 ```
 
-## Collections
+## Collections & Iterators
+### Collections
 
-### List
+#### List
 
-#### literal
+##### literal
 
 ```rust
 let a = vec![1, 2, 3];
 ```
 
-#### size
+##### size
 
 ```rust
 a.len()
 ```
 
-#### lookup
+##### lookup
 
 ```rust
 a[0]          // first element
@@ -1194,7 +1198,7 @@ a.last()      // Option<&i32> last element
 a.get(0)      // Option<&i32>
 ```
 
-#### update
+##### update
 
 ```rust
 let mut a = vec![1, 2, 3];
@@ -1202,13 +1206,13 @@ a[0] = 10;
 a.push(4);
 ```
 
-#### is element present
+##### is element present
 
 ```rust
 a.contains(&3)
 ```
 
-#### delete
+##### delete
 
 ```rust
 a.remove(0)    // by index
@@ -1216,21 +1220,21 @@ a.pop()        // last element, returns Option
 a.retain(|&x| x != 3); // by value
 ```
 
-#### merge
+##### merge
 
 ```rust
 a.extend([4, 5]);
 let merged = [a.clone(), vec![4, 5]].concat();
 ```
 
-#### slice
+##### slice
 
 ```rust
 &a[1..3]                      // elements at index 1 and 2
 a.iter().step_by(2).collect::<Vec<_>>()
 ```
 
-#### reversed
+##### reversed
 
 ```rust
 a.iter().rev().collect::<Vec<_>>()
@@ -1238,43 +1242,43 @@ let mut a = vec![1, 2, 3];
 a.reverse();                  // in place
 ```
 
-#### map
+##### map
 
 ```rust
 a.iter().map(|x| x * 2).collect::<Vec<_>>()
 ```
 
-#### filter
+##### filter
 
 ```rust
 a.iter().filter(|&&x| x > 0).collect::<Vec<_>>()
 ```
 
-### Dictionary
+#### Dictionary
 
 `HashMap<K, V>` for key-value storage.
 
-#### literal
+##### literal
 
 ```rust
 use std::collections::HashMap;
 let d = HashMap::from([('t', 1), ('f', 0)]);
 ```
 
-#### size
+##### size
 
 ```rust
 d.len()
 ```
 
-#### lookup
+##### lookup
 
 ```rust
 d.get(&'t')     // Option<&i32>, returns None if absent
 d[&'t']         // panics if absent
 ```
 
-#### update
+##### update
 
 ```rust
 let mut d = HashMap::from([('t', 1), ('f', 0)]);
@@ -1282,86 +1286,86 @@ d.insert('u', -1);
 d.entry('u').or_insert(-1);
 ```
 
-#### is key present
+##### is key present
 
 ```rust
 d.contains_key(&'c')
 ```
 
-#### delete
+##### delete
 
 ```rust
 let v = d.remove(&'t');   // Option<i32>, None if absent
 ```
 
-#### from array of pairs
+##### from array of pairs
 
 ```rust
 let pairs = [('t', 1), ('f', 0)];
 let d: HashMap<char, i32> = pairs.into_iter().collect();
 ```
 
-#### merge
+##### merge
 
 ```rust
 d.extend([('u', -1)]);
 ```
 
-#### invert
+##### invert
 
 ```rust
 let inverted: HashMap<i32, char> = d.iter().map(|(k, v)| (*v, *k)).collect();
 ```
 
-#### keys and values as arrays
+##### keys and values as arrays
 
 ```rust
 d.keys().collect::<Vec<_>>()
 d.values().collect::<Vec<_>>()
 ```
 
-### Set
+#### Set
 
-#### literal
+##### literal
 
 ```rust
 use std::collections::HashSet;
 let s = HashSet::from([1, 2, 3]);
 ```
 
-#### size
+##### size
 
 ```rust
 s.len()
 ```
 
-#### add
+##### add
 
 ```rust
 let mut s = HashSet::from([1, 2, 3]);
 s.insert(4);
 ```
 
-#### is element present
+##### is element present
 
 ```rust
 s.contains(&3)
 ```
 
-#### delete
+##### delete
 
 ```rust
 s.remove(&3);   // returns false if absent
 ```
 
-#### from array
+##### from array
 
 ```rust
 let a = vec![1, 2, 3, 2];
 let s: HashSet<i32> = a.into_iter().collect();   // {1, 2, 3}
 ```
 
-#### merge
+##### merge
 
 ```rust
 &s | &set_of                 // union
@@ -1371,35 +1375,35 @@ s.union(&set_of)
 s.intersection(&set_of)
 ```
 
-## Iterator and generator
+### Iterator and generator
 
-### Iterator
+#### Iterator
 
-#### chain
+##### chain
 
 ```rust
 "abc".chars().chain("de".chars()).collect::<String>()
 ```
 
-#### take
+##### take
 
 ```rust
 (1..=10).take(4).collect::<Vec<_>>()     // [1, 2, 3, 4]
 ```
 
-#### drop
+##### drop
 
 ```rust
 (1..=10).skip(3).collect::<Vec<_>>()     // [4, 5, 6, 7, 8, 9, 10]
 ```
 
-#### head
+##### head
 
 ```rust
 (1..=10).take(3).collect::<Vec<_>>()     // [1, 2, 3]
 ```
 
-#### takewhile
+##### takewhile
 
 ```rust
 [1, 2, 3, 1, 2].iter()
@@ -1407,7 +1411,7 @@ s.intersection(&set_of)
     .collect::<Vec<_>>()                  // [1, 2]
 ```
 
-#### dropwhile
+##### dropwhile
 
 ```rust
 [1, 2, 3, 1, 2].iter()
@@ -1415,7 +1419,7 @@ s.intersection(&set_of)
     .collect::<Vec<_>>()                  // [3, 1, 2]
 ```
 
-#### zip
+##### zip
 
 ```rust
 "abc".chars().zip("123".chars()).collect::<Vec<_>>()
@@ -1424,28 +1428,28 @@ s.intersection(&set_of)
 // zip stops at the shortest; no built-in zip_longest
 ```
 
-#### enumerate
+##### enumerate
 
 ```rust
 ['a', 'b', 'c'].iter().enumerate()
     .for_each(|(i, item)| println!("{} {}", i + 1, item));
 ```
 
-#### flatten
+##### flatten
 
 ```rust
 vec![vec![1, 2], vec![3, 4]].into_iter().flatten().collect::<Vec<_>>()
 // [1, 2, 3, 4]
 ```
 
-#### count
+##### count
 
 ```rust
 (10..).take(2).collect::<Vec<_>>()            // [10, 11]
 (10..).step_by(2).take(3).collect::<Vec<_>>() // [10, 12, 14]
 ```
 
-#### cycle
+##### cycle
 
 ```rust
 ["red", "green", "blue"].iter()
@@ -1455,7 +1459,7 @@ vec![vec![1, 2], vec![3, 4]].into_iter().flatten().collect::<Vec<_>>()
     .collect::<Vec<_>>()   // [red, green, blue, red, green]
 ```
 
-#### chunked
+##### chunked
 
 ```rust
 let v = vec![1, 2, 3, 4, 5, 6, 7];
@@ -1463,7 +1467,7 @@ v.chunks(3).collect::<Vec<_>>()
 // [[1, 2, 3], [4, 5, 6], [7]]
 ```
 
-#### groupby
+##### groupby
 
 ```rust
 // std has no group_by — use the itertools crate
@@ -1473,7 +1477,7 @@ let cities = vec![("NYC", "NY"), ("LA", "CA"), ("SF", "CA"), ("Buffalo", "NY")];
 let groups = cities.into_iter().group_by(|c| c.1); // group_by requires sorted input
 ```
 
-#### generator
+##### generator
 
 ```rust
 fn fib() -> impl Iterator<Item = u64> {
@@ -1645,4 +1649,5 @@ struct Box<T> { value: T }
 ```rust
 fn f<T: Clone + Default>(x: T) -> T { x.clone() }
 ```
+
 

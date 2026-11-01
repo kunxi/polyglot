@@ -2,12 +2,13 @@
 
 Lua is a lightweight, embeddable language with a tracing garbage collector. It is single-threaded by design and uses coroutines for cooperative concurrency.
 
-## Primitive types
+## Types
+### Primitive types
 
 Lua numbers are a single `number` type: 64-bit integers (5.3+) or doubles, with no fixed-width signed/unsigned types and no explicit alignment control.
-### Number
+#### Number
 
-#### integer
+##### integer
 
 ```lua
 local a = 42
@@ -15,7 +16,7 @@ local b = -7
 local c = tonumber("42")
 ```
 
-#### integer overflow
+##### integer overflow
 
 ```lua
 -- Lua 5.3+ has 64-bit integers; overflow wraps
@@ -25,7 +26,7 @@ print(x + 1)        -- math.mininteger (wraps)
 print(2 ^ 53)
 ```
 
-#### float
+##### float
 
 ```lua
 local x = 3.14
@@ -33,7 +34,7 @@ local y = 1.5e-3
 local z = tonumber("3.14")
 ```
 
-#### arithmetic
+##### arithmetic
 
 ```lua
 a + b      -- addition
@@ -45,7 +46,7 @@ a % b      -- modulo
 a ^ b      -- exponentiation
 ```
 
-#### min max abs
+##### min max abs
 
 ```lua
 math.min(a, b)
@@ -53,7 +54,7 @@ math.max(a, b)
 math.abs(-42)
 ```
 
-#### random
+##### random
 
 ```lua
 math.randomseed(os.time())
@@ -61,45 +62,45 @@ math.random(1, 6)
 math.random()      -- 0..1
 ```
 
-### Integer types
+#### Integer types
 
-#### short
+##### short
 
 ```lua
 -- No short — single number type
 ```
 
-#### long
+##### long
 
 ```lua
 -- No long — single number type
 ```
 
-#### long long
+##### long long
 
 ```lua
 -- No long long — single number type
 ```
 
-#### unsigned
+##### unsigned
 
 ```lua
 -- No unsigned types
 ```
 
-#### signed
+##### signed
 
 ```lua
 local i = -42   -- signed by nature
 ```
 
-#### struct
+##### struct
 
 ```lua
 string.pack("<bi4", 1, 2)   -- pack a byte and a 32-bit int
 ```
 
-#### divmod
+##### divmod
 
 ```lua
 -- Lua has no divmod; compute both directly
@@ -108,7 +109,7 @@ local r = a % b
 local q, r = math.modf(a / b)
 ```
 
-#### rounding
+##### rounding
 
 ```lua
 math.floor(3.14)        -- 3
@@ -117,7 +118,7 @@ math.ceil(3.14)         -- 4
 string.format("%.1f", 3.14) -- "3.1"
 ```
 
-#### range
+##### range
 
 ```lua
 for i = 0, 4 do print(i) end   -- 0, 1, 2, 3, 4 (inclusive)
@@ -130,41 +131,41 @@ local function range(a, b)
 end
 ```
 
-#### descending range
+##### descending range
 
 ```lua
 for i = 4, 0, -1 do print(i) end   -- 4, 3, 2, 1, 0
 for i = 10, 0, -2 do print(i) end  -- 10, 8, 6, 4, 2
 ```
 
-### Boolean
+#### Boolean
 
-#### literal
+##### literal
 
 ```lua
 local t = true
 local f = false
 ```
 
-#### negation
+##### negation
 
 ```lua
 not true        -- false
 ```
 
-#### logical and
+##### logical and
 
 ```lua
 true and false  -- false
 ```
 
-#### logical or
+##### logical or
 
 ```lua
 true or false   -- true
 ```
 
-#### truthy and falsy values
+##### truthy and falsy values
 
 ```lua
 -- Only false and nil are falsy; 0 and "" are truthy.
@@ -173,7 +174,7 @@ true or false   -- true
 #t > 0                      -- explicit check for list
 ```
 
-#### conversion
+##### conversion
 
 ```lua
 1 ~= 0              -- to Boolean
@@ -181,17 +182,17 @@ tostring(true)      -- "true"
 tonumber("1") ~= 0  -- to Boolean
 ```
 
-### None / null
+#### None / null
 
 Lua uses `nil` for absence.
 
-#### literal
+##### literal
 
 ```lua
 local x = nil
 ```
 
-#### null check
+##### null check
 
 ```lua
 if x == nil then
@@ -202,7 +203,7 @@ if x then
 end
 ```
 
-#### optional access
+##### optional access
 
 ```lua
 x and x.length           -- nil-safe access
@@ -210,11 +211,11 @@ x and x:do_something()
 local v = x or 0         -- provide default
 ```
 
-## Composite types
+### Composite types
 
-### String
+#### String
 
-#### literal
+##### literal
 
 ```lua
 local s = "hello"
@@ -223,21 +224,21 @@ local s = [[multiline
 string]]
 ```
 
-#### length
+##### length
 
 ```lua
 #s
 string.len(s)
 ```
 
-#### access
+##### access
 
 ```lua
 s:sub(1, 1)   -- first char
 s:sub(-1)     -- last char
 ```
 
-#### slice
+##### slice
 
 ```lua
 s:sub(1, 3)   -- chars 1..3, inclusive
@@ -245,21 +246,21 @@ s:sub(2)      -- from index 2 to end
 s:sub(-3)     -- last 3 chars
 ```
 
-#### concatenation
+##### concatenation
 
 ```lua
 s .. " world"
 table.concat({"hello", "world"}, " ")
 ```
 
-#### interpolation
+##### interpolation
 
 ```lua
 string.format("Hello, %s", name)
 ("Hello, " .. name)
 ```
 
-#### search
+##### search
 
 ```lua
 s:find("lo")             -- returns index or nil
@@ -268,42 +269,42 @@ s:sub(1, 2) == "he"      -- starts with
 s:sub(-2) == "lo"        -- ends with
 ```
 
-#### split and join
+##### split and join
 
 ```lua
 for part in s:gmatch("[^,]+") do print(part) end   -- split on ","
 table.concat({"a", "b", "c"}, "-")                  -- join
 ```
 
-#### trim
+##### trim
 
 ```lua
 s:match("^%s*(.-)%s*$")
 s:gsub("^%s+", ""):gsub("%s+$", "")
 ```
 
-#### case
+##### case
 
 ```lua
 s:upper()
 s:lower()
 ```
 
-#### replace
+##### replace
 
 ```lua
 (s:gsub("old", "new"))        -- all occurrences
 (s:gsub("old", "new", 1))     -- first occurrence only
 ```
 
-#### justify
+##### justify
 
 ```lua
 string.format("%10s", s)    -- right justify
 string.format("%-10s", s)   -- left justify
 ```
 
-#### format
+##### format
 
 ```lua
 string.format("Hello, %s!", name)
@@ -311,8 +312,8 @@ string.format("%.2f", 3.14159)   -- "3.14"
 string.format("%05d", 42)        -- "00042"
 ```
 
-### Complex
-#### operations
+#### Complex
+##### operations
 
 ```lua
 -- Lua has no built-in complex numbers; use a table
@@ -325,47 +326,47 @@ local function cmul(a, b)
 end
 ```
 
-### Date
-#### now
+#### Date
+##### now
 
 ```lua
 os.date("%Y-%m-%d")   -- 2026-10-13
 ```
-#### format
+##### format
 
 ```lua
 os.date("%d/%m/%Y", os.time())
 ```
-### Datetime
-#### now
+#### Datetime
+##### now
 
 ```lua
 os.date("%Y-%m-%d %H:%M:%S")
 ```
-#### format
+##### format
 
 ```lua
 os.date("%H:%M:%S", os.time())
 ```
-### Decimal
-#### literal
+#### Decimal
+##### literal
 
 ```lua
 -- No built-in decimal; use a library or string math
 0.1 + 0.2  -- 0.3 (double rounding)
 ```
-#### precision
+##### precision
 
 ```lua
 -- Use a decimal library (e.g. ldecNumber) for exact precision
 ```
-## Type system
+### Type system
 
-### type hints
+#### type hints
 
 Lua is dynamically typed; types are documented by convention.
 
-#### variable
+##### variable
 
 ```lua
 local name = "Alice"     -- string
@@ -373,13 +374,13 @@ local age = 30           -- number
 local scores = {1, 2, 3} -- list
 ```
 
-#### nullable
+##### nullable
 
 ```lua
 local name = nil   -- any variable may hold nil
 ```
 
-#### function
+##### function
 
 ```lua
 local function greet(name)
@@ -392,7 +393,7 @@ local function divide(a, b)
 end
 ```
 
-#### list of elements
+##### list of elements
 
 ```lua
 local names = {"Alice", "Bob"}
@@ -400,14 +401,14 @@ local scores = {1, 2, 3}
 local matrix = {{1, 2}, {3, 4}}
 ```
 
-#### dict
+##### dict
 
 ```lua
 local ages = {Alice = 30, Bob = 25}
 ```
 
-### Type operations
-#### type alias
+#### Type operations
+##### type alias
 
 ```lua
 -- Lua has no type aliases — use a comment to document
@@ -415,28 +416,28 @@ local ages = {Alice = 30, Bob = 25}
 local v = {1.0, 2.0}
 ```
 
-#### union
+##### union
 
 ```lua
 -- Dynamically typed — any value is allowed
 ```
-#### intersection
+##### intersection
 
 ```lua
 -- No type system — duck typing
 ```
-#### literal types
+##### literal types
 
 ```lua
 -- No literal types
 ```
-## Memory model
+### Memory model
 
 Lua uses a single dynamic value type. Tables are the only reference type — numbers, strings, and booleans are values. There are no pointers, and the garbage collector reclaims unreferenced tables.
 
-### Memory
+#### Memory
 
-#### value vs reference
+##### value vs reference
 
 ```lua
 local a = 1
@@ -446,7 +447,7 @@ local y = x        -- same table
 y[3] = 3           -- x is also {1, 2, 3}
 ```
 
-#### pointer / reference
+##### pointer / reference
 
 ```lua
 -- Tables are references; numbers, strings, booleans are values
@@ -455,31 +456,32 @@ local u = t
 u[1] = 10          -- t[1] is also 10
 ```
 
-#### ownership / borrowing
+##### ownership / borrowing
 
 ```lua
 -- No ownership/borrowing — garbage collected
 ```
 
-#### copy vs move
+##### copy vs move
 
 ```lua
 local a = {1, 2, {3, 4}}
 local b = {table.unpack(a)}   -- shallow copy of the outer table
 ```
 
-#### immutability
+##### immutability
 
 ```lua
 -- No immutable types — freeze by convention
 local READONLY = {1, 2, 3}
 ```
 
-## Control Flow
+## Statements
+### Control Flow
 
-### if
+#### if
 
-#### basic
+##### basic
 
 ```lua
 if x > 0 then
@@ -491,22 +493,22 @@ else
 end
 ```
 
-#### ternary
+##### ternary
 
 ```lua
 local s = x > 0 and "positive" or "not positive"
 ```
 
-#### as expression
+##### as expression
 
 ```lua
 -- and/or is the closest to a ternary expression
 local n = ok and 1 or 0
 ```
 
-### match / when
+#### match / when
 
-#### basic
+##### basic
 
 ```lua
 if x == 1 then
@@ -518,7 +520,7 @@ else
 end
 ```
 
-#### guard
+##### guard
 
 ```lua
 if x > 0 then
@@ -530,7 +532,7 @@ else
 end
 ```
 
-#### destructuring
+##### destructuring
 
 ```lua
 -- Lua has no pattern-matching destructuring; use table fields
@@ -542,15 +544,15 @@ local function handle(cmd)
 end
 ```
 
-#### exhaustiveness
+##### exhaustiveness
 
 ```lua
 -- No compile-time exhaustiveness — provide an else fallback
 ```
 
-### for
+#### for
 
-#### basic
+##### basic
 
 ```lua
 for _, item in ipairs(items) do
@@ -558,7 +560,7 @@ for _, item in ipairs(items) do
 end
 ```
 
-#### with index
+##### with index
 
 ```lua
 for i, item in ipairs(items) do
@@ -566,7 +568,7 @@ for i, item in ipairs(items) do
 end
 ```
 
-#### range loop
+##### range loop
 
 ```lua
 for i = 0, 9 do
@@ -574,7 +576,7 @@ for i = 0, 9 do
 end
 ```
 
-#### break & continue
+##### break & continue
 
 ```lua
 for _, x in ipairs(items) do
@@ -585,7 +587,7 @@ for _, x in ipairs(items) do
 end
 ```
 
-#### for else
+##### for else
 
 ```lua
 -- Lua has no for-else. Use a flag:
@@ -596,9 +598,9 @@ end
 if not found then print("not found") end
 ```
 
-### while
+#### while
 
-#### basic
+##### basic
 
 ```lua
 while x > 0 do
@@ -607,7 +609,7 @@ while x > 0 do
 end
 ```
 
-#### break & continue
+##### break & continue
 
 ```lua
 while true do
@@ -619,7 +621,7 @@ while true do
 end
 ```
 
-#### do while
+##### do while
 
 ```lua
 -- repeat...until checks the condition at the end
@@ -628,11 +630,11 @@ repeat
 until condition(x)
 ```
 
-### Exception
+#### Exception
 
 Lua models errors with `pcall`/`xpcall` and `error`.
 
-#### try / except
+##### try / except
 
 ```lua
 local ok, result = pcall(function()
@@ -643,7 +645,7 @@ if not ok then
 end
 ```
 
-#### finally
+##### finally
 
 ```lua
 -- Lua has no finally; close manually after the pcall
@@ -652,7 +654,7 @@ local ok, err = pcall(read, f)
 if f then f:close() end
 ```
 
-#### else
+##### else
 
 ```lua
 -- Lua has no try-else; run the success path only when pcall returns ok
@@ -664,14 +666,14 @@ else
 end
 ```
 
-#### raise
+##### raise
 
 ```lua
 error("invalid value")
 assert(condition, "condition failed")
 ```
 
-#### custom exception
+##### custom exception
 
 ```lua
 local function fail()
@@ -679,7 +681,7 @@ local function fail()
 end
 ```
 
-#### context manager
+##### context manager
 
 ```lua
 -- No 'with'; use io.open + close, or a helper that guarantees cleanup
@@ -688,11 +690,11 @@ local content = f:read("*a")
 f:close()
 ```
 
-## Functions
+### Functions
 
-### Function
+#### Function
 
-#### definition
+##### definition
 
 ```lua
 local function greet(name)
@@ -700,7 +702,7 @@ local function greet(name)
 end
 ```
 
-#### default parameters
+##### default parameters
 
 ```lua
 local function greet(name, greeting)
@@ -709,7 +711,7 @@ local function greet(name, greeting)
 end
 ```
 
-#### overloading
+##### overloading
 
 ```lua
 -- No overloading by signature; check argument types
@@ -719,7 +721,7 @@ local function stringify(arg)
 end
 ```
 
-#### varargs
+##### varargs
 
 ```lua
 local function sum_all(...)
@@ -729,7 +731,7 @@ local function sum_all(...)
 end
 ```
 
-#### keyword arguments
+##### keyword arguments
 
 ```lua
 -- Use a table for keyword-style arguments
@@ -741,7 +743,7 @@ end
 configure{host = "example.com", port = 3000, debug = true}
 ```
 
-#### return
+##### return
 
 ```lua
 local function divide(a, b)
@@ -750,23 +752,23 @@ local function divide(a, b)
 end
 ```
 
-#### callable check
+##### callable check
 
 ```lua
 type(greet) == "function"    -- true
 type(42) == "function"       -- false
 ```
 
-### Lambda
+#### Lambda
 
-#### basic
+##### basic
 
 ```lua
 local square = function(x) return x * x end
 local add = function(a, b) return a + b end
 ```
 
-#### as argument
+##### as argument
 
 ```lua
 table.sort(nums, function(a, b) return a < b end)
@@ -778,7 +780,7 @@ for _, x in ipairs(nums) do
 end
 ```
 
-#### receiver
+##### receiver
 
 ```lua
 -- Lua methods use a colon to pass the receiver as self
@@ -789,13 +791,14 @@ function sb:tostring() return table.concat(self.buf, "") end
 sb:append("Hello"):append(" "):append("World")
 ```
 
-## Classes
+## Classes & Interfaces
+### Classes
 
 Lua has no classes — use tables and metatables.
 
-### Class
+#### Class
 
-#### definition
+##### definition
 
 ```lua
 local Dog = {}
@@ -808,7 +811,7 @@ function Dog.new(name)
 end
 ```
 
-#### constructor
+##### constructor
 
 ```lua
 function Dog.new(name)
@@ -818,20 +821,20 @@ function Dog.new(name)
 end
 ```
 
-#### instantiation
+##### instantiation
 
 ```lua
 local dog = Dog.new("Fido")
 ```
 
-#### attributes
+##### attributes
 
 ```lua
 self.name = name            -- instance attribute
 Dog.species = "canine"      -- class attribute
 ```
 
-#### method
+##### method
 
 ```lua
 function Dog:bark()
@@ -839,7 +842,7 @@ function Dog:bark()
 end
 ```
 
-#### inheritance
+##### inheritance
 
 ```lua
 local Animal = {}
@@ -849,7 +852,7 @@ local Dog = setmetatable({}, {__index = Animal})
 Dog.__index = Dog
 ```
 
-#### multiple inheritance
+##### multiple inheritance
 
 ```lua
 -- No native multiple inheritance — chain __index fallbacks
@@ -860,7 +863,7 @@ local C = setmetatable({}, { __index = function(t, k)
 end })
 ```
 
-#### override
+##### override
 
 ```lua
 function Animal:speak() return "" end
@@ -870,7 +873,7 @@ function Dog:speak()
 end
 ```
 
-#### super
+##### super
 
 ```lua
 local Animal = {}
@@ -884,7 +887,7 @@ function Dog:speak()
 end
 ```
 
-#### class method
+##### class method
 
 ```lua
 function Dog.from_birthyear(birthyear)
@@ -892,7 +895,7 @@ function Dog.from_birthyear(birthyear)
 end
 ```
 
-#### static method
+##### static method
 
 ```lua
 function Dog.is_canine(name)
@@ -900,7 +903,7 @@ function Dog.is_canine(name)
 end
 ```
 
-#### abstract
+##### abstract
 
 ```lua
 -- No abstract — document methods that subclasses must provide
@@ -909,7 +912,7 @@ Animal.__index = Animal
 -- subclass must define Animal:speak()
 ```
 
-#### protocol / interface
+##### protocol / interface
 
 ```lua
 -- Duck typing: define expected methods, no interface declaration
@@ -918,7 +921,7 @@ local function make_sound(s)
 end
 ```
 
-#### data class
+##### data class
 
 ```lua
 local Dog = {}
@@ -932,7 +935,7 @@ function Dog.new(name, age)
 end
 ```
 
-#### equality
+##### equality
 
 ```lua
 Dog.__eq = function(a, b)
@@ -940,7 +943,7 @@ Dog.__eq = function(a, b)
 end
 ```
 
-#### string representation
+##### string representation
 
 ```lua
 Dog.__tostring = function(dog)
@@ -948,7 +951,7 @@ Dog.__tostring = function(dog)
 end
 ```
 
-#### sealed class
+##### sealed class
 
 ```lua
 -- Lua has no sealed classes — document the closed set
@@ -957,31 +960,31 @@ function Result.success(value) return {ok = true, value = value} end
 function Result.failure(error) return {ok = false, error = error} end
 ```
 
-#### private
+##### private
 
 ```lua
 -- Lua has no access control; underscore marks private by convention
 self._secret = 42
 ```
 
-#### protected
+##### protected
 
 ```lua
 -- Convention: a single underscore marks protected members
 self._name = ""
 ```
 
-#### public
+##### public
 
 ```lua
 -- Everything is public by default
 self.name = "Fido"
 ```
 
-### Interface & trait
+#### Interface & trait
 
 Lua has no interfaces or traits — metatables and duck typing fill the role.
-#### definition
+##### definition
 
 ```lua
 -- Duck typing: an object qualifies by implementing the methods
@@ -989,22 +992,22 @@ local Speakable = {}
 -- anything with speak() satisfies Speakable
 ```
 
-#### default method
+##### default method
 
 ```lua
 -- Default behavior via an __index metatable fallback
 local Speaker = {}
 function Speaker:greet() return self:speak() end
 ```
-### Enum
+#### Enum
 
-#### definition
+##### definition
 
 ```lua
 local Color = {RED = 1, GREEN = 2, AMBER = 3}
 ```
 
-#### auto value
+##### auto value
 
 ```lua
 -- Array position is the automatic value
@@ -1015,14 +1018,14 @@ local GREEN = 2
 local AMBER = 3
 ```
 
-#### access
+##### access
 
 ```lua
 Color.RED
 Color["RED"]
 ```
 
-#### iteration
+##### iteration
 
 ```lua
 for i, name in ipairs(Color) do
@@ -1030,14 +1033,14 @@ for i, name in ipairs(Color) do
 end
 ```
 
-#### lookup
+##### lookup
 
 ```lua
 local name_to_color = {RED = 1, GREEN = 2, AMBER = 3}
 name_to_color["RED"]   -- 1
 ```
 
-#### match
+##### match
 
 ```lua
 if color == Color.RED then
@@ -1049,7 +1052,7 @@ else
 end
 ```
 
-#### enum with data
+##### enum with data
 
 ```lua
 local Planet = {
@@ -1058,39 +1061,40 @@ local Planet = {
 }
 ```
 
-## Collections
+## Collections & Iterators
+### Collections
 
-### List
+#### List
 
 Lua uses tables as lists (1-indexed).
 
-#### literal
+##### literal
 
 ```lua
 local a = {1, 2, 3}
 ```
 
-#### size
+##### size
 
 ```lua
 #a
 ```
 
-#### lookup
+##### lookup
 
 ```lua
 a[1]    -- first element
 a[#a]   -- last element
 ```
 
-#### update
+##### update
 
 ```lua
 a[1] = 10
 table.insert(a, 4)
 ```
 
-#### is element present
+##### is element present
 
 ```lua
 local function contains(list, value)
@@ -1102,14 +1106,14 @@ end
 contains(a, 3)
 ```
 
-#### delete
+##### delete
 
 ```lua
 table.remove(a, 1)   -- by index
 table.remove(a)      -- last element
 ```
 
-#### merge
+##### merge
 
 ```lua
 for _, v in ipairs({4, 5}) do
@@ -1117,7 +1121,7 @@ for _, v in ipairs({4, 5}) do
 end
 ```
 
-#### slice
+##### slice
 
 ```lua
 local function slice(list, i, j)
@@ -1129,21 +1133,21 @@ end
 slice(a, 1, 3)   -- elements at index 1 and 2
 ```
 
-#### reversed
+##### reversed
 
 ```lua
 local out = {}
 for i = #a, 1, -1 do out[#out + 1] = a[i] end
 ```
 
-#### map
+##### map
 
 ```lua
 local out = {}
 for _, x in ipairs(a) do out[#out + 1] = x * 2 end
 ```
 
-#### filter
+##### filter
 
 ```lua
 local out = {}
@@ -1152,50 +1156,50 @@ for _, x in ipairs(a) do
 end
 ```
 
-### Dictionary
+#### Dictionary
 
 Lua uses tables with key-value pairs.
 
-#### literal
+##### literal
 
 ```lua
 local d = {t = 1, f = 0}
 ```
 
-#### size
+##### size
 
 ```lua
 local n = 0
 for _ in pairs(d) do n = n + 1 end
 ```
 
-#### lookup
+##### lookup
 
 ```lua
 d.t       -- may be nil
 d["t"]    -- may be nil
 ```
 
-#### update
+##### update
 
 ```lua
 d["u"] = -1
 d.u = -1
 ```
 
-#### is key present
+##### is key present
 
 ```lua
 d["c"] ~= nil
 ```
 
-#### delete
+##### delete
 
 ```lua
 d["t"] = nil
 ```
 
-#### from array of pairs
+##### from array of pairs
 
 ```lua
 local keys = {"t", "f"}
@@ -1204,7 +1208,7 @@ local d = {}
 for i, k in ipairs(keys) do d[k] = values[i] end
 ```
 
-#### merge
+##### merge
 
 ```lua
 for k, v in pairs({u = -1}) do
@@ -1212,14 +1216,14 @@ for k, v in pairs({u = -1}) do
 end
 ```
 
-#### invert
+##### invert
 
 ```lua
 local inverted = {}
 for k, v in pairs(d) do inverted[v] = k end
 ```
 
-#### keys and values as arrays
+##### keys and values as arrays
 
 ```lua
 local keys, values = {}, {}
@@ -1229,42 +1233,42 @@ for k, v in pairs(d) do
 end
 ```
 
-### Set
+#### Set
 
 Lua uses a table with true values as a set.
 
-#### literal
+##### literal
 
 ```lua
 local s = {[1] = true, [2] = true, [3] = true}
 ```
 
-#### size
+##### size
 
 ```lua
 local n = 0
 for _ in pairs(s) do n = n + 1 end
 ```
 
-#### add
+##### add
 
 ```lua
 s[4] = true
 ```
 
-#### is element present
+##### is element present
 
 ```lua
 s[3] == true
 ```
 
-#### delete
+##### delete
 
 ```lua
 s[3] = nil
 ```
 
-#### from array
+##### from array
 
 ```lua
 local a = {1, 2, 3, 2}
@@ -1272,7 +1276,7 @@ local s = {}
 for _, v in ipairs(a) do s[v] = true end   -- {1, 2, 3}
 ```
 
-#### merge
+##### merge
 
 ```lua
 for k in pairs(other) do s[k] = true end        -- union
@@ -1282,11 +1286,11 @@ local diff = {}
 for k in pairs(s) do if not other[k] then diff[k] = true end end  -- difference
 ```
 
-## Iterator and generator
+### Iterator and generator
 
-### Iterator
+#### Iterator
 
-#### chain
+##### chain
 
 ```lua
 local a, b = {"a", "b", "c"}, {"d", "e"}
@@ -1295,28 +1299,28 @@ for _, v in ipairs(a) do chained[#chained + 1] = v end
 for _, v in ipairs(b) do chained[#chained + 1] = v end
 ```
 
-#### take
+##### take
 
 ```lua
 local out = {}
 for i = 1, math.min(4, #t) do out[#out + 1] = t[i] end
 ```
 
-#### drop
+##### drop
 
 ```lua
 local out = {}
 for i = 4, #t do out[#out + 1] = t[i] end
 ```
 
-#### head
+##### head
 
 ```lua
 local out = {}
 for i = 1, math.min(3, #t) do out[#out + 1] = t[i] end
 ```
 
-#### takewhile
+##### takewhile
 
 ```lua
 local out = {}
@@ -1326,7 +1330,7 @@ for _, v in ipairs({1, 2, 3, 1, 2}) do
 end
 ```
 
-#### dropwhile
+##### dropwhile
 
 ```lua
 local t = {1, 2, 3, 1, 2}
@@ -1336,7 +1340,7 @@ local out = {}
 for j = i, #t do out[#out + 1] = t[j] end
 ```
 
-#### zip
+##### zip
 
 ```lua
 local a, b = {"a", "b", "c"}, {"1", "2", "3"}
@@ -1346,7 +1350,7 @@ for i = 1, math.min(#a, #b) do
 end
 ```
 
-#### enumerate
+##### enumerate
 
 ```lua
 for i, item in ipairs({"a", "b", "c"}) do
@@ -1354,7 +1358,7 @@ for i, item in ipairs({"a", "b", "c"}) do
 end
 ```
 
-#### flatten
+##### flatten
 
 ```lua
 local nested = {{1, 2}, {3, 4}}
@@ -1364,7 +1368,7 @@ for _, sub in ipairs(nested) do
 end
 ```
 
-#### count
+##### count
 
 ```lua
 local function count(start, step)
@@ -1378,7 +1382,7 @@ local function count(start, step)
 end
 ```
 
-#### cycle
+##### cycle
 
 ```lua
 local colors = {"red", "green", "blue"}
@@ -1387,7 +1391,7 @@ for i = 1, 5 do
 end
 ```
 
-#### chunked
+##### chunked
 
 ```lua
 local s = "ABCDEFG"
@@ -1397,7 +1401,7 @@ for i = 1, #s, 3 do
 end
 ```
 
-#### groupby
+##### groupby
 
 ```lua
 local cities = {{"NYC", "NY"}, {"LA", "CA"}, {"SF", "CA"}, {"Buffalo", "NY"}}
@@ -1408,7 +1412,7 @@ for _, c in ipairs(cities) do
 end
 ```
 
-#### generator
+##### generator
 
 ```lua
 local function fib()
@@ -1570,4 +1574,5 @@ coroutine.resume(co)
 ```lua
 -- No constraints — duck typing
 ```
+
 

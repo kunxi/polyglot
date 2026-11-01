@@ -1,10 +1,14 @@
 # Python
 
-## Primitive types
+## Types
 
-### Number
+### Primitive types
 
-#### integer
+Python primitive types overview.
+
+#### Number
+
+##### integer
 
 ```python
 a = 42
@@ -12,7 +16,7 @@ b = -7
 c = int('42')
 ```
 
-#### float
+##### float
 
 ```python
 x = 3.14
@@ -20,124 +24,98 @@ y = 1.5e-3
 z = float('3.14')
 ```
 
-#### arithmetic
+##### arithmetic
 
 ```python
-a + b      # addition
-a - b      # subtraction
-a * b      # multiplication
-a / b      # division, always returns float
-a // b     # floor division
-a % b      # modulo
-a ** b     # exponentiation
+a + b
+a - b
+a * b
+a / b
 ```
 
-### String
+#### Boolean
 
-#### literal
-
-```python
-s = "hello"
-s = 'hello'
-s = """multiline
-string"""
-```
-
-#### length
-
-```python
-len(s)
-```
-
-#### access
-
-```python
-s[0]        # first char
-s[-1]       # last char
-```
-
-### Boolean
-
-#### literal
+##### literal
 
 ```python
 t = True
 f = False
 ```
 
-#### negation
+##### negation
 
 ```python
-not True        # False
+not True
 ```
 
-#### logical and
+##### logical and
 
 ```python
-True and False  # False
+True and False
 ```
 
-## Collections
+## Collections & Iterators
 
-Python's built-in collections — `list`, `dict`, and `set` — are mutable and store object references.
+### Collections
 
-### List
+Python collections overview — mutable.
 
-#### literal
+#### List
+
+##### literal
 
 ```python
 a = [1, 2, 3]
 ```
 
-#### size
+##### size
 
 ```python
 len(a)
 ```
 
-#### lookup
+##### lookup
 
 ```python
-a[0]   # first element
-a[-1]  # last element
+a[0]
+a[-1]
 ```
 
-### Dictionary
+#### Dictionary
 
-#### literal
+##### literal
 
 ```python
 d = {'t': 1, 'f': 0}
 ```
 
-#### size
+##### size
 
 ```python
 len(d)
 ```
 
-#### lookup
+##### lookup
 
 ```python
-d['t']          # may raise KeyError
-d.get('foo')    # returns None
+d['t']
 ```
 
-### Set
+#### Set
 
-#### literal
+##### literal
 
 ```python
 s = {1, 2, 3}
 ```
 
-#### size
+##### size
 
 ```python
 len(s)
 ```
 
-#### add
+##### add
 
 ```python
 s.add(4)

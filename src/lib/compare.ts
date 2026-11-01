@@ -12,7 +12,7 @@ export interface ItemRow {
 }
 
 export interface Block {
-  type: 'h2' | 'h3' | 'table' | 'intro' | 'group-intro';
+  type: 'h2' | 'h3' | 'h4' | 'table' | 'intro' | 'group-intro';
   heading?: string;
   items?: ItemRow[];
   intro?: { meta: string; lang1: string; lang2: string };
@@ -71,6 +71,7 @@ export function renderMD(s: string): string {
 
   out = esc(out);
   out = out.replace(/`([^`]+)`/g, '<code>$1</code>');
+  out = out.replace(/\[([^\]]+)\]\(((?:https?:\/\/)[^)\s]+)\)/g, '<a href="$2" target="_blank" rel="noopener noreferrer">$1</a>');
 
   const parts = out.split(/\n\n+/);
   return parts.map((p: string) => {
@@ -104,31 +105,25 @@ function findChild(node: Section, heading: string): Section | undefined {
 
 // -- meta.md validation & template rendering --
 
-// meta.md and language files share the same shape:
-// h1 = title, h2 = topic, h3 = group, h4 = leaf.
+// meta.md and language files share the same tree shape; sections nest to
+// arbitrary depth (h2 category -> h3 topic -> h4 group -> h5 leaf).
 export function validateLanguage(langTree: Section, metaTree: Section, langName: string): void {
   const langRoot = langTree.children.find((c) => c.level === 1);
   if (!langRoot) throw new Error(`${langName}: missing h1 title`);
   const metaRoot = metaTree.children.find((c) => c.level === 1);
   if (!metaRoot) throw new Error('meta.md: missing h1 title');
 
-  for (const topic of langRoot.children) {
-    const metaTopic = findChild(metaRoot, topic.heading);
-    if (!metaTopic) {
-      throw new Error(`${langName}: topic "${topic.heading}" not found in meta.md`);
-    }
-    for (const group of topic.children) {
-      const metaGroup = findChild(metaTopic, group.heading);
-      if (!metaGroup) {
-        throw new Error(`${langName}: section "${group.heading}" under "${topic.heading}" not found in meta.md`);
+  function walk(langNode: Section, metaNode: Section, path: string) {
+    for (const child of langNode.children) {
+      const m = findChild(metaNode, child.heading);
+      if (!m) {
+        throw new Error(`${langName}: section "${child.heading}" under "${path}" not found in meta.md`);
       }
-      for (const leaf of group.children) {
-        if (!findChild(metaGroup, leaf.heading)) {
-          throw new Error(`${langName}: section "${leaf.heading}" under "${topic.heading} > ${group.heading}" not found in meta.md`);
-        }
-      }
+      walk(child, m, `${path} > ${child.heading}`);
     }
   }
+
+  walk(langRoot, metaRoot, langName);
 }
 
 export function renderComparison(metaTree: Section, lang1Tree: Section, lang2Tree: Section): Block[] {
@@ -138,40 +133,51 @@ export function renderComparison(metaTree: Section, lang1Tree: Section, lang2Tre
   const l2 = lang2Tree.children.find((c) => c.level === 1);
   const blocks: Block[] = [];
 
-  for (const topic of metaRoot.children) {
-    blocks.push({ type: 'h2', heading: topic.heading });
-    const t1 = l1 ? findChild(l1, topic.heading) : undefined;
-    const t2 = l2 ? findChild(l2, topic.heading) : undefined;
+  function headingType(level: number): 'h2' | 'h3' | 'h4' {
+    if (level === 2) return 'h2';
+    if (level === 3) return 'h3';
+    return 'h4';
+  }
 
-    const intro = {
-      meta: topic.content,
-      lang1: t1?.content ?? '',
-      lang2: t2?.content ?? '',
-    };
-    if (intro.meta.trim() || intro.lang1.trim() || intro.lang2.trim()) {
-      blocks.push({ type: 'intro', intro });
+  function walk(metaNode: Section, n1: Section | undefined, n2: Section | undefined) {
+    if (metaNode.level >= 2) {
+      blocks.push({ type: headingType(metaNode.level), heading: metaNode.heading });
     }
 
-    for (const group of topic.children) {
-      blocks.push({ type: 'h3', heading: group.heading });
-      const g1 = t1 ? findChild(t1, group.heading) : undefined;
-      const g2 = t2 ? findChild(t2, group.heading) : undefined;
+    const c1 = n1?.content ?? '';
+    const c2 = n2?.content ?? '';
+    if (metaNode.content.trim()) {
+      blocks.push({ type: 'intro', intro: { meta: metaNode.content, lang1: c1, lang2: c2 } });
+    } else if (c1.trim() || c2.trim()) {
+      blocks.push({ type: 'group-intro', prose: { content1: c1, content2: c2 } });
+    }
 
-      const prose = { content1: g1?.content ?? '', content2: g2?.content ?? '' };
-      if (prose.content1.trim() || prose.content2.trim()) {
-        blocks.push({ type: 'group-intro', prose });
+    if (metaNode.children.length === 0) return;
+
+    const childrenAreLeaves = metaNode.children.every((c) => c.children.length === 0);
+    if (childrenAreLeaves) {
+      const items: ItemRow[] = [];
+      for (const leaf of metaNode.children) {
+        const leaf1 = n1 ? findChild(n1, leaf.heading) : undefined;
+        const leaf2 = n2 ? findChild(n2, leaf.heading) : undefined;
+        items.push({ label: leaf.heading, content1: leaf1?.content ?? '', content2: leaf2?.content ?? '' });
       }
-
-      if (group.children.length > 0) {
-        const items: ItemRow[] = [];
-        for (const leaf of group.children) {
-          const leaf1 = g1 ? findChild(g1, leaf.heading) : undefined;
-          const leaf2 = g2 ? findChild(g2, leaf.heading) : undefined;
-          items.push({ label: leaf.heading, content1: leaf1?.content ?? '', content2: leaf2?.content ?? '' });
-        }
-        blocks.push({ type: 'table', items });
+      blocks.push({ type: 'table', items });
+    } else {
+      for (const child of metaNode.children) {
+        const c1n = n1 ? findChild(n1, child.heading) : undefined;
+        const c2n = n2 ? findChild(n2, child.heading) : undefined;
+        walk(child, c1n, c2n);
       }
     }
+  }
+
+  for (const child of metaRoot.children) {
+    walk(
+      child,
+      l1 ? findChild(l1, child.heading) : undefined,
+      l2 ? findChild(l2, child.heading) : undefined
+    );
   }
 
   return blocks;

@@ -2,12 +2,13 @@
 
 TypeScript is a typed superset of JavaScript running on a garbage-collected engine. Asynchronous work uses promises and async/await, with parallelism available through worker threads.
 
-## Primitive types
+## Types
+### Primitive types
 
 TypeScript's `number` is an IEEE-754 double (no separate `int`/`long`); `bigint` gives arbitrary precision. There are no fixed-width signed/unsigned types, and alignment is handled by the JS engine.
-### Number
+#### Number
 
-#### integer
+##### integer
 
 ```typescript
 let a: number = 42;
@@ -16,7 +17,7 @@ let c: number = parseInt("42");
 let big: bigint = 1000000000000n;
 ```
 
-#### integer overflow
+##### integer overflow
 
 ```typescript
 // Numbers are IEEE-754 doubles; integers are exact up to 2^53
@@ -27,7 +28,7 @@ Number.MAX_SAFE_INTEGER + 1 === Number.MAX_SAFE_INTEGER + 2  // true (precision 
 const big = 2n ** 1000n;
 ```
 
-#### float
+##### float
 
 ```typescript
 let x = 3.14;
@@ -35,7 +36,7 @@ let y = 1.5e-3;
 let z = parseFloat("3.14");
 ```
 
-#### arithmetic
+##### arithmetic
 
 ```typescript
 a + b      // addition
@@ -47,7 +48,7 @@ a % b      // modulo
 a ** b     // exponentiation
 ```
 
-#### min max abs
+##### min max abs
 
 ```typescript
 Math.min(a, b)
@@ -55,46 +56,46 @@ Math.max(a, b)
 Math.abs(-42)
 ```
 
-#### random
+##### random
 
 ```typescript
 Math.random()                      // 0..1
 Math.floor(Math.random() * 6) + 1  // 1..6
 ```
 
-### Integer types
+#### Integer types
 
-#### short
+##### short
 
 ```typescript
 // No short — number is an IEEE-754 double
 ```
 
-#### long
+##### long
 
 ```typescript
 // No long — number is a double; bigint for large ints
 ```
 
-#### long long
+##### long long
 
 ```typescript
 const big = 42n;   // bigint (arbitrary precision)
 ```
 
-#### unsigned
+##### unsigned
 
 ```typescript
 // No unsigned number — BigUint64Array or >>> for unsigned ops
 ```
 
-#### signed
+##### signed
 
 ```typescript
 let i = -42;   // signed double
 ```
 
-#### struct
+##### struct
 
 ```typescript
 // Use DataView over an ArrayBuffer for a packed layout
@@ -102,7 +103,7 @@ const buf = new ArrayBuffer(5);
 new DataView(buf).setInt32(1, 2, true);   // little-endian int after byte
 ```
 
-#### divmod
+##### divmod
 
 ```typescript
 // No divmod — compute both
@@ -111,7 +112,7 @@ const r = a % b;
 const [q, r] = [Math.floor(a / b), a % b];
 ```
 
-#### rounding
+##### rounding
 
 ```typescript
 Math.round(3.14);        // 3
@@ -120,48 +121,48 @@ Math.floor(3.14);        // 3
 (3.14).toFixed(1);       // "3.1"
 ```
 
-#### range
+##### range
 
 ```typescript
 Array.from({ length: 5 }, (_, i) => i)      // [0, 1, 2, 3, 4]
 Array.from({ length: 3 }, (_, i) => i + 2)  // [2, 3, 4]
 ```
 
-#### descending range
+##### descending range
 
 ```typescript
 Array.from({ length: 5 }, (_, i) => 4 - i)  // [4, 3, 2, 1, 0]
 for (let i = 10; i >= 0; i -= 2) { }
 ```
 
-### Boolean
+#### Boolean
 
-#### literal
+##### literal
 
 ```typescript
 const t = true;
 const f = false;
 ```
 
-#### negation
+##### negation
 
 ```typescript
 !true           // false
 ```
 
-#### logical and
+##### logical and
 
 ```typescript
 true && false   // false
 ```
 
-#### logical or
+##### logical or
 
 ```typescript
 true || false   // true
 ```
 
-#### truthy and falsy values
+##### truthy and falsy values
 
 ```typescript
 // Only false, 0, "", null, undefined, and NaN are falsy
@@ -170,7 +171,7 @@ s.length > 0         // explicit check for string
 arr.length > 0       // explicit check for array
 ```
 
-#### conversion
+##### conversion
 
 ```typescript
 Boolean(1)       // true
@@ -178,18 +179,18 @@ String(true)     // "true"
 !!1              // true
 ```
 
-### None / null
+#### None / null
 
 TypeScript has both `null` and `undefined`; use `?` for optional access.
 
-#### literal
+##### literal
 
 ```typescript
 let x: string | null = null;
 let y: number | undefined = undefined;
 ```
 
-#### null check
+##### null check
 
 ```typescript
 if (x !== null && x !== undefined) {
@@ -200,7 +201,7 @@ if (x != null) {   // matches both null and undefined
 }
 ```
 
-#### optional access
+##### optional access
 
 ```typescript
 x?.length              // safe access, undefined if null
@@ -208,11 +209,11 @@ x?.length ?? 0         // default when nullish
 x?.toUpperCase()
 ```
 
-## Composite types
+### Composite types
 
-### String
+#### String
 
-#### literal
+##### literal
 
 ```typescript
 let s = "hello";
@@ -221,13 +222,13 @@ let s = `multiline
 string`;
 ```
 
-#### length
+##### length
 
 ```typescript
 s.length
 ```
 
-#### access
+##### access
 
 ```typescript
 s[0]          // first char
@@ -235,7 +236,7 @@ s.charAt(0)   // first char
 s.at(-1)      // last char
 ```
 
-#### slice
+##### slice
 
 ```typescript
 s.slice(1, 3)     // chars 1..2, exclusive end
@@ -243,7 +244,7 @@ s.slice(2)        // from index 2 to end
 s.slice(-3)       // last 3 chars
 ```
 
-#### concatenation
+##### concatenation
 
 ```typescript
 s + " world"
@@ -251,14 +252,14 @@ s.concat(" world")
 `${s} world`
 ```
 
-#### interpolation
+##### interpolation
 
 ```typescript
 `Hello, ${name}`
 `Hello, ${name.length}`
 ```
 
-#### search
+##### search
 
 ```typescript
 s.includes("hello")
@@ -267,14 +268,14 @@ s.startsWith("he")
 s.endsWith("lo")
 ```
 
-#### split and join
+##### split and join
 
 ```typescript
 s.split(",")
 ["a", "b", "c"].join("-")
 ```
 
-#### trim
+##### trim
 
 ```typescript
 s.trim()
@@ -282,28 +283,28 @@ s.trimStart()
 s.trimEnd()
 ```
 
-#### case
+##### case
 
 ```typescript
 s.toUpperCase()
 s.toLowerCase()
 ```
 
-#### replace
+##### replace
 
 ```typescript
 s.replace("old", "new")
 s.replaceAll("old", "new")   // all occurrences
 ```
 
-#### justify
+##### justify
 
 ```typescript
 s.padStart(10)    // right justify
 s.padEnd(10)      // left justify
 ```
 
-#### format
+##### format
 
 ```typescript
 `Hello, ${name}!`
@@ -311,8 +312,8 @@ s.padEnd(10)      // left justify
 String(42).padStart(5, "0")   // "00042"
 ```
 
-### Complex
-#### operations
+#### Complex
+##### operations
 
 ```typescript
 // No built-in complex numbers — use a class or library
@@ -326,48 +327,48 @@ class Complex {
 const z = new Complex(1, 2);
 ```
 
-### Date
-#### now
+#### Date
+##### now
 
 ```typescript
 new Date().toISOString().slice(0, 10)
 ```
-#### format
+##### format
 
 ```typescript
 new Date().toLocaleDateString("en-CA")  // YYYY-MM-DD
 ```
-### Datetime
-#### now
+#### Datetime
+##### now
 
 ```typescript
 new Date().toISOString()
 ```
-#### format
+##### format
 
 ```typescript
 new Date().toISOString().slice(0, 19).replace("T", " ")
 ```
-### Decimal
-#### literal
+#### Decimal
+##### literal
 
 ```typescript
 // No built-in decimal — 0.1 + 0.2 === 0.30000000000000004
 // Use a library like decimal.js
 ```
-#### precision
+##### precision
 
 ```typescript
 import Decimal from "decimal.js";
 new Decimal("0.1").plus("0.2").toString()  // "0.3"
 ```
-## Type system
+### Type system
 
-### type hints
+#### type hints
 
 TypeScript is statically typed with structural typing.
 
-#### variable
+##### variable
 
 ```typescript
 let name: string = "Alice";
@@ -375,13 +376,13 @@ let age: number = 30;
 let scores: number[] = [1, 2, 3];
 ```
 
-#### nullable
+##### nullable
 
 ```typescript
 let name: string | null = null;
 ```
 
-#### function
+##### function
 
 ```typescript
 function greet(name: string): string {
@@ -394,7 +395,7 @@ function divide(a: number, b: number): number | null {
 }
 ```
 
-#### list of elements
+##### list of elements
 
 ```typescript
 let names: string[] = ["Alice", "Bob"];
@@ -402,14 +403,14 @@ let scores: number[] = [1, 2, 3];
 let matrix: number[][] = [[1, 2], [3, 4]];
 ```
 
-#### dict
+##### dict
 
 ```typescript
 const ages: Record<string, number> = { Alice: 30, Bob: 25 };
 ```
 
-### Type operations
-#### type alias
+#### Type operations
+##### type alias
 
 ```typescript
 type Vector = number[];
@@ -418,31 +419,31 @@ function scale(scalar: number, v: Vector): Vector {
 }
 ```
 
-#### union
+##### union
 
 ```typescript
 type A = number | string;
 let v: A = 5; v = "five";
 ```
-#### intersection
+##### intersection
 
 ```typescript
 type A = { x: number } & { y: string };
 const o: A = { x: 1, y: "a" };
 ```
-#### literal types
+##### literal types
 
 ```typescript
 type Color = "red" | "green" | "blue";
 const c: Color = "red";
 ```
-## Memory model
+### Memory model
 
 TypeScript (JavaScript) stores primitives by value and objects — arrays, objects, functions — by reference on the heap. There are no pointers, and the garbage collector frees unreachable objects.
 
-### Memory
+#### Memory
 
-#### value vs reference
+##### value vs reference
 
 ```typescript
 let a = 1;
@@ -452,7 +453,7 @@ const y = x;          // same array reference
 y.push(3);            // x is also [1, 2, 3]
 ```
 
-#### pointer / reference
+##### pointer / reference
 
 ```typescript
 // No pointers — objects are references
@@ -461,13 +462,13 @@ const t = s;          // same reference
 s === t               // true
 ```
 
-#### ownership / borrowing
+##### ownership / borrowing
 
 ```typescript
 // No ownership/borrowing — garbage collected
 ```
 
-#### copy vs move
+##### copy vs move
 
 ```typescript
 const a = [1, 2, [3, 4]];
@@ -475,18 +476,19 @@ const b = [...a];             // shallow copy
 const c = structuredClone(a); // deep copy
 ```
 
-#### immutability
+##### immutability
 
 ```typescript
 const arr = [1, 2, 3] as const;      // readonly
 const obj = Object.freeze({ x: 1 }); // frozen
 ```
 
-## Control Flow
+## Statements
+### Control Flow
 
-### if
+#### if
 
-#### basic
+##### basic
 
 ```typescript
 if (x > 0) {
@@ -498,22 +500,22 @@ if (x > 0) {
 }
 ```
 
-#### ternary
+##### ternary
 
 ```typescript
 const s = x > 0 ? "positive" : "not positive";
 ```
 
-#### as expression
+##### as expression
 
 ```typescript
 // The ternary is the expression form
 const n = ok ? 1 : 0;
 ```
 
-### match / when
+#### match / when
 
-#### basic
+##### basic
 
 ```typescript
 switch (x) {
@@ -523,7 +525,7 @@ switch (x) {
 }
 ```
 
-#### guard
+##### guard
 
 ```typescript
 // No guarded cases — use switch(true) or if/else
@@ -534,7 +536,7 @@ switch (true) {
 }
 ```
 
-#### destructuring
+##### destructuring
 
 ```typescript
 const { x, y } = point;
@@ -542,7 +544,7 @@ const [a, b] = [1, 2];
 const { action, ...rest } = cmd;
 ```
 
-#### exhaustiveness
+##### exhaustiveness
 
 ```typescript
 type Command = { kind: "move"; x: number; y: number } | { kind: "stop" };
@@ -559,9 +561,9 @@ function handle(cmd: Command): string {
 }
 ```
 
-### for
+#### for
 
-#### basic
+##### basic
 
 ```typescript
 for (const item of items) {
@@ -569,7 +571,7 @@ for (const item of items) {
 }
 ```
 
-#### with index
+##### with index
 
 ```typescript
 for (const [i, item] of items.entries()) {
@@ -577,7 +579,7 @@ for (const [i, item] of items.entries()) {
 }
 ```
 
-#### range loop
+##### range loop
 
 ```typescript
 for (let i = 0; i < 10; i++) {
@@ -585,7 +587,7 @@ for (let i = 0; i < 10; i++) {
 }
 ```
 
-#### break & continue
+##### break & continue
 
 ```typescript
 for (const x of items) {
@@ -595,7 +597,7 @@ for (const x of items) {
 }
 ```
 
-#### for else
+##### for else
 
 ```typescript
 // No for-else. Use some() or a flag:
@@ -603,9 +605,9 @@ const found = items.some(x => x === target);
 if (!found) console.log("not found");
 ```
 
-### while
+#### while
 
-#### basic
+##### basic
 
 ```typescript
 while (x > 0) {
@@ -614,7 +616,7 @@ while (x > 0) {
 }
 ```
 
-#### break & continue
+##### break & continue
 
 ```typescript
 while (true) {
@@ -625,7 +627,7 @@ while (true) {
 }
 ```
 
-#### do while
+##### do while
 
 ```typescript
 do {
@@ -634,9 +636,9 @@ do {
 } while (x > 0);
 ```
 
-### Exception
+#### Exception
 
-#### try / except
+##### try / except
 
 ```typescript
 try {
@@ -646,7 +648,7 @@ try {
 }
 ```
 
-#### finally
+##### finally
 
 ```typescript
 try {
@@ -656,7 +658,7 @@ try {
 }
 ```
 
-#### else
+##### else
 
 ```typescript
 // No try-else; run the success path after the try
@@ -668,14 +670,14 @@ try {
 }
 ```
 
-#### raise
+##### raise
 
 ```typescript
 throw new Error("invalid value");
 throw new TypeError("wrong type");
 ```
 
-#### custom exception
+##### custom exception
 
 ```typescript
 class MyError extends Error {
@@ -685,7 +687,7 @@ class MyError extends Error {
 throw new MyError("something went wrong");
 ```
 
-#### context manager
+##### context manager
 
 ```typescript
 // try/finally, or using for disposable resources
@@ -697,11 +699,11 @@ try {
 }
 ```
 
-## Functions
+### Functions
 
-### Function
+#### Function
 
-#### definition
+##### definition
 
 ```typescript
 function greet(name: string): string {
@@ -709,7 +711,7 @@ function greet(name: string): string {
 }
 ```
 
-#### default parameters
+##### default parameters
 
 ```typescript
 function greet(name: string, greeting = "Hello"): string {
@@ -717,7 +719,7 @@ function greet(name: string, greeting = "Hello"): string {
 }
 ```
 
-#### overloading
+##### overloading
 
 ```typescript
 function stringify(arg: number): string;
@@ -727,7 +729,7 @@ function stringify(arg: number | string): string {
 }
 ```
 
-#### varargs
+##### varargs
 
 ```typescript
 function sumAll(...args: number[]): number {
@@ -736,7 +738,7 @@ function sumAll(...args: number[]): number {
 sumAll(1, 2, 3);
 ```
 
-#### keyword arguments
+##### keyword arguments
 
 ```typescript
 // Object destructuring gives keyword-style arguments
@@ -746,7 +748,7 @@ function configure({ host = "localhost", port = 8080, debug = false } = {}) {
 configure({ host: "example.com", port: 3000, debug: true });
 ```
 
-#### return
+##### return
 
 ```typescript
 function divide(a: number, b: number): number | null {
@@ -755,23 +757,23 @@ function divide(a: number, b: number): number | null {
 }
 ```
 
-#### callable check
+##### callable check
 
 ```typescript
 typeof greet === "function"   // true
 typeof 42 === "function"      // false
 ```
 
-### Lambda
+#### Lambda
 
-#### basic
+##### basic
 
 ```typescript
 const square = (x: number) => x * x;
 const add = (a: number, b: number) => a + b;
 ```
 
-#### as argument
+##### as argument
 
 ```typescript
 nums.map(x => x * 2);
@@ -779,7 +781,7 @@ nums.filter(x => x > 2);
 nums.sort((a, b) => a - b);
 ```
 
-#### receiver
+##### receiver
 
 ```typescript
 // Arrow functions capture this lexically; methods bind their receiver
@@ -790,11 +792,12 @@ const obj = {
 };
 ```
 
-## Classes
+## Classes & Interfaces
+### Classes
 
-### Class
+#### Class
 
-#### definition
+##### definition
 
 ```typescript
 class Dog {
@@ -802,7 +805,7 @@ class Dog {
 }
 ```
 
-#### constructor
+##### constructor
 
 ```typescript
 class Dog {
@@ -810,13 +813,13 @@ class Dog {
 }
 ```
 
-#### instantiation
+##### instantiation
 
 ```typescript
 const dog = new Dog("Fido");
 ```
 
-#### attributes
+##### attributes
 
 ```typescript
 class Dog {
@@ -825,7 +828,7 @@ class Dog {
 }
 ```
 
-#### method
+##### method
 
 ```typescript
 class Dog {
@@ -835,14 +838,14 @@ class Dog {
 }
 ```
 
-#### inheritance
+##### inheritance
 
 ```typescript
 class Animal { }
 class Dog extends Animal { }
 ```
 
-#### multiple inheritance
+##### multiple inheritance
 
 ```typescript
 interface X { x(): void; }
@@ -854,7 +857,7 @@ class C implements X, Y {
 // No multiple class inheritance — use mixins to share behavior
 ```
 
-#### override
+##### override
 
 ```typescript
 class Animal {
@@ -865,7 +868,7 @@ class Dog extends Animal {
 }
 ```
 
-#### super
+##### super
 
 ```typescript
 class Dog extends Animal {
@@ -875,7 +878,7 @@ class Dog extends Animal {
 }
 ```
 
-#### class method
+##### class method
 
 ```typescript
 class Dog {
@@ -885,7 +888,7 @@ class Dog {
 }
 ```
 
-#### static method
+##### static method
 
 ```typescript
 class Dog {
@@ -895,7 +898,7 @@ class Dog {
 }
 ```
 
-#### abstract
+##### abstract
 
 ```typescript
 abstract class Animal {
@@ -903,7 +906,7 @@ abstract class Animal {
 }
 ```
 
-#### protocol / interface
+##### protocol / interface
 
 ```typescript
 interface Speaker {
@@ -917,7 +920,7 @@ class Dog implements Speaker {
 function makeSound(s: Speaker): string { return s.speak(); }
 ```
 
-#### data class
+##### data class
 
 ```typescript
 // No data class — use an interface + object, or Object.freeze
@@ -925,7 +928,7 @@ interface Dog { name: string; age: number; }
 const dog: Dog = Object.freeze({ name: "Fido", age: 3 });
 ```
 
-#### equality
+##### equality
 
 ```typescript
 // No operator overloading — implement an equals method
@@ -935,7 +938,7 @@ class Dog {
 }
 ```
 
-#### string representation
+##### string representation
 
 ```typescript
 class Dog {
@@ -944,7 +947,7 @@ class Dog {
 }
 ```
 
-#### sealed class
+##### sealed class
 
 ```typescript
 // No sealed keyword — model closed sets with union types
@@ -953,7 +956,7 @@ type Result =
   | { ok: false; error: string };
 ```
 
-#### private
+##### private
 
 ```typescript
 class Dog {
@@ -962,7 +965,7 @@ class Dog {
 }
 ```
 
-#### protected
+##### protected
 
 ```typescript
 class Animal {
@@ -975,7 +978,7 @@ class Dog extends Animal {
 }
 ```
 
-#### public
+##### public
 
 ```typescript
 class Dog {
@@ -983,10 +986,10 @@ class Dog {
 }
 ```
 
-### Interface & trait
+#### Interface & trait
 
 TypeScript uses `interface` and structural typing; there is no `trait` keyword — mixins and interfaces fill the role.
-#### definition
+##### definition
 
 ```typescript
 interface Speakable {
@@ -998,16 +1001,16 @@ class Dog implements Speakable {
 }
 ```
 
-#### default method
+##### default method
 
 ```typescript
 // Interfaces declare, classes implement; mixins add default behavior
 interface Speaker { speak(): string; }
 class Dog implements Speaker { speak() { return "Woof!"; } }
 ```
-### Enum
+#### Enum
 
-#### definition
+##### definition
 
 ```typescript
 enum Color {
@@ -1015,7 +1018,7 @@ enum Color {
 }
 ```
 
-#### auto value
+##### auto value
 
 ```typescript
 // enum entries auto-increment from 0
@@ -1023,7 +1026,7 @@ enum Color { Red, Green, Amber }
 Color.Amber   // 2
 ```
 
-#### access
+##### access
 
 ```typescript
 Color.Red
@@ -1031,19 +1034,19 @@ Color["Red"]
 Color[0]      // "Red" (reverse mapping)
 ```
 
-#### iteration
+##### iteration
 
 ```typescript
 Object.values(Color)
 ```
 
-#### lookup
+##### lookup
 
 ```typescript
 Color["Red"]   // Color.Red
 ```
 
-#### match
+##### match
 
 ```typescript
 switch (color) {
@@ -1053,7 +1056,7 @@ switch (color) {
 }
 ```
 
-#### enum with data
+##### enum with data
 
 ```typescript
 // enums hold no data — use a const object instead
@@ -1063,45 +1066,46 @@ const Planet = {
 } as const;
 ```
 
-## Collections
+## Collections & Iterators
+### Collections
 
-### List
+#### List
 
 Arrays are the default list.
 
-#### literal
+##### literal
 
 ```typescript
 const a = [1, 2, 3];
 ```
 
-#### size
+##### size
 
 ```typescript
 a.length
 ```
 
-#### lookup
+##### lookup
 
 ```typescript
 a[0]        // first element
 a.at(-1)    // last element
 ```
 
-#### update
+##### update
 
 ```typescript
 a[0] = 10;
 a.push(4);
 ```
 
-#### is element present
+##### is element present
 
 ```typescript
 a.includes(3)
 ```
 
-#### delete
+##### delete
 
 ```typescript
 a.splice(0, 1)           // by index
@@ -1109,149 +1113,149 @@ a.pop()                  // last element
 a.filter(x => x !== 3)   // by value
 ```
 
-#### merge
+##### merge
 
 ```typescript
 [...a, 4, 5]
 a.push(4, 5)
 ```
 
-#### slice
+##### slice
 
 ```typescript
 a.slice(1, 3)    // elements at index 1 and 2
 ```
 
-#### reversed
+##### reversed
 
 ```typescript
 a.toReversed()          // copy, reversed
 [...a].reverse()        // copy, reversed
 ```
 
-#### map
+##### map
 
 ```typescript
 a.map(x => x * 2)
 ```
 
-#### filter
+##### filter
 
 ```typescript
 a.filter(x => x > 0)
 ```
 
-### Dictionary
+#### Dictionary
 
 Objects and `Map` for key-value storage.
 
-#### literal
+##### literal
 
 ```typescript
 const d = { t: 1, f: 0 };
 const d = new Map([["t", 1], ["f", 0]]);
 ```
 
-#### size
+##### size
 
 ```typescript
 Object.keys(d).length
 d.size    // Map
 ```
 
-#### lookup
+##### lookup
 
 ```typescript
 d["t"]
 d.t
 ```
 
-#### update
+##### update
 
 ```typescript
 d["u"] = -1;
 d.u = -1;
 ```
 
-#### is key present
+##### is key present
 
 ```typescript
 "c" in d
 Object.hasOwn(d, "c")
 ```
 
-#### delete
+##### delete
 
 ```typescript
 delete d["t"];
 ```
 
-#### from array of pairs
+##### from array of pairs
 
 ```typescript
 Object.fromEntries([["t", 1], ["f", 0]])
 ```
 
-#### merge
+##### merge
 
 ```typescript
 { ...d, u: -1 }
 Object.assign(d, { u: -1 })
 ```
 
-#### invert
+##### invert
 
 ```typescript
 Object.fromEntries(Object.entries(d).map(([k, v]) => [v, k]))
 ```
 
-#### keys and values as arrays
+##### keys and values as arrays
 
 ```typescript
 Object.keys(d)
 Object.values(d)
 ```
 
-### Set
+#### Set
 
-#### literal
+##### literal
 
 ```typescript
 const s = new Set([1, 2, 3]);
 ```
 
-#### size
+##### size
 
 ```typescript
 s.size
 ```
 
-#### add
+##### add
 
 ```typescript
 s.add(4);
 ```
 
-#### is element present
+##### is element present
 
 ```typescript
 s.has(3)
 ```
 
-#### delete
+##### delete
 
 ```typescript
 s.delete(3)     // returns false if absent
 ```
 
-#### from array
+##### from array
 
 ```typescript
 const a = [1, 2, 3, 2];
 const s = new Set(a);   // Set {1, 2, 3}
 ```
 
-#### merge
+##### merge
 
 ```typescript
 new Set([...s, ...other])   // union
@@ -1260,11 +1264,11 @@ s.intersection(other)       // intersection
 s.difference(other)         // difference
 ```
 
-## Iterator and generator
+### Iterator and generator
 
-### Iterator
+#### Iterator
 
-#### chain
+##### chain
 
 ```typescript
 [...a, ...b]
@@ -1272,25 +1276,25 @@ s.difference(other)         // difference
 function* chain<T>(...arrs: T[][]) { for (const a of arrs) yield* a; }
 ```
 
-#### take
+##### take
 
 ```typescript
 arr.slice(0, 4)
 ```
 
-#### drop
+##### drop
 
 ```typescript
 arr.slice(3)
 ```
 
-#### head
+##### head
 
 ```typescript
 arr.slice(0, 3)
 ```
 
-#### takewhile
+##### takewhile
 
 ```typescript
 const out = [];
@@ -1300,7 +1304,7 @@ for (const x of [1, 2, 3, 1, 2]) {
 }
 ```
 
-#### dropwhile
+##### dropwhile
 
 ```typescript
 const t = [1, 2, 3, 1, 2];
@@ -1309,14 +1313,14 @@ while (i < t.length && t[i] < 3) i++;
 const out = t.slice(i);
 ```
 
-#### zip
+##### zip
 
 ```typescript
 const a = ["a", "b", "c"], b = ["1", "2", "3"];
 a.map((x, i) => [x, b[i]])
 ```
 
-#### enumerate
+##### enumerate
 
 ```typescript
 for (const [i, item] of ["a", "b", "c"].entries()) {
@@ -1324,13 +1328,13 @@ for (const [i, item] of ["a", "b", "c"].entries()) {
 }
 ```
 
-#### flatten
+##### flatten
 
 ```typescript
 [[1, 2], [3, 4]].flat()   // [1, 2, 3, 4]
 ```
 
-#### count
+##### count
 
 ```typescript
 function* count(start = 0, step = 1) {
@@ -1339,7 +1343,7 @@ function* count(start = 0, step = 1) {
 }
 ```
 
-#### cycle
+##### cycle
 
 ```typescript
 function* cycle<T>(arr: T[]) {
@@ -1348,7 +1352,7 @@ function* cycle<T>(arr: T[]) {
 }
 ```
 
-#### chunked
+##### chunked
 
 ```typescript
 const s = "ABCDEFG";
@@ -1356,7 +1360,7 @@ const chunks = [];
 for (let i = 0; i < s.length; i += 3) chunks.push(s.slice(i, i + 3));
 ```
 
-#### groupby
+##### groupby
 
 ```typescript
 const cities = [["NYC", "NY"], ["LA", "CA"], ["SF", "CA"], ["Buffalo", "NY"]];
@@ -1368,7 +1372,7 @@ cities.reduce((groups, c) => {
 }, {} as Record<string, string[]>);
 ```
 
-#### generator
+##### generator
 
 ```typescript
 function* fib() {
@@ -1534,4 +1538,5 @@ class Box<T> { constructor(public value: T) {} }
 ```typescript
 function f<T extends number>(x: T): T { return x; }
 ```
+
 
