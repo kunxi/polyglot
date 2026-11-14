@@ -1,46 +1,53 @@
-# Astro Starter Kit: Basics
+# Polyglot
+
+A side-by-side reference for comparing programming languages. Pick two languages on the home page and browse the same concepts rendered from a shared template.
+[See it live](https://polyglot.kunxi.org/).
+
+## Getting Started
+
+Requires [Node.js](https://nodejs.org) >= 22.12.0.
 
 ```sh
-npm create astro@latest -- --template basics
+npm install
+npm run dev
 ```
 
-> 🧑‍🚀 **Seasoned astronaut?** Delete this file. Have fun!
+Open http://localhost:4321.
 
-## 🚀 Project Structure
+## Development
 
-Inside of your Astro project, you'll see the following folders and files:
+| Command           | Action                                    |
+| ----------------- | ----------------------------------------- |
+| `npm run dev`     | Start the dev server at `localhost:4321`  |
+| `npm run build`   | Build the static site into `./dist`       |
+| `npm run preview` | Preview the production build locally      |
+| `npm test`        | Run the unit tests (Vitest)               |
+
+## How content works
+
+- `src/content/meta.md` is the canonical template. It defines every section as `h2` (category) → `h3` (topic) → `h4` (group) → `h5` (leaf).
+- Each language lives in `src/content/<lang>.md` and must only use sections that exist in `meta.md`. The build throws if a language defines an unknown section.
+- The comparison page (`/[lang1]/vs/[lang2]`) renders the whole template and pulls the matching content from both languages.
+
+## Project structure
 
 ```text
-/
+.
+├── docs/adrs/                        # Architecture decision records
 ├── public/
-│   └── favicon.svg
-├── src
-│   ├── assets
-│   │   └── astro.svg
-│   ├── components
-│   │   └── Welcome.astro
-│   ├── layouts
-│   │   └── Layout.astro
-│   └── pages
-│       └── index.astro
-└── package.json
+│   ├── logos/                        # Language logos (SVG)
+│   └── index.css                     # Global styles
+├── src/
+│   ├── content/                      # meta.md + one markdown file per language
+│   ├── layouts/                      # Layout.astro
+│   ├── lib/compare.ts                # Markdown parsing, validation, rendering
+│   └── pages/
+│       ├── index.astro               # Home (language picker)
+│       └── [lang1]/vs/[lang2]/index.astro
+└── tests/                            # Vitest tests + fixtures
 ```
 
-To learn more about the folder structure of an Astro project, refer to [our guide on project structure](https://docs.astro.build/en/basics/project-structure/).
+## Adding a language
 
-## 🧞 Commands
-
-All commands are run from the root of the project, from a terminal:
-
-| Command                   | Action                                           |
-| :------------------------ | :----------------------------------------------- |
-| `npm install`             | Installs dependencies                            |
-| `npm run dev`             | Starts local dev server at `localhost:4321`      |
-| `npm run build`           | Build your production site to `./dist/`          |
-| `npm run preview`         | Preview your build locally, before deploying     |
-| `npm run astro ...`       | Run CLI commands like `astro add`, `astro check` |
-| `npm run astro -- --help` | Get help using the Astro CLI                     |
-
-## 👀 Want to learn more?
-
-Feel free to check [our documentation](https://docs.astro.build) or jump into our [Discord server](https://astro.build/chat).
+1. Create `src/content/<lang>.md` following the sections in `meta.md`.
+2. Add its logo to `public/logos/<lang>.svg`.
