@@ -226,7 +226,42 @@ const toc = topics.map((t) => ({
     }
   </main>
 
+  <aside class="side-toc" aria-label="On this page">
+    <ul>
+      {toc.map((t) => (
+        <Fragment>
+          <li class="l2">
+            <a href={`#${slugify(t.heading)}`}>{t.heading}</a>
+          </li>
+          {t.subs.map((s) => (
+            <li class="l3">
+              <a href={`#${slugify(s)}`}>{s}</a>
+            </li>
+          ))}
+        </Fragment>
+      ))}
+    </ul>
+  </aside>
+
   <script is:inline>
     hljs.highlightAll();
+
+    const tocLinks = document.querySelectorAll(".side-toc a, .toc-dropdown a");
+    const sections = Array.from(tocLinks)
+      .map((l) => document.querySelector(l.getAttribute("href")))
+      .filter(Boolean);
+    let currentId = null;
+    const spy = new IntersectionObserver(
+      (entries) => {
+        entries.forEach((e) => {
+          if (e.isIntersecting) currentId = e.target.id;
+        });
+        tocLinks.forEach((l) =>
+          l.classList.toggle("active", l.getAttribute("href") === "#" + currentId)
+        );
+      },
+      { rootMargin: "0px 0px -75% 0px", threshold: 0 }
+    );
+    sections.forEach((s) => spy.observe(s));
   </script>
 </Layout>
