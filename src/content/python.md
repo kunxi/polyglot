@@ -1435,7 +1435,7 @@ list(islice(fib(), 10))
 # [0, 1, 1, 2, 3, 5, 8, 13, 21, 34]
 ```
 
-## Modules & Imports
+## Modules
 
 ### Import
 
@@ -1479,7 +1479,7 @@ pyproject.toml   # or requirements.txt
 pip install requests
 ```
 
-## Metaprogramming & Reflection
+## Metaprogramming
 
 ### Annotations
 
@@ -1527,7 +1527,7 @@ vars(obj)
 eval("1 + 2")   # 3
 ```
 
-## Concurrency & Async
+## Concurrency
 
 ### Threads & coroutines
 
@@ -1574,7 +1574,7 @@ with lock:
     ...
 ```
 
-## Generics & Templates
+## Generic
 
 ### Generic function
 

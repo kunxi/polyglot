@@ -1393,7 +1393,7 @@ Array.from({ length: 10 }, () => it.next().value);
 // [0, 1, 1, 2, 3, 5, 8, 13, 21, 34]
 ```
 
-## Modules & Imports
+## Modules
 
 ### Import
 
@@ -1438,7 +1438,7 @@ package.json
 npm install express   // or pnpm add express
 ```
 
-## Metaprogramming & Reflection
+## Metaprogramming
 
 ### Annotations
 
@@ -1481,7 +1481,7 @@ Object.getOwnPropertyNames(obj)
 eval("1 + 2")   // 3
 ```
 
-## Concurrency & Async
+## Concurrency
 
 ### Threads & coroutines
 
@@ -1518,7 +1518,7 @@ async function f() {
 // No built-in mutex — use Atomics or a lock library
 ```
 
-## Generics & Templates
+## Generic
 
 ### Generic function
 

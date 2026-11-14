@@ -1446,7 +1446,7 @@ std::generator<long long> fib() {
 // for (long long x : fib() | std::views::take(10)) { }
 ```
 
-## Modules & Imports
+## Modules
 
 ### Import
 
@@ -1492,7 +1492,7 @@ find_package(fmt REQUIRED)
 target_link_libraries(app PRIVATE fmt::fmt)
 ```
 
-## Metaprogramming & Reflection
+## Metaprogramming
 
 ### Annotations
 
@@ -1532,7 +1532,7 @@ typeid(x).name()   // compiler-specific name
 // No eval
 ```
 
-## Concurrency & Async
+## Concurrency
 
 ### Threads & coroutines
 
@@ -1569,7 +1569,7 @@ std::mutex m;
 std::lock_guard lock(m);
 ```
 
-## Generics & Templates
+## Generic
 
 ### Generic function
 

@@ -1444,7 +1444,7 @@ fib().take(10).toList()
 // [0, 1, 1, 2, 3, 5, 8, 13, 21, 34]
 ```
 
-## Modules & Imports
+## Modules
 
 ### Import
 
@@ -1491,7 +1491,7 @@ dependencies {
 }
 ```
 
-## Metaprogramming & Reflection
+## Metaprogramming
 
 ### Annotations
 
@@ -1534,7 +1534,7 @@ x::class.members
 // No eval — use the kotlin-scripting engine
 ```
 
-## Concurrency & Async
+## Concurrency
 
 ### Threads & coroutines
 
@@ -1575,7 +1575,7 @@ val m = Mutex()
 m.withLock { /* ... */ }
 ```
 
-## Generics & Templates
+## Generic
 
 ### Generic function
 

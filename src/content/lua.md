@@ -1437,7 +1437,7 @@ for i = 1, 10 do print(it()) end
 -- 0, 1, 1, 2, 3, 5, 8, 13, 21, 34
 ```
 
-## Modules & Imports
+## Modules
 
 ### Import
 
@@ -1481,7 +1481,7 @@ return { public_fn = public_fn }   -- module returns a table
 luarocks install luasocket
 ```
 
-## Metaprogramming & Reflection
+## Metaprogramming
 
 ### Annotations
 
@@ -1521,7 +1521,7 @@ for k, v in pairs(t) do print(k, v) end
 load("return 1 + 2")()   -- 3
 ```
 
-## Concurrency & Async
+## Concurrency
 
 ### Threads & coroutines
 
@@ -1556,7 +1556,7 @@ coroutine.resume(co)
 -- No threads — single OS thread (use Lua Lanes for parallelism)
 ```
 
-## Generics & Templates
+## Generic
 
 ### Generic function
 

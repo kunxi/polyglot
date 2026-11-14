@@ -1452,7 +1452,7 @@ Array(fib.prefix(10))
 // [0, 1, 1, 2, 3, 5, 8, 13, 21, 34]
 ```
 
-## Modules & Imports
+## Modules
 
 ### Import
 
@@ -1499,7 +1499,7 @@ dependencies: [
 ]
 ```
 
-## Metaprogramming & Reflection
+## Metaprogramming
 
 ### Annotations
 
@@ -1540,7 +1540,7 @@ Mirror(reflecting: obj).children
 // No eval
 ```
 
-## Concurrency & Async
+## Concurrency
 
 ### Threads & coroutines
 
@@ -1577,7 +1577,7 @@ func f() async -> Int {
 // No built-in mutex — use actors or NSLock
 ```
 
-## Generics & Templates
+## Generic
 
 ### Generic function
 

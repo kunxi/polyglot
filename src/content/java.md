@@ -1413,7 +1413,7 @@ Stream.iterate(new long[]{0, 1}, p -> new long[]{p[1], p[0] + p[1]})
     .toList();   // [0, 1, 1, 2, 3, 5, 8, 13, 21, 34]
 ```
 
-## Modules & Imports
+## Modules
 
 ### Import
 
@@ -1461,7 +1461,7 @@ pom.xml   // Maven, or build.gradle
 </dependency>
 ```
 
-## Metaprogramming & Reflection
+## Metaprogramming
 
 ### Annotations
 
@@ -1504,7 +1504,7 @@ x.getClass().getDeclaredMethods()
 // No eval — use the Java scripting API
 ```
 
-## Concurrency & Async
+## Concurrency
 
 ### Threads & coroutines
 
@@ -1541,7 +1541,7 @@ var v = q.take();
 synchronized (lock) { /* ... */ }
 ```
 
-## Generics & Templates
+## Generic
 
 ### Generic function
 

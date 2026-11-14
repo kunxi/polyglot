@@ -1501,7 +1501,7 @@ fib().take(10).collect::<Vec<_>>()
 // [0, 1, 1, 2, 3, 5, 8, 13, 21, 34]
 ```
 
-## Modules & Imports
+## Modules
 
 ### Import
 
@@ -1546,7 +1546,7 @@ Cargo.toml
 cargo add serde
 ```
 
-## Metaprogramming & Reflection
+## Metaprogramming
 
 ### Annotations
 
@@ -1590,7 +1590,7 @@ sq!(4)   // 16
 // No eval
 ```
 
-## Concurrency & Async
+## Concurrency
 
 ### Threads & coroutines
 
@@ -1629,7 +1629,7 @@ let mut g = m.lock().unwrap();
 *g += 1;
 ```
 
-## Generics & Templates
+## Generic
 
 ### Generic function
 

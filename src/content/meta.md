@@ -236,7 +236,7 @@ Iterators traverse a sequence; generators produce values lazily. See [Iterator](
 ##### groupby
 ##### generator
 
-## Modules & Imports
+## Modules
 
 Modules organize code into reusable units; a package manager resolves and installs dependencies. See [Modular programming](https://en.wikipedia.org/wiki/Modular_programming).
 
@@ -250,7 +250,7 @@ Modules organize code into reusable units; a package manager resolves and instal
 #### manifest
 #### install
 
-## Metaprogramming & Reflection
+## Metaprogramming
 
 Code that inspects or generates code at compile time or runtime. See [Metaprogramming](https://en.wikipedia.org/wiki/Metaprogramming) and [Reflective programming](https://en.wikipedia.org/wiki/Reflective_programming).
 
@@ -264,7 +264,7 @@ Code that inspects or generates code at compile time or runtime. See [Metaprogra
 ### Eval
 #### eval
 
-## Concurrency & Async
+## Concurrency
 
 Code that runs concurrently: threads and coroutines, async/await, channels for message passing, and locks for shared state. See [Concurrency (computer science)](https://en.wikipedia.org/wiki/Concurrency_(computer_science)).
 
@@ -277,7 +277,7 @@ Code that runs concurrently: threads and coroutines, async/await, channels for m
 ### Mutex / lock
 #### mutex
 
-## Generics & Templates
+## Generic
 
 Code parameterized over types. See [Generic programming](https://en.wikipedia.org/wiki/Generic_programming).
 

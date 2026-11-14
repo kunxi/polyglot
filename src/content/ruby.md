@@ -1381,7 +1381,7 @@ fib.first(10)
 # [0, 1, 1, 2, 3, 5, 8, 13, 21, 34]
 ```
 
-## Modules & Imports
+## Modules
 
 ### Import
 
@@ -1425,7 +1425,7 @@ Gemfile   # Bundler
 bundle add json   # or: gem install json
 ```
 
-## Metaprogramming & Reflection
+## Metaprogramming
 
 ### Annotations
 
@@ -1466,7 +1466,7 @@ obj.instance_variables
 eval("1 + 2")   # 3
 ```
 
-## Concurrency & Async
+## Concurrency
 
 ### Threads & coroutines
 
@@ -1505,7 +1505,7 @@ m = Mutex.new
 m.synchronize { ... }
 ```
 
-## Generics & Templates
+## Generic
 
 ### Generic function
 
