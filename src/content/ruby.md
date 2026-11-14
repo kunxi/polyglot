@@ -2,12 +2,13 @@
 
 Ruby is a dynamically typed language with a generational garbage collector. It offers native threads and fibers, and is known for rich metaprogramming through modules and mixins.
 
-## Primitive types
+## Types
+### Primitive types
 
-Ruby's `Integer` is arbitrary precision (no fixed-width types) and `Float` is an IEEE-754 double; there are no signed/unsigned keywords, and padding/alignment is handled by the VM.
-### Number
+Ruby's `Integer` is arbitrary precision (no fixed-width types) and `Float` is an IEEE-754 double; there are no signed/unsigned keywords, and padding/alignment is handled by the VM. Docs: [Ruby literals](https://docs.ruby-lang.org/en/master/syntax/literals_rdoc.html).
+#### Number
 
-#### integer
+##### integer
 
 ```ruby
 a = 42
@@ -15,7 +16,7 @@ b = -7
 c = "42".to_i
 ```
 
-#### integer overflow
+##### integer overflow
 
 ```ruby
 # Ruby integers are arbitrary precision — no overflow
@@ -24,7 +25,7 @@ big = 2 ** 1000
 1e308 * 10   # Infinity
 ```
 
-#### float
+##### float
 
 ```ruby
 x = 3.14
@@ -32,7 +33,7 @@ y = 1.5e-3
 z = "3.14".to_f
 ```
 
-#### arithmetic
+##### arithmetic
 
 ```ruby
 a + b      # addition
@@ -44,7 +45,7 @@ a % b      # modulo
 a ** b     # exponentiation
 ```
 
-#### min max abs
+##### min max abs
 
 ```ruby
 [a, b].min
@@ -53,52 +54,52 @@ a ** b     # exponentiation
 a.clamp(0, 10)
 ```
 
-#### random
+##### random
 
 ```ruby
 rand(1..6)
 rand        # 0.0..1.0
 ```
 
-### Integer types
+#### Integer types
 
-#### short
+##### short
 
 ```ruby
 # No short — Integer is arbitrary precision
 ```
 
-#### long
+##### long
 
 ```ruby
 # No long — Integer is arbitrary precision
 ```
 
-#### long long
+##### long long
 
 ```ruby
 # No long long — Integer is arbitrary precision
 ```
 
-#### unsigned
+##### unsigned
 
 ```ruby
 # No unsigned types
 ```
 
-#### signed
+##### signed
 
 ```ruby
 i = -42   # signed by nature
 ```
 
-#### struct
+##### struct
 
 ```ruby
 [1, 2].pack("CI")   # pack 8-bit + native unsigned int
 ```
 
-#### divmod
+##### divmod
 
 ```ruby
 q, r = a.divmod(b)
@@ -106,7 +107,7 @@ q = a / b
 r = a % b
 ```
 
-#### rounding
+##### rounding
 
 ```ruby
 3.14.round          # 3
@@ -115,7 +116,7 @@ r = a % b
 format("%.1f", 3.14) # "3.1"
 ```
 
-#### range
+##### range
 
 ```ruby
 (0..4).to_a          # [0, 1, 2, 3, 4] (inclusive)
@@ -124,7 +125,7 @@ format("%.1f", 3.14) # "3.1"
 (0..8).step(2).to_a  # [0, 2, 4, 6, 8]
 ```
 
-#### descending range
+##### descending range
 
 ```ruby
 (0..4).to_a.reverse     # [4, 3, 2, 1, 0]
@@ -132,34 +133,40 @@ format("%.1f", 3.14) # "3.1"
 10.step(0, -2).to_a     # [10, 8, 6, 4, 2]
 ```
 
-### Boolean
+#### Boolean
 
-#### literal
+##### literal
 
 ```ruby
 t = true
 f = false
 ```
 
-#### negation
+##### negation
 
 ```ruby
 !true           # false
 ```
 
-#### logical and
+##### logical and
 
 ```ruby
 true && false   # false
 ```
 
-#### logical or
+##### logical or
 
 ```ruby
 true || false   # true
 ```
 
-#### truthy and falsy values
+##### xor
+
+```ruby
+true ^ false   # true
+```
+
+##### truthy and falsy values
 
 ```ruby
 # Only false and nil are falsy; 0 and "" are truthy
@@ -168,7 +175,7 @@ true || false   # true
 !arr.empty?          # explicit check for array
 ```
 
-#### conversion
+##### conversion
 
 ```ruby
 1 != 0         # to Boolean
@@ -176,17 +183,17 @@ true.to_s      # "true"
 !!1            # true
 ```
 
-### None / null
+#### Nullability
 
 Ruby uses `nil` for absence.
 
-#### literal
+##### literal
 
 ```ruby
 x = nil
 ```
 
-#### null check
+##### null check
 
 ```ruby
 if x.nil?
@@ -197,7 +204,7 @@ if x
 end
 ```
 
-#### optional access
+##### optional access
 
 ```ruby
 x&.length          # safe navigation
@@ -205,11 +212,11 @@ x&.upcase
 x || 0             # provide default
 ```
 
-## Composite types
+### Composite types
 
-### String
+#### String
 
-#### literal
+##### literal
 
 ```ruby
 s = "hello"
@@ -217,21 +224,21 @@ s = 'hello'
 s = "multiline\nstring"
 ```
 
-#### length
+##### length
 
 ```ruby
 s.length
 s.size
 ```
 
-#### access
+##### access
 
 ```ruby
 s[0]     # first char
 s[-1]    # last char
 ```
 
-#### slice
+##### slice
 
 ```ruby
 s[1, 2]   # 2 chars from index 1
@@ -239,7 +246,7 @@ s[1..2]   # chars 1..2 inclusive
 s[2..]    # from index 2 to end
 ```
 
-#### concatenation
+##### concatenation
 
 ```ruby
 s + " world"
@@ -247,14 +254,14 @@ s << " world"
 ["hello", "world"].join(" ")
 ```
 
-#### interpolation
+##### interpolation
 
 ```ruby
 "Hello, #{name}"
 "Hello, #{name.length}"
 ```
 
-#### search
+##### search
 
 ```ruby
 s.include?("hello")
@@ -263,14 +270,14 @@ s.start_with?("he")
 s.end_with?("lo")
 ```
 
-#### split and join
+##### split and join
 
 ```ruby
 s.split(",")
 ["a", "b", "c"].join("-")
 ```
 
-#### trim
+##### trim
 
 ```ruby
 s.strip
@@ -278,7 +285,7 @@ s.lstrip
 s.rstrip
 ```
 
-#### case
+##### case
 
 ```ruby
 s.upcase
@@ -286,14 +293,14 @@ s.downcase
 s.capitalize
 ```
 
-#### replace
+##### replace
 
 ```ruby
 s.gsub("old", "new")   # all occurrences
 s.sub("old", "new")    # first occurrence only
 ```
 
-#### justify
+##### justify
 
 ```ruby
 s.rjust(10)    # right justify
@@ -301,7 +308,7 @@ s.ljust(10)    # left justify
 s.center(10)   # center
 ```
 
-#### format
+##### format
 
 ```ruby
 "Hello, %s!" % name
@@ -310,8 +317,8 @@ format("Hello, %s!", name)
 "%05d" % 42        # "00042"
 ```
 
-### Complex
-#### operations
+#### Complex
+##### operations
 
 ```ruby
 z = Complex(1, 2)
@@ -324,49 +331,49 @@ z + c
 z * c
 ```
 
-### Date
-#### now
+#### Date
+##### now
 
 ```ruby
 require "date"
 Date.today   # => #<Date: 2026-10-13>
 ```
-#### format
+##### format
 
 ```ruby
 Date.today.strftime("%Y-%m-%d")
 ```
-### Datetime
-#### now
+#### Datetime
+##### now
 
 ```ruby
 require "date"
 DateTime.now
 ```
-#### format
+##### format
 
 ```ruby
 DateTime.now.strftime("%Y-%m-%d %H:%M:%S")
 ```
-### Decimal
-#### literal
+#### Decimal
+##### literal
 
 ```ruby
 require "bigdecimal"
 BigDecimal("0.1") + BigDecimal("0.2")
 ```
-#### precision
+##### precision
 
 ```ruby
 BigDecimal("1").div(BigDecimal("7"), 6)
 ```
-## Type system
+### Type system
 
-### type hints
+#### type hints
 
 Ruby is dynamically typed; types are documented by convention.
 
-#### variable
+##### variable
 
 ```ruby
 name = "Alice"     # String
@@ -374,13 +381,13 @@ age = 30           # Integer
 scores = [1, 2, 3] # Array
 ```
 
-#### nullable
+##### nullable
 
 ```ruby
 name = nil   # any variable may hold nil
 ```
 
-#### function
+##### function
 
 ```ruby
 def greet(name)
@@ -393,7 +400,7 @@ def divide(a, b)
 end
 ```
 
-#### list of elements
+##### list of elements
 
 ```ruby
 names = ["Alice", "Bob"]
@@ -401,14 +408,14 @@ scores = [1, 2, 3]
 matrix = [[1, 2], [3, 4]]
 ```
 
-#### dict
+##### dict
 
 ```ruby
 ages = { "Alice" => 30, "Bob" => 25 }
 ```
 
-### Type operations
-#### type alias
+#### Type operations
+##### type alias
 
 ```ruby
 # Ruby has no type aliases — document with comments
@@ -416,28 +423,27 @@ ages = { "Alice" => 30, "Bob" => 25 }
 v = [1.0, 2.0]
 ```
 
-#### union
+##### union
 
 ```ruby
 # No static union types — any object works (duck typing)
 ```
-#### intersection
+##### intersection
 
 ```ruby
 # No intersection types
 ```
-#### literal types
+##### literal types
 
 ```ruby
 # No literal types
 ```
-## Memory model
+### Memory model
 
-Ruby stores everything as an object; names are references to objects. Immediate values like integers and symbols are immutable, while arrays and hashes are shared by reference. There are no pointers, and memory is garbage collected.
+Ruby stores everything as an object; names are references to objects. Immediate values like integers and symbols are immutable, while arrays and hashes are shared by reference. There are no pointers, and memory is garbage collected. Docs: [Ruby assignment](https://docs.ruby-lang.org/en/master/syntax/assignment_rdoc.html).
+#### Memory
 
-### Memory
-
-#### value vs reference
+##### value vs reference
 
 ```ruby
 a = 1
@@ -447,7 +453,7 @@ y = x            # same array
 y << 3           # x is also [1, 2, 3]
 ```
 
-#### pointer / reference
+##### pointer / reference
 
 ```ruby
 # No pointers — every name is a reference to an object
@@ -456,13 +462,13 @@ y = x
 y.equal?(x)      # true
 ```
 
-#### ownership / borrowing
+##### ownership / borrowing
 
 ```ruby
 # No ownership/borrowing — garbage collected
 ```
 
-#### copy vs move
+##### copy vs move
 
 ```ruby
 a = [1, 2, [3, 4]]
@@ -470,18 +476,19 @@ b = a.dup          # shallow copy
 c = Marshal.load(Marshal.dump(a))  # deep copy
 ```
 
-#### immutability
+##### immutability
 
 ```ruby
 arr = [1, 2, 3].freeze
 s = "hello".freeze
 ```
 
-## Control Flow
+## Statements
+### Control Flow
 
-### if
+#### if
 
-#### basic
+##### basic
 
 ```ruby
 if x > 0
@@ -493,13 +500,13 @@ else
 end
 ```
 
-#### ternary
+##### ternary
 
 ```ruby
 s = x > 0 ? "positive" : "not positive"
 ```
 
-#### as expression
+##### as expression
 
 ```ruby
 # if is an expression in Ruby
@@ -507,9 +514,9 @@ n = if ok then 1 else 0 end
 n = ok ? 1 : 0
 ```
 
-### match / when
+#### match / when
 
-#### basic
+##### basic
 
 ```ruby
 case x
@@ -519,7 +526,7 @@ else "other"
 end
 ```
 
-#### guard
+##### guard
 
 ```ruby
 case x
@@ -529,7 +536,7 @@ else "zero"
 end
 ```
 
-#### destructuring
+##### destructuring
 
 ```ruby
 case cmd
@@ -542,7 +549,7 @@ else
 end
 ```
 
-#### exhaustiveness
+##### exhaustiveness
 
 ```ruby
 # Ruby's case has no exhaustiveness checking — add an else
@@ -553,9 +560,9 @@ else "caution"
 end
 ```
 
-### for
+#### for
 
-#### basic
+##### basic
 
 ```ruby
 for item in items
@@ -564,21 +571,21 @@ end
 items.each { |item| puts item }
 ```
 
-#### with index
+##### with index
 
 ```ruby
 items.each_with_index { |item, i| puts "#{i}: #{item}" }
 items.each.with_index(1) { |item, i| puts "#{i}: #{item}" }
 ```
 
-#### range loop
+##### range loop
 
 ```ruby
 (0..9).each { |i| puts i }
 10.times { |i| puts i }
 ```
 
-#### break & continue
+##### break & continue
 
 ```ruby
 items.each do |x|
@@ -588,7 +595,7 @@ items.each do |x|
 end
 ```
 
-#### for else
+##### for else
 
 ```ruby
 # Ruby has no for-else. Use any? or a flag:
@@ -596,9 +603,9 @@ found = items.any? { |x| x == target }
 puts "not found" unless found
 ```
 
-### while
+#### while
 
-#### basic
+##### basic
 
 ```ruby
 while x > 0
@@ -607,7 +614,7 @@ while x > 0
 end
 ```
 
-#### break & continue
+##### break & continue
 
 ```ruby
 loop do
@@ -618,7 +625,7 @@ loop do
 end
 ```
 
-#### do while
+##### do while
 
 ```ruby
 begin
@@ -626,9 +633,9 @@ begin
 end while condition(x)
 ```
 
-### Exception
+#### Exception
 
-#### try / except
+##### try / except
 
 ```ruby
 begin
@@ -640,7 +647,7 @@ rescue => e
 end
 ```
 
-#### finally
+##### finally
 
 ```ruby
 begin
@@ -651,7 +658,7 @@ ensure
 end
 ```
 
-#### else
+##### else
 
 ```ruby
 begin
@@ -663,14 +670,14 @@ else
 end
 ```
 
-#### raise
+##### raise
 
 ```ruby
 raise "invalid value"
 raise ArgumentError, "invalid value"
 ```
 
-#### custom exception
+##### custom exception
 
 ```ruby
 class MyError < StandardError; end
@@ -678,7 +685,7 @@ class MyError < StandardError; end
 raise MyError, "something went wrong"
 ```
 
-#### context manager
+##### context manager
 
 ```ruby
 File.open("file.txt") do |f|
@@ -687,11 +694,11 @@ end
 # file auto-closed by the block
 ```
 
-## Functions
+### Functions
 
-### Function
+#### Function
 
-#### definition
+##### definition
 
 ```ruby
 def greet(name)
@@ -699,7 +706,7 @@ def greet(name)
 end
 ```
 
-#### default parameters
+##### default parameters
 
 ```ruby
 def greet(name, greeting = "Hello")
@@ -707,7 +714,7 @@ def greet(name, greeting = "Hello")
 end
 ```
 
-#### overloading
+##### overloading
 
 ```ruby
 # No overloading by signature — dispatch on type manually
@@ -716,7 +723,7 @@ def stringify(arg)
 end
 ```
 
-#### varargs
+##### varargs
 
 ```ruby
 def sum_all(*args)
@@ -725,7 +732,7 @@ end
 sum_all(1, 2, 3)
 ```
 
-#### keyword arguments
+##### keyword arguments
 
 ```ruby
 def configure(host: "localhost", port: 8080, debug: false)
@@ -734,7 +741,7 @@ end
 configure(host: "example.com", port: 3000, debug: true)
 ```
 
-#### return
+##### return
 
 ```ruby
 def divide(a, b)
@@ -743,7 +750,7 @@ def divide(a, b)
 end
 ```
 
-#### callable check
+##### callable check
 
 ```ruby
 greet.respond_to?(:call)   # true for lambdas/procs
@@ -751,9 +758,9 @@ greet.is_a?(Proc)
 42.respond_to?(:call)      # false
 ```
 
-### Lambda
+#### Lambda
 
-#### basic
+##### basic
 
 ```ruby
 square = ->(x) { x * x }
@@ -761,7 +768,7 @@ add = ->(a, b) { a + b }
 square = lambda { |x| x * x }
 ```
 
-#### as argument
+##### as argument
 
 ```ruby
 nums.map { |x| x * 2 }
@@ -769,7 +776,7 @@ nums.select { |x| x > 2 }
 nums.sort_by { |x| -x }
 ```
 
-#### receiver
+##### receiver
 
 ```ruby
 # Blocks and lambdas capture self from the enclosing scope
@@ -780,18 +787,19 @@ end
 Builder.new.append("Hello").append(" ").append("World")
 ```
 
-## Classes
+## Classes & Interfaces
+### Classes
 
-### Class
+#### Class
 
-#### definition
+##### definition
 
 ```ruby
 class Dog
 end
 ```
 
-#### constructor
+##### constructor
 
 ```ruby
 class Dog
@@ -801,13 +809,13 @@ class Dog
 end
 ```
 
-#### instantiation
+##### instantiation
 
 ```ruby
 dog = Dog.new("Fido")
 ```
 
-#### attributes
+##### attributes
 
 ```ruby
 class Dog
@@ -817,7 +825,7 @@ class Dog
 end
 ```
 
-#### method
+##### method
 
 ```ruby
 class Dog
@@ -827,7 +835,7 @@ class Dog
 end
 ```
 
-#### inheritance
+##### inheritance
 
 ```ruby
 class Animal
@@ -837,7 +845,7 @@ class Dog < Animal
 end
 ```
 
-#### multiple inheritance
+##### multiple inheritance
 
 ```ruby
 module A
@@ -853,7 +861,7 @@ end
 C.ancestors   # [C, B, A, Object, ...]
 ```
 
-#### override
+##### override
 
 ```ruby
 class Dog < Animal
@@ -863,7 +871,7 @@ class Dog < Animal
 end
 ```
 
-#### super
+##### super
 
 ```ruby
 class Dog < Animal
@@ -873,7 +881,7 @@ class Dog < Animal
 end
 ```
 
-#### class method
+##### class method
 
 ```ruby
 class Dog
@@ -883,7 +891,7 @@ class Dog
 end
 ```
 
-#### static method
+##### static method
 
 ```ruby
 class Dog
@@ -893,7 +901,7 @@ class Dog
 end
 ```
 
-#### abstract
+##### abstract
 
 ```ruby
 class Animal
@@ -903,7 +911,7 @@ class Animal
 end
 ```
 
-#### protocol / interface
+##### protocol / interface
 
 ```ruby
 # Duck typing: an object qualifies by responding to the methods
@@ -912,14 +920,14 @@ def make_sound(s)
 end
 ```
 
-#### data class
+##### data class
 
 ```ruby
 Dog = Struct.new(:name, :age)
 Dog = Data.define(:name, :age)   # Ruby 3.2+
 ```
 
-#### equality
+##### equality
 
 ```ruby
 class Dog
@@ -931,7 +939,7 @@ class Dog
 end
 ```
 
-#### string representation
+##### string representation
 
 ```ruby
 class Dog
@@ -941,14 +949,14 @@ class Dog
 end
 ```
 
-#### sealed class
+##### sealed class
 
 ```ruby
 # Ruby has no sealed classes — document the closed set
 Result = Data.define(:ok, :value)
 ```
 
-#### private
+##### private
 
 ```ruby
 class Dog
@@ -960,7 +968,7 @@ class Dog
 end
 ```
 
-#### protected
+##### protected
 
 ```ruby
 class Animal
@@ -970,7 +978,7 @@ class Animal
 end
 ```
 
-#### public
+##### public
 
 ```ruby
 class Dog
@@ -980,10 +988,10 @@ class Dog
 end
 ```
 
-### Interface & trait
+#### Interface & trait
 
 Ruby has no `interface` or `trait` keyword — modules and mixins provide shared and default behavior.
-#### definition
+##### definition
 
 ```ruby
 # Duck typing — any object with speak() satisfies the interface
@@ -992,16 +1000,16 @@ module Speakable
 end
 ```
 
-#### default method
+##### default method
 
 ```ruby
 module Speaker
   def greet = speak   # default method via module
 end
 ```
-### Enum
+#### Enum
 
-#### definition
+##### definition
 
 ```ruby
 # Ruby has no enum — use a module of constants or a Hash
@@ -1012,7 +1020,7 @@ module Color
 end
 ```
 
-#### auto value
+##### auto value
 
 ```ruby
 # An array of symbols gives automatic values (the index)
@@ -1020,27 +1028,27 @@ COLORS = %i[red green amber]
 COLORS.index(:amber)   # 2
 ```
 
-#### access
+##### access
 
 ```ruby
 Color::RED
 COLORS[0]   # :red
 ```
 
-#### iteration
+##### iteration
 
 ```ruby
 COLORS.each { |c| puts c }
 ```
 
-#### lookup
+##### lookup
 
 ```ruby
 NAME_TO_COLOR = { "RED" => Color::RED, "GREEN" => Color::GREEN, "AMBER" => Color::AMBER }
 NAME_TO_COLOR["RED"]
 ```
 
-#### match
+##### match
 
 ```ruby
 case color
@@ -1050,7 +1058,7 @@ else "caution"
 end
 ```
 
-#### enum with data
+##### enum with data
 
 ```ruby
 PLANETS = {
@@ -1059,26 +1067,27 @@ PLANETS = {
 }
 ```
 
-## Collections
+## Collections & Iterators
+### Collections
 
-### List
+#### List
 
 Arrays are the default list.
 
-#### literal
+##### literal
 
 ```ruby
 a = [1, 2, 3]
 ```
 
-#### size
+##### size
 
 ```ruby
 a.size
 a.length
 ```
 
-#### lookup
+##### lookup
 
 ```ruby
 a[0]       # first element
@@ -1087,7 +1096,7 @@ a.first
 a.last
 ```
 
-#### update
+##### update
 
 ```ruby
 a[0] = 10
@@ -1095,13 +1104,13 @@ a << 4
 a.push(4)
 ```
 
-#### is element present
+##### is element present
 
 ```ruby
 a.include?(3)
 ```
 
-#### delete
+##### delete
 
 ```ruby
 a.delete_at(0)   # by index
@@ -1109,155 +1118,155 @@ a.pop            # last element
 a.delete(3)      # by value
 ```
 
-#### merge
+##### merge
 
 ```ruby
 a + [4, 5]
 a.concat([4, 5])
 ```
 
-#### slice
+##### slice
 
 ```ruby
 a[1, 2]     # elements at index 1 and 2
 a[1..2]     # inclusive range
 ```
 
-#### reversed
+##### reversed
 
 ```ruby
 a.reverse
 ```
 
-#### map
+##### map
 
 ```ruby
 a.map { |x| x * 2 }
 ```
 
-#### filter
+##### filter
 
 ```ruby
 a.select { |x| x > 0 }
 ```
 
-### Dictionary
+#### Dictionary
 
 `Hash` for key-value storage.
 
-#### literal
+##### literal
 
 ```ruby
 d = { t: 1, f: 0 }
 d = { "t" => 1, "f" => 0 }
 ```
 
-#### size
+##### size
 
 ```ruby
 d.size
 ```
 
-#### lookup
+##### lookup
 
 ```ruby
 d[:t]           # nil if absent
 d.fetch(:t)     # raises KeyError if absent
 ```
 
-#### update
+##### update
 
 ```ruby
 d[:u] = -1
 d.store(:u, -1)
 ```
 
-#### is key present
+##### is key present
 
 ```ruby
 d.key?(:c)
 d.has_key?(:c)
 ```
 
-#### delete
+##### delete
 
 ```ruby
 v = d.delete(:t)   # nil if absent
 ```
 
-#### from array of pairs
+##### from array of pairs
 
 ```ruby
 pairs = [["t", 1], ["f", 0]]
 d = pairs.to_h
 ```
 
-#### merge
+##### merge
 
 ```ruby
 d.merge(u: -1)
 d.merge!({ u: -1 })
 ```
 
-#### invert
+##### invert
 
 ```ruby
 d.invert
 ```
 
-#### keys and values as arrays
+##### keys and values as arrays
 
 ```ruby
 d.keys
 d.values
 ```
 
-### Set
+#### Set
 
 ```ruby
 require 'set'
 ```
 
-#### literal
+##### literal
 
 ```ruby
 s = Set[1, 2, 3]
 s = Set.new([1, 2, 3])
 ```
 
-#### size
+##### size
 
 ```ruby
 s.size
 ```
 
-#### add
+##### add
 
 ```ruby
 s.add(4)
 s << 4
 ```
 
-#### is element present
+##### is element present
 
 ```ruby
 s.include?(3)
 ```
 
-#### delete
+##### delete
 
 ```ruby
 s.delete(3)
 ```
 
-#### from array
+##### from array
 
 ```ruby
 a = [1, 2, 3, 2]
 s = Set.new(a)   # Set {1, 2, 3}
 ```
 
-#### merge
+##### merge
 
 ```ruby
 s | other         # union
@@ -1266,98 +1275,98 @@ s - other         # difference
 s.merge(other)    # in-place union
 ```
 
-## Iterator and generator
+### Iterator and generator
 
-### Iterator
+#### Iterator
 
-#### chain
+##### chain
 
 ```ruby
 a = ["a", "b", "c"] + ["d", "e"]
 ["a", "b", "c"].concat(["d", "e"])
 ```
 
-#### take
+##### take
 
 ```ruby
 arr.first(4)
 arr.take(4)
 ```
 
-#### drop
+##### drop
 
 ```ruby
 arr.drop(3)
 ```
 
-#### head
+##### head
 
 ```ruby
 arr.take(3)
 arr.first(3)
 ```
 
-#### takewhile
+##### takewhile
 
 ```ruby
 [1, 2, 3, 1, 2].take_while { |x| x < 3 }   # [1, 2]
 ```
 
-#### dropwhile
+##### dropwhile
 
 ```ruby
 [1, 2, 3, 1, 2].drop_while { |x| x < 3 }   # [3, 1, 2]
 ```
 
-#### zip
+##### zip
 
 ```ruby
 ["a", "b", "c"].zip(["1", "2", "3"])
 # [["a", "1"], ["b", "2"], ["c", "3"]]
 ```
 
-#### enumerate
+##### enumerate
 
 ```ruby
 ["a", "b", "c"].each_with_index { |item, i| puts "#{i + 1} #{item}" }
 ["a", "b", "c"].each.with_index(1) { |item, i| puts "#{i} #{item}" }
 ```
 
-#### flatten
+##### flatten
 
 ```ruby
 [[1, 2], [3, 4]].flatten   # [1, 2, 3, 4]
 ```
 
-#### count
+##### count
 
 ```ruby
 (10..).first(2)          # [10, 11]  (endless range)
 10.step(by: 2).first(3)  # [10, 12, 14]
 ```
 
-#### cycle
+##### cycle
 
 ```ruby
 ["red", "green", "blue"].cycle.first(5)
 # ["red", "green", "blue", "red", "green"]
 ```
 
-#### chunked
+##### chunked
 
 ```ruby
 "ABCDEFG".chars.each_slice(3).map(&:join)
 # ["ABC", "DEF", "G"]
 ```
 
-#### groupby
+##### groupby
 
 ```ruby
 cities = [["NYC", "NY"], ["LA", "CA"], ["SF", "CA"], ["Buffalo", "NY"]]
 cities.group_by { |name, state| state }
 ```
 
-#### generator
+##### generator
 
 ```ruby
 fib = Enumerator.new do |y|
@@ -1372,7 +1381,7 @@ fib.first(10)
 # [0, 1, 1, 2, 3, 5, 8, 13, 21, 34]
 ```
 
-## Modules & Imports
+## Modules
 
 ### Import
 
@@ -1416,7 +1425,7 @@ Gemfile   # Bundler
 bundle add json   # or: gem install json
 ```
 
-## Metaprogramming & Reflection
+## Metaprogramming
 
 ### Annotations
 
@@ -1457,7 +1466,7 @@ obj.instance_variables
 eval("1 + 2")   # 3
 ```
 
-## Concurrency & Async
+## Concurrency
 
 ### Threads & coroutines
 
@@ -1496,7 +1505,7 @@ m = Mutex.new
 m.synchronize { ... }
 ```
 
-## Generics & Templates
+## Generic
 
 ### Generic function
 
@@ -1521,4 +1530,6 @@ m.synchronize { ... }
 ```ruby
 # No constraints — duck typing
 ```
+
+
 

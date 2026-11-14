@@ -2,12 +2,13 @@
 
 Swift uses Automatic Reference Counting instead of a garbage collector and favors value types such as structs and enums. Concurrency is handled with async/await and actors.
 
-## Primitive types
+## Types
+### Primitive types
 
-Swift's fixed-width integers (`Int8` through `Int64`, `UInt8` through `UInt64`) map to hardware with signed/unsigned variants; `Int` is 64-bit on 64-bit platforms. Padding/alignment follows the platform ABI.
-### Number
+Swift's fixed-width integers (`Int8` through `Int64`, `UInt8` through `UInt64`) map to hardware with signed/unsigned variants; `Int` is 64-bit on 64-bit platforms. Padding/alignment follows the platform ABI. Docs: [Swift basic types](https://docs.swift.org/swift-book/LanguageGuide/TheBasics.html).
+#### Number
 
-#### integer
+##### integer
 
 ```swift
 let a = 42
@@ -16,7 +17,7 @@ let c = Int("42")!       // optional, force unwrap
 let c = Int("42") ?? 0   // default on failure
 ```
 
-#### integer overflow
+##### integer overflow
 
 ```swift
 // Swift traps on overflow by default
@@ -26,7 +27,7 @@ let y = x &+ 1                    // wraps to Int.min
 let (r, overflow) = x.addingReportingOverflow(1)
 ```
 
-#### float
+##### float
 
 ```swift
 let x = 3.14
@@ -34,7 +35,7 @@ let y = 1.5e-3
 let z = Double("3.14")!
 ```
 
-#### arithmetic
+##### arithmetic
 
 ```swift
 a + b      // addition
@@ -45,7 +46,7 @@ Double(a) / Double(b)   // force float division
 a % b      // remainder (truncating)
 ```
 
-#### min max abs
+##### min max abs
 
 ```swift
 min(a, b)
@@ -54,7 +55,7 @@ abs(-42)
 min(max(x, 0), 10)   // clamp — stdlib has no clamp
 ```
 
-#### random
+##### random
 
 ```swift
 Int.random(in: 1...6)
@@ -62,39 +63,39 @@ Double.random(in: 0..<1)
 Bool.random()
 ```
 
-### Integer types
+#### Integer types
 
-#### short
+##### short
 
 ```swift
 let s: Int16 = 42   // 16-bit signed
 ```
 
-#### long
+##### long
 
 ```swift
 let l: Int64 = 42   // 64-bit signed
 ```
 
-#### long long
+##### long long
 
 ```swift
 // No long long — Int64 is the widest fixed integer
 ```
 
-#### unsigned
+##### unsigned
 
 ```swift
 let u: UInt32 = 42  // unsigned
 ```
 
-#### signed
+##### signed
 
 ```swift
 let i: Int = -42   // signed by default
 ```
 
-#### struct
+##### struct
 
 ```swift
 struct Packed {
@@ -105,7 +106,7 @@ MemoryLayout<Packed>.size      // includes padding
 MemoryLayout<Packed>.stride
 ```
 
-#### divmod
+##### divmod
 
 ```swift
 // Swift has no divmod; use quotientAndRemainder
@@ -114,7 +115,7 @@ let q = a / b
 let r = a % b   // remainder, not modulo
 ```
 
-#### rounding
+##### rounding
 
 ```swift
 3.14.rounded()                        // 3.0 (to nearest)
@@ -124,7 +125,7 @@ Int(3.9)                              // 3 (truncates)
 String(format: "%.1f", 3.14)          // "3.1"
 ```
 
-#### range
+##### range
 
 ```swift
 0..<5                 // 0, 1, 2, 3, 4 (half-open)
@@ -134,7 +135,7 @@ stride(from: 0, through: 8, by: 2)   // 0, 2, 4, 6, 8
 Array(0..<5)          // [0, 1, 2, 3, 4]
 ```
 
-#### descending range
+##### descending range
 
 ```swift
 Array((0...4).reversed())                    // [4, 3, 2, 1, 0]
@@ -142,34 +143,41 @@ Array(stride(from: 4, through: 0, by: -1))   // [4, 3, 2, 1, 0]
 Array(stride(from: 10, through: 0, by: -2))  // [10, 8, 6, 4, 2]
 ```
 
-### Boolean
+#### Boolean
 
-#### literal
+##### literal
 
 ```swift
 let t = true
 let f = false
 ```
 
-#### negation
+##### negation
 
 ```swift
 !true           // false
 ```
 
-#### logical and
+##### logical and
 
 ```swift
 true && false   // false
 ```
 
-#### logical or
+##### logical or
 
 ```swift
 true || false   // true
 ```
 
-#### truthy and falsy values
+##### xor
+
+```swift
+// No ^ for Bool — use !=
+true != false   // true
+```
+
+##### truthy and falsy values
 
 ```swift
 // Swift has no implicit truthiness — only Bool works in conditions.
@@ -178,7 +186,7 @@ true || false   // true
 !arr.isEmpty               // explicit check for list
 ```
 
-#### conversion
+##### conversion
 
 ```swift
 1 != 0             // to Boolean
@@ -186,18 +194,18 @@ String(true)       // "true"
 Bool("true")       // true?
 ```
 
-### None / null
+#### Nullability
 
 Swift has no null; absence is modeled with `Optional<T>` and `nil`.
 
-#### literal
+##### literal
 
 ```swift
 let x: Int? = nil
 let y: Int? = 5
 ```
 
-#### null check
+##### null check
 
 ```swift
 if let v = x {
@@ -207,7 +215,7 @@ x != nil
 x == nil
 ```
 
-#### optional access
+##### optional access
 
 ```swift
 x.map { abs($0) }   // Int?
@@ -216,11 +224,11 @@ x!                  // force unwrap — traps if nil
 x?.magnitude        // optional chaining
 ```
 
-## Composite types
+### Composite types
 
-### String
+#### String
 
-#### literal
+##### literal
 
 ```swift
 let s = "hello"
@@ -232,14 +240,14 @@ string
 """
 ```
 
-#### length
+##### length
 
 ```swift
 s.count            // characters
 s.utf8.count       // bytes
 ```
 
-#### access
+##### access
 
 ```swift
 s.first              // Character?
@@ -247,7 +255,7 @@ s[s.startIndex]      // Character
 Array(s)[0]          // Character
 ```
 
-#### slice
+##### slice
 
 ```swift
 s.dropFirst(2)       // Substring
@@ -256,7 +264,7 @@ String(s.dropFirst(2))           // String
 s[s.index(s.startIndex, offsetBy: 1)..<s.index(s.startIndex, offsetBy: 3)]
 ```
 
-#### concatenation
+##### concatenation
 
 ```swift
 s + " world"
@@ -264,14 +272,14 @@ s + " world"
 ["hello", "world"].joined(separator: " ")
 ```
 
-#### interpolation
+##### interpolation
 
 ```swift
 "Hello, \(name)"
 "Hello, \(name.count)"
 ```
 
-#### search
+##### search
 
 ```swift
 s.contains("lo")
@@ -280,7 +288,7 @@ s.hasSuffix("lo")
 s.firstIndex(of: "l")       // String.Index?, nil if absent
 ```
 
-#### split and join
+##### split and join
 
 ```swift
 s.split(separator: ",")              // [Substring]
@@ -288,27 +296,27 @@ s.components(separatedBy: ",")       // [String]
 ["a", "b", "c"].joined(separator: "-")
 ```
 
-#### trim
+##### trim
 
 ```swift
 s.trimmingCharacters(in: .whitespaces)
 s.trimmingCharacters(in: .whitespacesAndNewlines)
 ```
 
-#### case
+##### case
 
 ```swift
 s.uppercased()
 s.lowercased()
 ```
 
-#### replace
+##### replace
 
 ```swift
 s.replacingOccurrences(of: "old", with: "new")
 ```
 
-#### justify
+##### justify
 
 ```swift
 String(format: "%10s", s)                              // right justify (ASCII)
@@ -316,7 +324,7 @@ s.padding(toLength: 10, withPad: " ", startingAt: 0)   // left justify
 String(repeating: " ", count: max(0, 10 - s.count)) + s // right justify
 ```
 
-#### format
+##### format
 
 ```swift
 String(format: "Hello, %@!", name)
@@ -324,8 +332,8 @@ String(format: "%.2f", 3.14159)   // "3.14"
 String(format: "%05d", 42)        // "00042"
 ```
 
-### Complex
-#### operations
+#### Complex
+##### operations
 
 ```swift
 // Swift has no built-in complex numbers. Use swift-numerics:
@@ -339,53 +347,53 @@ z + z
 z * z
 ```
 
-### Date
-#### now
+#### Date
+##### now
 
 ```swift
 import Foundation
 Date()   // current date/time
 ```
-#### format
+##### format
 
 ```swift
 let df = DateFormatter()
 df.dateFormat = "yyyy-MM-dd"
 df.string(from: Date())
 ```
-### Datetime
-#### now
+#### Datetime
+##### now
 
 ```swift
 import Foundation
 Date()
 ```
-#### format
+##### format
 
 ```swift
 df.dateFormat = "yyyy-MM-dd HH:mm:ss"
 df.string(from: Date())
 ```
-### Decimal
-#### literal
+#### Decimal
+##### literal
 
 ```swift
 import Foundation
 Decimal(string: "0.1")! + Decimal(string: "0.2")!   // 0.3
 ```
-#### precision
+##### precision
 
 ```swift
 // Decimal keeps 38 digits; division rounds to that scale
 Decimal(string: "1")! / Decimal(string: "7")!
 ```
-## Type system
+### Type system
 
-### type hints
+#### type hints
 
 Swift types are inferred but can be declared explicitly.
 
-#### variable
+##### variable
 
 ```swift
 let name: String = "Alice"
@@ -393,13 +401,13 @@ var age: Int = 30
 let scores: [Int] = [1, 2, 3]
 ```
 
-#### nullable
+##### nullable
 
 ```swift
 let name: String? = nil
 ```
 
-#### function
+##### function
 
 ```swift
 func greet(_ name: String) -> String {
@@ -411,7 +419,7 @@ func divide(_ a: Int, _ b: Int) -> Double? {
 }
 ```
 
-#### list of elements
+##### list of elements
 
 ```swift
 let names: [String] = ["Alice", "Bob"]
@@ -419,14 +427,14 @@ let scores: [Int] = [1, 2, 3]
 let matrix: [[Int]] = [[1, 2], [3, 4]]
 ```
 
-#### dict
+##### dict
 
 ```swift
 var ages: [String: Int] = ["Alice": 30, "Bob": 25]
 ```
 
-### Type operations
-#### type alias
+#### Type operations
+##### type alias
 
 ```swift
 typealias Vector = [Double]
@@ -435,7 +443,7 @@ func scale(_ scalar: Double, _ v: Vector) -> Vector {
 }
 ```
 
-#### union
+##### union
 
 ```swift
 // No union types — use enums with associated values
@@ -444,7 +452,7 @@ enum A {
     case c(String)
 }
 ```
-#### intersection
+##### intersection
 
 ```swift
 // Protocol composition with &
@@ -452,18 +460,17 @@ protocol Named { var name: String { get } }
 protocol Aged { var age: Int { get } }
 func f(_ x: any Named & Aged) {}
 ```
-#### literal types
+##### literal types
 
 ```swift
 // No literal types
 ```
-## Memory model
+### Memory model
 
-Swift uses Automatic Reference Counting (ARC) for class instances. Structs and enums are value types that copy on assignment; classes are reference types shared through ARC. Arrays and dictionaries are value types with copy-on-write storage.
+Swift uses Automatic Reference Counting (ARC) for class instances. Structs and enums are value types that copy on assignment; classes are reference types shared through ARC. Arrays and dictionaries are value types with copy-on-write storage. Docs: [Swift ARC](https://docs.swift.org/swift-book/LanguageGuide/AutomaticReferenceCounting.html).
+#### Memory
 
-### Memory
-
-#### value vs reference
+##### value vs reference
 
 ```swift
 struct Point { var x: Int; var y: Int }
@@ -477,7 +484,7 @@ let d2 = d1        // d2 references the same object
 d2.name = "Fido"   // d1.name is now "Fido"
 ```
 
-#### pointer / reference
+##### pointer / reference
 
 ```swift
 var x = 5
@@ -485,7 +492,7 @@ withUnsafePointer(to: &x) { p in p.pointee }          // read
 withUnsafeMutablePointer(to: &x) { p in p.pointee += 1 }
 ```
 
-#### ownership / borrowing
+##### ownership / borrowing
 
 ```swift
 // Swift 5.9 adds explicit ownership for performance-sensitive code
@@ -493,7 +500,7 @@ func consume(_ value: consuming [Int]) {}   // takes ownership
 func borrow(_ value: borrowing [Int]) {}    // borrows without copying
 ```
 
-#### copy vs move
+##### copy vs move
 
 ```swift
 let a = 5
@@ -507,7 +514,7 @@ let c1 = C()
 let c2 = c1        // reference, no copy
 ```
 
-#### immutability
+##### immutability
 
 ```swift
 let x = 5        // immutable binding
@@ -516,11 +523,12 @@ y += 1
 let arr = [1, 2] // can't append to a let array
 ```
 
-## Control Flow
+## Statements
+### Control Flow
 
-### if
+#### if
 
-#### basic
+##### basic
 
 ```swift
 if x > 0 {
@@ -532,13 +540,13 @@ if x > 0 {
 }
 ```
 
-#### ternary
+##### ternary
 
 ```swift
 let s = x > 0 ? "positive" : "not positive"
 ```
 
-#### as expression
+##### as expression
 
 ```swift
 // if is a statement in Swift, not an expression — use the ternary
@@ -547,9 +555,9 @@ let n = ok ? 1 : 0
 let grade = score >= 90 ? "A" : score >= 80 ? "B" : "F"
 ```
 
-### match / when
+#### match / when
 
-#### basic
+##### basic
 
 ```swift
 switch x {
@@ -559,7 +567,7 @@ default: "other"
 }
 ```
 
-#### guard
+##### guard
 
 ```swift
 switch x {
@@ -569,7 +577,7 @@ default: "zero"
 }
 ```
 
-#### destructuring
+##### destructuring
 
 ```swift
 switch cmd {
@@ -578,7 +586,7 @@ case .stop: "stop"
 }
 ```
 
-#### exhaustiveness
+##### exhaustiveness
 
 ```swift
 // The compiler enforces exhaustiveness for enums
@@ -593,9 +601,9 @@ case .stop: "stop"
 }
 ```
 
-### for
+#### for
 
-#### basic
+##### basic
 
 ```swift
 for item in items {
@@ -603,7 +611,7 @@ for item in items {
 }
 ```
 
-#### with index
+##### with index
 
 ```swift
 for (i, item) in items.enumerated() {
@@ -611,7 +619,7 @@ for (i, item) in items.enumerated() {
 }
 ```
 
-#### range loop
+##### range loop
 
 ```swift
 for i in 0..<10 {
@@ -619,7 +627,7 @@ for i in 0..<10 {
 }
 ```
 
-#### break & continue
+##### break & continue
 
 ```swift
 for x in items {
@@ -629,7 +637,7 @@ for x in items {
 }
 ```
 
-#### for else
+##### for else
 
 ```swift
 // Swift has no for-else. Use contains/first(where:):
@@ -637,9 +645,9 @@ if !items.contains(target) { print("not found") }
 if items.first(where: { $0 == target }) == nil { print("not found") }
 ```
 
-### while
+#### while
 
-#### basic
+##### basic
 
 ```swift
 while x > 0 {
@@ -648,7 +656,7 @@ while x > 0 {
 }
 ```
 
-#### break & continue
+##### break & continue
 
 ```swift
 while true {
@@ -659,7 +667,7 @@ while true {
 }
 ```
 
-#### do while
+##### do while
 
 ```swift
 repeat {
@@ -667,11 +675,11 @@ repeat {
 } while condition(x)
 ```
 
-### Exception
+#### Exception
 
 Swift models errors with `throw` and the `Error` protocol.
 
-#### try / except
+##### try / except
 
 ```swift
 do {
@@ -685,7 +693,7 @@ do {
 let result = try? divide(1, 0)
 ```
 
-#### finally
+##### finally
 
 ```swift
 // Swift has no finally — use defer for guaranteed cleanup
@@ -695,7 +703,7 @@ func process() throws {
 }
 ```
 
-#### else
+##### else
 
 ```swift
 // Swift has no try-else. Run the success path after the do:
@@ -707,14 +715,14 @@ do {
 }
 ```
 
-#### raise
+##### raise
 
 ```swift
 throw MyError.something("invalid value")
 fatalError("unrecoverable error")
 ```
 
-#### custom exception
+##### custom exception
 
 ```swift
 enum MyError: Error {
@@ -726,7 +734,7 @@ func fail() throws {
 }
 ```
 
-#### context manager
+##### context manager
 
 ```swift
 // Use defer for RAII-style cleanup — resources free on scope exit
@@ -735,11 +743,11 @@ defer { try? file.close() }
 let data = try file.readToEnd()
 ```
 
-## Functions
+### Functions
 
-### Function
+#### Function
 
-#### definition
+##### definition
 
 ```swift
 func greet(_ name: String) -> String {
@@ -747,7 +755,7 @@ func greet(_ name: String) -> String {
 }
 ```
 
-#### default parameters
+##### default parameters
 
 ```swift
 func greet(_ name: String, greeting: String = "Hello") -> String {
@@ -755,7 +763,7 @@ func greet(_ name: String, greeting: String = "Hello") -> String {
 }
 ```
 
-#### overloading
+##### overloading
 
 ```swift
 // Swift supports overloading by signature
@@ -763,7 +771,7 @@ func stringify(_ arg: Int) -> String { "int: \(arg)" }
 func stringify(_ arg: String) -> String { "str: \(arg)" }
 ```
 
-#### varargs
+##### varargs
 
 ```swift
 func sum(_ nums: Int...) -> Int {
@@ -772,7 +780,7 @@ func sum(_ nums: Int...) -> Int {
 sum(1, 2, 3)
 ```
 
-#### keyword arguments
+##### keyword arguments
 
 ```swift
 // Swift argument labels are the keyword-argument analogue
@@ -780,7 +788,7 @@ func connect(host: String, port: Int = 80, debug: Bool = false) {}
 connect(host: "example.com", port: 3000)
 ```
 
-#### return
+##### return
 
 ```swift
 func divide(_ a: Int, _ b: Int) -> Double? {
@@ -789,7 +797,7 @@ func divide(_ a: Int, _ b: Int) -> Double? {
 }
 ```
 
-#### callable check
+##### callable check
 
 ```swift
 // Functions are first-class and carry types
@@ -805,16 +813,16 @@ let add3 = Adder(base: 3)
 add3(4)   // 7
 ```
 
-### Lambda
+#### Lambda
 
-#### basic
+##### basic
 
 ```swift
 let square = { (x: Int) in x * x }
 let add = { (a: Int, b: Int) in a + b }
 ```
 
-#### as argument
+##### as argument
 
 ```swift
 items.map { $0 * 2 }
@@ -824,7 +832,7 @@ items.filter { $0 > 2 }
 items.map({ x in x * 2 })
 ```
 
-#### receiver
+##### receiver
 
 ```swift
 // Swift closures have no receiver. Trailing closures + method chaining:
@@ -833,13 +841,14 @@ let result = [1, 2, 3]
     .reduce(0, +)
 ```
 
-## Classes
+## Classes & Interfaces
+### Classes
 
 Swift uses classes (reference types), structs (value types), and protocols instead of a single class system.
 
-### Class
+#### Class
 
-#### definition
+##### definition
 
 ```swift
 class Dog {
@@ -850,7 +859,7 @@ class Dog {
 }
 ```
 
-#### constructor
+##### constructor
 
 ```swift
 init(name: String) {
@@ -858,13 +867,13 @@ init(name: String) {
 }
 ```
 
-#### instantiation
+##### instantiation
 
 ```swift
 let dog = Dog(name: "Fido")
 ```
 
-#### attributes
+##### attributes
 
 ```swift
 class Dog {
@@ -874,7 +883,7 @@ class Dog {
 }
 ```
 
-#### method
+##### method
 
 ```swift
 func bark() -> String {
@@ -882,7 +891,7 @@ func bark() -> String {
 }
 ```
 
-#### inheritance
+##### inheritance
 
 ```swift
 class Puppy: Dog {
@@ -890,7 +899,7 @@ class Puppy: Dog {
 }
 ```
 
-#### multiple inheritance
+##### multiple inheritance
 
 ```swift
 // No multiple class inheritance — one superclass only
@@ -900,7 +909,7 @@ protocol Y { func y() }
 class C: A, X, Y { }
 ```
 
-#### override
+##### override
 
 ```swift
 override func bark() -> String {
@@ -908,7 +917,7 @@ override func bark() -> String {
 }
 ```
 
-#### super
+##### super
 
 ```swift
 override func bark() -> String {
@@ -916,19 +925,19 @@ override func bark() -> String {
 }
 ```
 
-#### class method
+##### class method
 
 ```swift
 class func species() -> String { "Canis" }   // can be overridden
 ```
 
-#### static method
+##### static method
 
 ```swift
 static func isCanine(_ name: String) -> Bool { name == "dog" }
 ```
 
-#### abstract
+##### abstract
 
 ```swift
 // Swift has no abstract classes — use protocols
@@ -937,7 +946,7 @@ protocol Animal {
 }
 ```
 
-#### protocol / interface
+##### protocol / interface
 
 ```swift
 protocol Speaker {
@@ -953,7 +962,7 @@ func makeSound(_ s: any Speaker) -> String {
 }
 ```
 
-#### data class
+##### data class
 
 ```swift
 // Structs are value types with an auto memberwise initializer
@@ -964,7 +973,7 @@ struct Dog {
 let dog = Dog(name: "Fido", age: 3)
 ```
 
-#### equality
+##### equality
 
 ```swift
 struct Dog: Equatable {
@@ -978,7 +987,7 @@ static func == (lhs: Dog, rhs: Dog) -> Bool {
 }
 ```
 
-#### string representation
+##### string representation
 
 ```swift
 struct Dog: CustomStringConvertible {
@@ -987,7 +996,7 @@ struct Dog: CustomStringConvertible {
 }
 ```
 
-#### sealed class
+##### sealed class
 
 ```swift
 // Swift models closed sets with enums instead of sealed classes
@@ -1004,7 +1013,7 @@ func handle(_ r: Result) -> String {
 }
 ```
 
-#### private
+##### private
 
 ```swift
 class Dog {
@@ -1013,7 +1022,7 @@ class Dog {
 }
 ```
 
-#### protected
+##### protected
 
 ```swift
 // Swift has no protected — only private/fileprivate/internal
@@ -1022,7 +1031,7 @@ class Animal {
 }
 ```
 
-#### public
+##### public
 
 ```swift
 public class Dog {
@@ -1033,10 +1042,10 @@ public class Dog {
 }
 ```
 
-### Interface & trait
+#### Interface & trait
 
 Swift uses `protocol` for shared behavior; there is no `trait` keyword. Protocols gain default implementations through extensions.
-#### definition
+##### definition
 
 ```swift
 protocol Speakable {
@@ -1048,7 +1057,7 @@ struct Dog: Speakable {
 }
 ```
 
-#### default method
+##### default method
 
 ```swift
 protocol Speaker {
@@ -1058,9 +1067,9 @@ extension Speaker {
     func greet() -> String { speak() }   // default method
 }
 ```
-### Enum
+#### Enum
 
-#### definition
+##### definition
 
 ```swift
 enum Color {
@@ -1068,7 +1077,7 @@ enum Color {
 }
 ```
 
-#### auto value
+##### auto value
 
 ```swift
 enum Color: Int {
@@ -1079,14 +1088,14 @@ Color.red.rawValue     // 0
 Color.amber.rawValue   // 2
 ```
 
-#### access
+##### access
 
 ```swift
 Color.red
 Color.red.rawValue       // 0 (with Int raw values)
 ```
 
-#### iteration
+##### iteration
 
 ```swift
 enum Color: CaseIterable {
@@ -1096,7 +1105,7 @@ enum Color: CaseIterable {
 Color.allCases   // [red, green, amber]
 ```
 
-#### lookup
+##### lookup
 
 ```swift
 enum Color: String {
@@ -1106,7 +1115,7 @@ enum Color: String {
 Color(rawValue: "red")   // Color?.red, nil if absent
 ```
 
-#### match
+##### match
 
 ```swift
 switch color {
@@ -1116,7 +1125,7 @@ case .amber: "caution"
 }
 ```
 
-#### enum with data
+##### enum with data
 
 ```swift
 enum Planet {
@@ -1126,23 +1135,24 @@ enum Planet {
 let mercury = Planet.mercury(3.303e23, 2.4397e6)
 ```
 
-## Collections
+## Collections & Iterators
+### Collections
 
-### List
+#### List
 
-#### literal
+##### literal
 
 ```swift
 let a = [1, 2, 3]
 ```
 
-#### size
+##### size
 
 ```swift
 a.count
 ```
 
-#### lookup
+##### lookup
 
 ```swift
 a[0]                              // first element
@@ -1151,7 +1161,7 @@ a.last                            // Int?
 a.indices.contains(0) ? a[0] : nil // safe lookup
 ```
 
-#### update
+##### update
 
 ```swift
 var a = [1, 2, 3]
@@ -1159,13 +1169,13 @@ a[0] = 10
 a.append(4)
 ```
 
-#### is element present
+##### is element present
 
 ```swift
 a.contains(3)
 ```
 
-#### delete
+##### delete
 
 ```swift
 var a = [1, 2, 3]
@@ -1174,7 +1184,7 @@ a.removeLast()         // last element
 a.removeAll { $0 == 3 } // by value
 ```
 
-#### merge
+##### merge
 
 ```swift
 var a = [1, 2, 3]
@@ -1182,14 +1192,14 @@ a += [4, 5]
 a.append(contentsOf: [4, 5])
 ```
 
-#### slice
+##### slice
 
 ```swift
 Array(a[1..<3])                    // elements at index 1 and 2
 Array(stride(from: 0, to: a.count, by: 2).map { a[$0] })
 ```
 
-#### reversed
+##### reversed
 
 ```swift
 Array(a.reversed())   // [3, 2, 1]
@@ -1198,42 +1208,42 @@ var a = [1, 2, 3]
 a.reverse()           // in place
 ```
 
-#### map
+##### map
 
 ```swift
 a.map { $0 * 2 }
 ```
 
-#### filter
+##### filter
 
 ```swift
 a.filter { $0 > 0 }
 ```
 
-### Dictionary
+#### Dictionary
 
 `Dictionary<Key, Value>` for key-value storage.
 
-#### literal
+##### literal
 
 ```swift
 let d = ["t": 1, "f": 0]
 ```
 
-#### size
+##### size
 
 ```swift
 d.count
 ```
 
-#### lookup
+##### lookup
 
 ```swift
 d["t"]                 // Int?, nil if absent
 d["t", default: 0]     // Int, default if absent
 ```
 
-#### update
+##### update
 
 ```swift
 var d = ["t": 1, "f": 0]
@@ -1241,88 +1251,88 @@ d["u"] = -1
 d.updateValue(-1, forKey: "u")
 ```
 
-#### is key present
+##### is key present
 
 ```swift
 d["c"] != nil
 d.keys.contains("c")
 ```
 
-#### delete
+##### delete
 
 ```swift
 d.removeValue(forKey: "t")   // Int?, nil if absent
 d["t"] = nil                 // remove
 ```
 
-#### from array of pairs
+##### from array of pairs
 
 ```swift
 let pairs = [("t", 1), ("f", 0)]
 let d = Dictionary(uniqueKeysWithValues: pairs)
 ```
 
-#### merge
+##### merge
 
 ```swift
 var d = ["t": 1, "f": 0]
 d.merge(["u": -1]) { _, new in new }
 ```
 
-#### invert
+##### invert
 
 ```swift
 Dictionary(uniqueKeysWithValues: d.map { ($0.value, $0.key) })
 ```
 
-#### keys and values as arrays
+##### keys and values as arrays
 
 ```swift
 Array(d.keys)
 Array(d.values)
 ```
 
-### Set
+#### Set
 
-#### literal
+##### literal
 
 ```swift
 let s: Set = [1, 2, 3]
 ```
 
-#### size
+##### size
 
 ```swift
 s.count
 ```
 
-#### add
+##### add
 
 ```swift
 var s: Set = [1, 2, 3]
 s.insert(4)
 ```
 
-#### is element present
+##### is element present
 
 ```swift
 s.contains(3)
 ```
 
-#### delete
+##### delete
 
 ```swift
 s.remove(3)   // returns nil if absent
 ```
 
-#### from array
+##### from array
 
 ```swift
 let a = [1, 2, 3, 2]
 let s = Set(a)   // {1, 2, 3}
 ```
 
-#### merge
+##### merge
 
 ```swift
 s.union(other)        // union
@@ -1330,11 +1340,11 @@ s.intersection(other) // intersection
 s.subtracting(other)  // difference
 ```
 
-## Iterator and generator
+### Iterator and generator
 
-### Iterator
+#### Iterator
 
-#### chain
+##### chain
 
 ```swift
 Array("abc") + Array("de")           // ["a", "b", "c", "d", "e"]
@@ -1342,37 +1352,37 @@ Array("abc") + Array("de")           // ["a", "b", "c", "d", "e"]
 [1, 2].chained(with: [3, 4])
 ```
 
-#### take
+##### take
 
 ```swift
 (1...10).prefix(4)         // [1, 2, 3, 4]
 ```
 
-#### drop
+##### drop
 
 ```swift
 (1...10).dropFirst(3)      // [4, 5, 6, 7, 8, 9, 10]
 ```
 
-#### head
+##### head
 
 ```swift
 (1...10).prefix(3)         // [1, 2, 3]
 ```
 
-#### takewhile
+##### takewhile
 
 ```swift
 [1, 2, 3, 1, 2].prefix(while: { $0 < 3 })   // [1, 2]
 ```
 
-#### dropwhile
+##### dropwhile
 
 ```swift
 [1, 2, 3, 1, 2].drop(while: { $0 < 3 })     // [3, 1, 2]
 ```
 
-#### zip
+##### zip
 
 ```swift
 Array(zip(["a", "b", "c"], [1, 2, 3]))   // [("a", 1), ("b", 2), ("c", 3)]
@@ -1380,21 +1390,21 @@ Array(zip(["a", "b", "c"], [1, 2, 3]))   // [("a", 1), ("b", 2), ("c", 3)]
 // zip stops at the shortest; no built-in zip_longest
 ```
 
-#### enumerate
+##### enumerate
 
 ```swift
 ["a", "b", "c"].enumerated()   // (offset, element) pairs
 for (i, item) in items.enumerated() { print("\(i + 1) \(item)") }
 ```
 
-#### flatten
+##### flatten
 
 ```swift
 [[1, 2], [3, 4]].flatMap { $0 }   // [1, 2, 3, 4]
 [[1, 2], [3, 4]].joined()         // FlattenSequence
 ```
 
-#### count
+##### count
 
 ```swift
 Array((0...).prefix(2))              // [0, 1]
@@ -1402,7 +1412,7 @@ Array((0...).prefix(2))              // [0, 1]
 Array(sequence(first: 10) { $0 + 2 }.prefix(3))   // [10, 12, 14]
 ```
 
-#### cycle
+##### cycle
 
 ```swift
 // stdlib has no cycle — use swift-algorithms
@@ -1411,7 +1421,7 @@ Array(sequence(first: 10) { $0 + 2 }.prefix(3))   // [10, 12, 14]
 Array((0..<5).map { ["red", "green", "blue"][$0 % 3] })
 ```
 
-#### chunked
+##### chunked
 
 ```swift
 // swift-algorithms
@@ -1419,7 +1429,7 @@ Array([1, 2, 3, 4, 5, 6, 7].chunks(ofCount: 3))
 // [[1, 2, 3], [4, 5, 6], [7]]
 ```
 
-#### groupby
+##### groupby
 
 ```swift
 // stdlib: Dictionary(grouping:by:)
@@ -1428,7 +1438,7 @@ Dictionary(grouping: cities, by: { $0.1 })
 // ["NY": [("NYC", "NY"), ("Buffalo", "NY")], "CA": [("LA", "CA"), ("SF", "CA")]]
 ```
 
-#### generator
+##### generator
 
 ```swift
 // Swift has no generator functions — use a Sequence
@@ -1442,7 +1452,7 @@ Array(fib.prefix(10))
 // [0, 1, 1, 2, 3, 5, 8, 13, 21, 34]
 ```
 
-## Modules & Imports
+## Modules
 
 ### Import
 
@@ -1489,7 +1499,7 @@ dependencies: [
 ]
 ```
 
-## Metaprogramming & Reflection
+## Metaprogramming
 
 ### Annotations
 
@@ -1530,7 +1540,7 @@ Mirror(reflecting: obj).children
 // No eval
 ```
 
-## Concurrency & Async
+## Concurrency
 
 ### Threads & coroutines
 
@@ -1567,7 +1577,7 @@ func f() async -> Int {
 // No built-in mutex — use actors or NSLock
 ```
 
-## Generics & Templates
+## Generic
 
 ### Generic function
 
@@ -1592,4 +1602,6 @@ struct Box<T> { let value: T }
 ```swift
 func f<T: Numeric>(_ x: T) -> T { x }
 ```
+
+
 

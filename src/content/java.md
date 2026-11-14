@@ -2,12 +2,13 @@
 
 Java runs on the JVM with automatic garbage collection. It supports OS threads, and recent releases add virtual threads for lightweight concurrency.
 
-## Primitive types
+## Types
+### Primitive types
 
-Java's `byte`(8), `short`(16), `int`(32), `long`(64) and `float`/`double` are fixed hardware primitives (signed only); wrapper classes (`Integer`, `Long`) box them, and alignment is JVM-managed.
-### Number
+Java's `byte`(8), `short`(16), `int`(32), `long`(64) and `float`/`double` are fixed hardware primitives (signed only); wrapper classes (`Integer`, `Long`) box them, and alignment is JVM-managed. Docs: [Java primitive types](https://docs.oracle.com/javase/tutorial/java/nutsandbolts/datatypes.html).
+#### Number
 
-#### integer
+##### integer
 
 ```java
 int a = 42;
@@ -16,7 +17,7 @@ int c = Integer.parseInt("42");
 long big = 1_000_000_000_000L;
 ```
 
-#### integer overflow
+##### integer overflow
 
 ```java
 // Java primitives wrap silently on overflow
@@ -29,7 +30,7 @@ b + 1;                      // Long.MIN_VALUE (wraps)
 Math.multiplyExact(b, 2);   // throws ArithmeticException
 ```
 
-#### float
+##### float
 
 ```java
 double x = 3.14;
@@ -37,7 +38,7 @@ double y = 1.5e-3;
 double z = Double.parseDouble("3.14");
 ```
 
-#### arithmetic
+##### arithmetic
 
 ```java
 a + b      // addition
@@ -48,7 +49,7 @@ a / b      // integer division if both int
 a % b      // modulo
 ```
 
-#### min max abs
+##### min max abs
 
 ```java
 Math.min(a, b)
@@ -56,47 +57,47 @@ Math.max(a, b)
 Math.abs(-42)
 ```
 
-#### random
+##### random
 
 ```java
 new Random().nextInt(1, 7)   // 1..6
 Math.random()                // 0.0..1.0
 ```
 
-### Integer types
+#### Integer types
 
-#### short
+##### short
 
 ```java
 short s = 42;   // 16-bit signed
 ```
 
-#### long
+##### long
 
 ```java
 long l = 42L;   // 64-bit signed
 ```
 
-#### long long
+##### long long
 
 ```java
 // No long long — long is 64-bit
 ```
 
-#### unsigned
+##### unsigned
 
 ```java
 // No unsigned primitives — char is 16-bit unsigned
 char c = 'a';
 ```
 
-#### signed
+##### signed
 
 ```java
 int i = -42;   // signed by default
 ```
 
-#### struct
+##### struct
 
 ```java
 // Use ByteBuffer for a packed layout
@@ -104,7 +105,7 @@ var buf = ByteBuffer.allocate(5).order(ByteOrder.LITTLE_ENDIAN);
 buf.put((byte) 1).putInt(2);
 ```
 
-#### divmod
+##### divmod
 
 ```java
 // Java has no divmod; compute both
@@ -112,7 +113,7 @@ int q = a / b;
 int r = a % b;
 ```
 
-#### rounding
+##### rounding
 
 ```java
 Math.round(3.14);        // 3
@@ -121,7 +122,7 @@ Math.floor(3.14);        // 3.0
 String.format("%.1f", 3.14); // "3.1"
 ```
 
-#### range
+##### range
 
 ```java
 IntStream.range(0, 5)              // 0, 1, 2, 3, 4 (exclusive)
@@ -130,7 +131,7 @@ IntStream.range(2, 5)              // 2, 3, 4
 IntStream.iterate(0, i -> i + 2).limit(5) // 0, 2, 4, 6, 8
 ```
 
-#### descending range
+##### descending range
 
 ```java
 for (int i = 4; i >= 0; i--) {}          // 4, 3, 2, 1, 0
@@ -138,34 +139,40 @@ for (int i = 10; i >= 0; i -= 2) {}      // 10, 8, 6, 4, 2
 IntStream.iterate(4, i -> i - 1).limit(5) // 4, 3, 2, 1, 0
 ```
 
-### Boolean
+#### Boolean
 
-#### literal
+##### literal
 
 ```java
 boolean t = true;
 boolean f = false;
 ```
 
-#### negation
+##### negation
 
 ```java
 !true           // false
 ```
 
-#### logical and
+##### logical and
 
 ```java
 true && false   // false
 ```
 
-#### logical or
+##### logical or
 
 ```java
 true || false   // true
 ```
 
-#### truthy and falsy values
+##### xor
+
+```java
+true ^ false   // true
+```
+
+##### truthy and falsy values
 
 ```java
 // Java has no truthiness — only boolean works in conditions.
@@ -174,7 +181,7 @@ true || false   // true
 !list.isEmpty()             // explicit check for list
 ```
 
-#### conversion
+##### conversion
 
 ```java
 1 != 0                     // to Boolean
@@ -182,11 +189,11 @@ Boolean.toString(true)     // "true"
 Boolean.parseBoolean("true") // true
 ```
 
-### None / null
+#### Nullability
 
 Java reference types can be null; `Optional<T>` models absence.
 
-#### literal
+##### literal
 
 ```java
 String x = null;
@@ -194,7 +201,7 @@ Optional<String> y = Optional.empty();
 Optional<Integer> z = Optional.of(5);
 ```
 
-#### null check
+##### null check
 
 ```java
 if (x != null) {
@@ -203,7 +210,7 @@ if (x != null) {
 x == null
 ```
 
-#### optional access
+##### optional access
 
 ```java
 Optional.ofNullable(x).map(String::length).orElse(0)
@@ -211,11 +218,11 @@ x != null ? x.length() : 0
 Optional.ofNullable(x).ifPresent(v -> { /* ... */ })
 ```
 
-## Composite types
+### Composite types
 
-### String
+#### String
 
-#### literal
+##### literal
 
 ```java
 String s = "hello";
@@ -226,27 +233,27 @@ String s = """
     """;
 ```
 
-#### length
+##### length
 
 ```java
 s.length()
 ```
 
-#### access
+##### access
 
 ```java
 s.charAt(0)               // first char
 s.charAt(s.length() - 1)  // last char
 ```
 
-#### slice
+##### slice
 
 ```java
 s.substring(1, 3)   // chars 1..2, exclusive end
 s.substring(2)      // from index 2 to end
 ```
 
-#### concatenation
+##### concatenation
 
 ```java
 s + " world"
@@ -254,7 +261,7 @@ s + " world"
 String.join(" ", "hello", "world")
 ```
 
-#### interpolation
+##### interpolation
 
 ```java
 String.format("Hello, %s", name)
@@ -262,7 +269,7 @@ String.format("Hello, %s", name)
 "Hello, " + name
 ```
 
-#### search
+##### search
 
 ```java
 s.contains("hello")
@@ -271,14 +278,14 @@ s.startsWith("he")
 s.endsWith("lo")
 ```
 
-#### split and join
+##### split and join
 
 ```java
 s.split(",")
 String.join("-", "a", "b", "c")
 ```
 
-#### trim
+##### trim
 
 ```java
 s.trim()
@@ -287,28 +294,28 @@ s.stripLeading()
 s.stripTrailing()
 ```
 
-#### case
+##### case
 
 ```java
 s.toUpperCase()
 s.toLowerCase()
 ```
 
-#### replace
+##### replace
 
 ```java
 s.replace("old", "new")
 s.replaceFirst("old", "new")   // first occurrence only
 ```
 
-#### justify
+##### justify
 
 ```java
 String.format("%10s", s)    // right justify
 String.format("%-10s", s)   // left justify
 ```
 
-#### format
+##### format
 
 ```java
 String.format("Hello, %s!", name)
@@ -316,8 +323,8 @@ String.format("%.2f", 3.14159)   // "3.14"
 String.format("%05d", 42)        // "00042"
 ```
 
-### Complex
-#### operations
+#### Complex
+##### operations
 
 ```java
 // Java has no built-in complex numbers; use a class or library
@@ -332,49 +339,49 @@ class Complex {
 var z = new Complex(1.0, 2.0);
 ```
 
-### Date
-#### now
+#### Date
+##### now
 
 ```java
 import java.time.LocalDate;
 LocalDate.now()
 ```
-#### format
+##### format
 
 ```java
 LocalDate.now().format(DateTimeFormatter.ISO_DATE)
 ```
-### Datetime
-#### now
+#### Datetime
+##### now
 
 ```java
 import java.time.LocalDateTime;
 LocalDateTime.now()
 ```
-#### format
+##### format
 
 ```java
 LocalDateTime.now().format(DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss"))
 ```
-### Decimal
-#### literal
+#### Decimal
+##### literal
 
 ```java
 import java.math.BigDecimal;
 new BigDecimal("0.1").add(new BigDecimal("0.2"))
 ```
-#### precision
+##### precision
 
 ```java
 new BigDecimal("1").divide(new BigDecimal("7"), 6, RoundingMode.HALF_UP)
 ```
-## Type system
+### Type system
 
-### type hints
+#### type hints
 
 Java is statically typed; types are mandatory.
 
-#### variable
+##### variable
 
 ```java
 String name = "Alice";
@@ -382,13 +389,13 @@ int age = 30;
 List<Integer> scores = List.of(1, 2, 3);
 ```
 
-#### nullable
+##### nullable
 
 ```java
 String name = null;    // reference types are nullable by default
 ```
 
-#### function
+##### function
 
 ```java
 static String greet(String name) {
@@ -401,7 +408,7 @@ static Double divide(int a, int b) {
 }
 ```
 
-#### list of elements
+##### list of elements
 
 ```java
 List<String> names = List.of("Alice", "Bob");
@@ -409,21 +416,21 @@ List<Integer> scores = List.of(1, 2, 3);
 List<List<Integer>> matrix = List.of(List.of(1, 2), List.of(3, 4));
 ```
 
-#### dict
+##### dict
 
 ```java
 Map<String, Integer> ages = Map.of("Alice", 30, "Bob", 25);
 ```
 
-### Type operations
-#### type alias
+#### Type operations
+##### type alias
 
 ```java
 // Java has no type aliases — use generics or wrapper classes
 class Vector extends ArrayList<Double> { }
 ```
 
-#### union
+##### union
 
 ```java
 // No union types — sealed interfaces (Java 17+)
@@ -431,24 +438,23 @@ sealed interface A permits B, C {}
 record B(int x) implements A {}
 record C(String s) implements A {}
 ```
-#### intersection
+##### intersection
 
 ```java
 // Intersections in generic bounds
 <T extends CharSequence & Comparable<T>> T pick(T a, T b)
 ```
-#### literal types
+##### literal types
 
 ```java
 // No literal types
 ```
-## Memory model
+### Memory model
 
-Java stores primitives by value and objects on the heap, accessed through references. There are no raw pointers, and the JVM garbage collector reclaims unreachable objects.
+Java stores primitives by value and objects on the heap, accessed through references. There are no raw pointers, and the JVM garbage collector reclaims unreachable objects. Docs: [Java memory model](https://docs.oracle.com/javase/specs/jls/se21/html/jls-17.html).
+#### Memory
 
-### Memory
-
-#### value vs reference
+##### value vs reference
 
 ```java
 int a = 1;
@@ -458,7 +464,7 @@ List<Integer> y = x;           // same list reference
 y.add(3);                      // x is also [1, 2, 3]
 ```
 
-#### pointer / reference
+##### pointer / reference
 
 ```java
 // No raw pointers — only object references
@@ -467,31 +473,32 @@ String t = s;                  // same reference
 s == t                         // true (reference equality)
 ```
 
-#### ownership / borrowing
+##### ownership / borrowing
 
 ```java
 // No ownership/borrowing — garbage collected
 ```
 
-#### copy vs move
+##### copy vs move
 
 ```java
 List<Integer> a = new ArrayList<>(List.of(1, 2, 3));
 List<Integer> b = new ArrayList<>(a);   // shallow copy
 ```
 
-#### immutability
+##### immutability
 
 ```java
 final List<Integer> list = List.of(1, 2, 3);   // immutable
 record Point(int x, int y) {}
 ```
 
-## Control Flow
+## Statements
+### Control Flow
 
-### if
+#### if
 
-#### basic
+##### basic
 
 ```java
 if (x > 0) {
@@ -503,22 +510,22 @@ if (x > 0) {
 }
 ```
 
-#### ternary
+##### ternary
 
 ```java
 String s = x > 0 ? "positive" : "not positive";
 ```
 
-#### as expression
+##### as expression
 
 ```java
 // Java's if is a statement — the ternary is the expression form
 int n = ok ? 1 : 0;
 ```
 
-### match / when
+#### match / when
 
-#### basic
+##### basic
 
 ```java
 // switch expression (Java 14+)
@@ -529,7 +536,7 @@ String s = switch (x) {
 };
 ```
 
-#### guard
+##### guard
 
 ```java
 // guarded pattern in switch (Java 21+)
@@ -540,7 +547,7 @@ String s = switch (x) {
 };
 ```
 
-#### destructuring
+##### destructuring
 
 ```java
 // record pattern destructuring (Java 21+)
@@ -555,7 +562,7 @@ String s = switch (cmd) {
 };
 ```
 
-#### exhaustiveness
+##### exhaustiveness
 
 ```java
 // sealed types give exhaustive switches (Java 21+)
@@ -569,9 +576,9 @@ String s = switch (cmd) {   // no default needed — all cases covered
 };
 ```
 
-### for
+#### for
 
-#### basic
+##### basic
 
 ```java
 for (String item : items) {
@@ -579,7 +586,7 @@ for (String item : items) {
 }
 ```
 
-#### with index
+##### with index
 
 ```java
 for (int i = 0; i < items.size(); i++) {
@@ -587,7 +594,7 @@ for (int i = 0; i < items.size(); i++) {
 }
 ```
 
-#### range loop
+##### range loop
 
 ```java
 for (int i = 0; i < 10; i++) {
@@ -595,7 +602,7 @@ for (int i = 0; i < 10; i++) {
 }
 ```
 
-#### break & continue
+##### break & continue
 
 ```java
 for (int x : items) {
@@ -605,7 +612,7 @@ for (int x : items) {
 }
 ```
 
-#### for else
+##### for else
 
 ```java
 // Java has no for-else. Use anyMatch or a flag:
@@ -613,9 +620,9 @@ boolean found = items.stream().anyMatch(x -> x == target);
 if (!found) System.out.println("not found");
 ```
 
-### while
+#### while
 
-#### basic
+##### basic
 
 ```java
 while (x > 0) {
@@ -624,7 +631,7 @@ while (x > 0) {
 }
 ```
 
-#### break & continue
+##### break & continue
 
 ```java
 while (true) {
@@ -635,7 +642,7 @@ while (true) {
 }
 ```
 
-#### do while
+##### do while
 
 ```java
 do {
@@ -644,9 +651,9 @@ do {
 } while (x > 0);
 ```
 
-### Exception
+#### Exception
 
-#### try / except
+##### try / except
 
 ```java
 try {
@@ -658,7 +665,7 @@ try {
 }
 ```
 
-#### finally
+##### finally
 
 ```java
 FileReader f = null;
@@ -670,7 +677,7 @@ try {
 }
 ```
 
-#### else
+##### else
 
 ```java
 // Java has no try-else; run the success path after the try
@@ -682,14 +689,14 @@ try {
 }
 ```
 
-#### raise
+##### raise
 
 ```java
 throw new IllegalArgumentException("invalid value");
 throw new RuntimeException("unrecoverable error");
 ```
 
-#### custom exception
+##### custom exception
 
 ```java
 class MyError extends Exception {
@@ -699,7 +706,7 @@ class MyError extends Exception {
 throw new MyError("something went wrong");
 ```
 
-#### context manager
+##### context manager
 
 ```java
 // try-with-resources auto-closes on exit
@@ -708,11 +715,11 @@ try (BufferedReader reader = Files.newBufferedReader(Path.of("file.txt"))) {
 }
 ```
 
-## Functions
+### Functions
 
-### Function
+#### Function
 
-#### definition
+##### definition
 
 ```java
 static String greet(String name) {
@@ -720,7 +727,7 @@ static String greet(String name) {
 }
 ```
 
-#### default parameters
+##### default parameters
 
 ```java
 // Java has no default parameters — use overloads
@@ -732,14 +739,14 @@ static String greet(String name, String greeting) {
 }
 ```
 
-#### overloading
+##### overloading
 
 ```java
 static String stringify(int arg) { return "int: " + arg; }
 static String stringify(String arg) { return "str: " + arg; }
 ```
 
-#### varargs
+##### varargs
 
 ```java
 static int sumAll(int... args) {
@@ -750,7 +757,7 @@ static int sumAll(int... args) {
 sumAll(1, 2, 3);
 ```
 
-#### keyword arguments
+##### keyword arguments
 
 ```java
 // Java has no keyword arguments — use a builder or record
@@ -758,7 +765,7 @@ record Config(String host, int port, boolean debug) {}
 var c = new Config("example.com", 3000, true);
 ```
 
-#### return
+##### return
 
 ```java
 static Double divide(int a, int b) {
@@ -767,7 +774,7 @@ static Double divide(int a, int b) {
 }
 ```
 
-#### callable check
+##### callable check
 
 ```java
 // No callable() — use functional interfaces or instanceof
@@ -775,16 +782,16 @@ boolean isFn = greet instanceof Object; // not meaningful
 // Functions are typed: Function<String, String> f = JavaClass::greet;
 ```
 
-### Lambda
+#### Lambda
 
-#### basic
+##### basic
 
 ```java
 Function<Integer, Integer> square = x -> x * x;
 BiFunction<Integer, Integer, Integer> add = (a, b) -> a + b;
 ```
 
-#### as argument
+##### as argument
 
 ```java
 list.stream().map(x -> x * 2).toList();
@@ -794,7 +801,7 @@ list.stream().filter(x -> x > 2).toList();
 list.stream().sorted(Comparator.reverseOrder());
 ```
 
-#### receiver
+##### receiver
 
 ```java
 // Method references capture the receiver
@@ -807,11 +814,12 @@ String result = list.stream()
     .collect(Collectors.joining(","));
 ```
 
-## Classes
+## Classes & Interfaces
+### Classes
 
-### Class
+#### Class
 
-#### definition
+##### definition
 
 ```java
 class Dog {
@@ -819,7 +827,7 @@ class Dog {
 }
 ```
 
-#### constructor
+##### constructor
 
 ```java
 class Dog {
@@ -830,13 +838,13 @@ class Dog {
 }
 ```
 
-#### instantiation
+##### instantiation
 
 ```java
 Dog dog = new Dog("Fido");
 ```
 
-#### attributes
+##### attributes
 
 ```java
 class Dog {
@@ -845,7 +853,7 @@ class Dog {
 }
 ```
 
-#### method
+##### method
 
 ```java
 class Dog {
@@ -855,14 +863,14 @@ class Dog {
 }
 ```
 
-#### inheritance
+##### inheritance
 
 ```java
 class Animal { }
 class Dog extends Animal { }
 ```
 
-#### multiple inheritance
+##### multiple inheritance
 
 ```java
 class A {}
@@ -873,7 +881,7 @@ interface Y { void y(); }
 class C extends A implements X, Y {}
 ```
 
-#### override
+##### override
 
 ```java
 class Animal {
@@ -884,7 +892,7 @@ class Dog extends Animal {
 }
 ```
 
-#### super
+##### super
 
 ```java
 class Dog extends Animal {
@@ -894,7 +902,7 @@ class Dog extends Animal {
 }
 ```
 
-#### class method
+##### class method
 
 ```java
 class Dog {
@@ -904,7 +912,7 @@ class Dog {
 }
 ```
 
-#### static method
+##### static method
 
 ```java
 class Dog {
@@ -914,7 +922,7 @@ class Dog {
 }
 ```
 
-#### abstract
+##### abstract
 
 ```java
 abstract class Animal {
@@ -922,7 +930,7 @@ abstract class Animal {
 }
 ```
 
-#### protocol / interface
+##### protocol / interface
 
 ```java
 interface Speaker {
@@ -936,14 +944,14 @@ class Dog implements Speaker {
 static String makeSound(Speaker s) { return s.speak(); }
 ```
 
-#### data class
+##### data class
 
 ```java
 // records are value-like classes (Java 16+)
 record Dog(String name, int age) {}
 ```
 
-#### equality
+##### equality
 
 ```java
 class Dog {
@@ -955,7 +963,7 @@ class Dog {
 }
 ```
 
-#### string representation
+##### string representation
 
 ```java
 class Dog {
@@ -966,7 +974,7 @@ class Dog {
 }
 ```
 
-#### sealed class
+##### sealed class
 
 ```java
 sealed class Result permits Success, Failure {}
@@ -974,7 +982,7 @@ final class Success extends Result { int value; }
 final class Failure extends Result { String error; }
 ```
 
-#### private
+##### private
 
 ```java
 class Dog {
@@ -983,7 +991,7 @@ class Dog {
 }
 ```
 
-#### protected
+##### protected
 
 ```java
 class Animal {
@@ -996,7 +1004,7 @@ class Dog extends Animal {
 }
 ```
 
-#### public
+##### public
 
 ```java
 class Dog {
@@ -1004,10 +1012,10 @@ class Dog {
 }
 ```
 
-### Interface & trait
+#### Interface & trait
 
 Java uses `interface` (with default methods since Java 8) for the trait role; there is no `trait` keyword.
-#### definition
+##### definition
 
 ```java
 interface Speakable {
@@ -1019,7 +1027,7 @@ class Dog implements Speakable {
 }
 ```
 
-#### default method
+##### default method
 
 ```java
 interface Speaker {
@@ -1027,9 +1035,9 @@ interface Speaker {
     default String greet() { return speak(); } // default method
 }
 ```
-### Enum
+#### Enum
 
-#### definition
+##### definition
 
 ```java
 enum Color {
@@ -1037,7 +1045,7 @@ enum Color {
 }
 ```
 
-#### auto value
+##### auto value
 
 ```java
 // enum entries get an auto ordinal value
@@ -1045,7 +1053,7 @@ enum Color { RED, GREEN, AMBER }
 Color.RED.ordinal()   // 0
 ```
 
-#### access
+##### access
 
 ```java
 Color.RED
@@ -1053,7 +1061,7 @@ Color.RED.name()      // "RED"
 Color.RED.ordinal()   // 0
 ```
 
-#### iteration
+##### iteration
 
 ```java
 for (Color c : Color.values()) {
@@ -1061,13 +1069,13 @@ for (Color c : Color.values()) {
 }
 ```
 
-#### lookup
+##### lookup
 
 ```java
 Color.valueOf("RED")   // Color.RED, throws if absent
 ```
 
-#### match
+##### match
 
 ```java
 String s = switch (color) {
@@ -1077,7 +1085,7 @@ String s = switch (color) {
 };
 ```
 
-#### enum with data
+##### enum with data
 
 ```java
 enum Planet {
@@ -1092,125 +1100,126 @@ enum Planet {
 }
 ```
 
-## Collections
+## Collections & Iterators
+### Collections
 
-### List
+#### List
 
-#### literal
+##### literal
 
 ```java
 List<Integer> a = List.of(1, 2, 3);                 // immutable
 List<Integer> a = new ArrayList<>(List.of(1, 2, 3)); // mutable
 ```
 
-#### size
+##### size
 
 ```java
 a.size()
 ```
 
-#### lookup
+##### lookup
 
 ```java
 a.get(0)               // first element
 a.get(a.size() - 1)    // last element
 ```
 
-#### update
+##### update
 
 ```java
 a.set(0, 10);
 a.add(4);
 ```
 
-#### is element present
+##### is element present
 
 ```java
 a.contains(3)
 ```
 
-#### delete
+##### delete
 
 ```java
 a.remove(0)                    // by index
 a.remove(Integer.valueOf(3))   // by value, returns false if absent
 ```
 
-#### merge
+##### merge
 
 ```java
 a.addAll(List.of(4, 5));
 List<Integer> merged = Stream.concat(a.stream(), Stream.of(4, 5)).toList();
 ```
 
-#### slice
+##### slice
 
 ```java
 a.subList(1, 3)    // elements at index 1 and 2
 ```
 
-#### reversed
+##### reversed
 
 ```java
 List<Integer> rev = new ArrayList<>(a);
 Collections.reverse(rev);
 ```
 
-#### map
+##### map
 
 ```java
 a.stream().map(x -> x * 2).toList()
 ```
 
-#### filter
+##### filter
 
 ```java
 a.stream().filter(x -> x > 0).toList()
 ```
 
-### Dictionary
+#### Dictionary
 
 `Map<K, V>` for key-value storage.
 
-#### literal
+##### literal
 
 ```java
 Map<Character, Integer> d = Map.of('t', 1, 'f', 0);
 ```
 
-#### size
+##### size
 
 ```java
 d.size()
 ```
 
-#### lookup
+##### lookup
 
 ```java
 d.get('t')              // may return null
 d.getOrDefault('t', 0)
 ```
 
-#### update
+##### update
 
 ```java
 Map<Character, Integer> d = new HashMap<>(Map.of('t', 1, 'f', 0));
 d.put('u', -1);
 ```
 
-#### is key present
+##### is key present
 
 ```java
 d.containsKey('c')
 ```
 
-#### delete
+##### delete
 
 ```java
 Integer v = d.remove('t');   // null if absent
 ```
 
-#### from array of pairs
+##### from array of pairs
 
 ```java
 Map<Character, Integer> d = Map.ofEntries(
@@ -1219,67 +1228,67 @@ Map<Character, Integer> d = Map.ofEntries(
 );
 ```
 
-#### merge
+##### merge
 
 ```java
 d.putAll(Map.of('u', -1));
 ```
 
-#### invert
+##### invert
 
 ```java
 Map<Integer, Character> inverted = new HashMap<>();
 d.forEach((k, v) -> inverted.put(v, k));
 ```
 
-#### keys and values as arrays
+##### keys and values as arrays
 
 ```java
 d.keySet()
 d.values()
 ```
 
-### Set
+#### Set
 
-#### literal
+##### literal
 
 ```java
 Set<Integer> s = Set.of(1, 2, 3);
 ```
 
-#### size
+##### size
 
 ```java
 s.size()
 ```
 
-#### add
+##### add
 
 ```java
 Set<Integer> s = new HashSet<>(Set.of(1, 2, 3));
 s.add(4);
 ```
 
-#### is element present
+##### is element present
 
 ```java
 s.contains(3)
 ```
 
-#### delete
+##### delete
 
 ```java
 s.remove(3)     // returns false if absent
 ```
 
-#### from array
+##### from array
 
 ```java
 List<Integer> a = List.of(1, 2, 3, 2);
 Set<Integer> s = new HashSet<>(a);   // {1, 2, 3}
 ```
 
-#### merge
+##### merge
 
 ```java
 Set<Integer> union = new HashSet<>(s);
@@ -1288,47 +1297,47 @@ s.retainAll(Set.of(2, 3));           // intersection
 s.removeAll(Set.of(2));              // difference
 ```
 
-## Iterator and generator
+### Iterator and generator
 
-### Iterator
+#### Iterator
 
-#### chain
+##### chain
 
 ```java
 Stream.concat(Stream.of("a", "b", "c"), Stream.of("d", "e")).toList()
 ```
 
-#### take
+##### take
 
 ```java
 Stream.iterate(1, i -> i + 1).limit(4).toList()   // [1, 2, 3, 4]
 ```
 
-#### drop
+##### drop
 
 ```java
 Stream.iterate(1, i -> i + 1).skip(3).limit(7).toList()  // [4..10]
 ```
 
-#### head
+##### head
 
 ```java
 Stream.iterate(1, i -> i + 1).limit(3).toList()   // [1, 2, 3]
 ```
 
-#### takewhile
+##### takewhile
 
 ```java
 Stream.of(1, 2, 3, 1, 2).takeWhile(x -> x < 3).toList()   // [1, 2]
 ```
 
-#### dropwhile
+##### dropwhile
 
 ```java
 Stream.of(1, 2, 3, 1, 2).dropWhile(x -> x < 3).toList()   // [3, 1, 2]
 ```
 
-#### zip
+##### zip
 
 ```java
 // Java has no built-in zip — use an index loop
@@ -1340,7 +1349,7 @@ for (int i = 0; i < Math.min(a.size(), b.size()); i++) {
 }
 ```
 
-#### enumerate
+##### enumerate
 
 ```java
 List<String> items = List.of("a", "b", "c");
@@ -1348,21 +1357,21 @@ IntStream.range(0, items.size())
     .forEach(i -> System.out.println((i + 1) + " " + items.get(i)));
 ```
 
-#### flatten
+##### flatten
 
 ```java
 List<List<Integer>> nested = List.of(List.of(1, 2), List.of(3, 4));
 nested.stream().flatMap(List::stream).toList()   // [1, 2, 3, 4]
 ```
 
-#### count
+##### count
 
 ```java
 Stream.iterate(10, i -> i + 1).limit(2).toList()   // [10, 11]
 Stream.iterate(10, i -> i + 2).limit(3).toList()   // [10, 12, 14]
 ```
 
-#### cycle
+##### cycle
 
 ```java
 String[] colors = {"red", "green", "blue"};
@@ -1372,7 +1381,7 @@ Stream.iterate(0, i -> (i + 1) % colors.length)
     .toList()   // [red, green, blue, red, green]
 ```
 
-#### chunked
+##### chunked
 
 ```java
 String s = "ABCDEFG";
@@ -1382,7 +1391,7 @@ for (int i = 0; i < s.length(); i += 3) {
 }
 ```
 
-#### groupby
+##### groupby
 
 ```java
 record City(String name, String state) {}
@@ -1394,7 +1403,7 @@ Map<String, List<City>> groups = cities.stream()
     .collect(Collectors.groupingBy(City::state));
 ```
 
-#### generator
+##### generator
 
 ```java
 // infinite Fibonacci via Stream.iterate
@@ -1404,7 +1413,7 @@ Stream.iterate(new long[]{0, 1}, p -> new long[]{p[1], p[0] + p[1]})
     .toList();   // [0, 1, 1, 2, 3, 5, 8, 13, 21, 34]
 ```
 
-## Modules & Imports
+## Modules
 
 ### Import
 
@@ -1452,7 +1461,7 @@ pom.xml   // Maven, or build.gradle
 </dependency>
 ```
 
-## Metaprogramming & Reflection
+## Metaprogramming
 
 ### Annotations
 
@@ -1495,7 +1504,7 @@ x.getClass().getDeclaredMethods()
 // No eval — use the Java scripting API
 ```
 
-## Concurrency & Async
+## Concurrency
 
 ### Threads & coroutines
 
@@ -1532,7 +1541,7 @@ var v = q.take();
 synchronized (lock) { /* ... */ }
 ```
 
-## Generics & Templates
+## Generic
 
 ### Generic function
 
@@ -1557,4 +1566,6 @@ class Box<T> { T value; }
 ```java
 <T extends Number> T f(T x) { return x; }
 ```
+
+
 

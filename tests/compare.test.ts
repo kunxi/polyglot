@@ -44,15 +44,19 @@ describe("parseSections", () => {
     expect(tree.children).toHaveLength(0);
   });
 
-  it("parses the consolidated Python fixture into topics, groups, and leaves", () => {
+  it("parses the consolidated Python fixture into categories, topics, groups, and leaves", () => {
     const tree = parseSections(PY_LANG_MD);
     const h1 = tree.children[0];
     expect(h1?.heading).toBe("Python");
-    expect(h1?.children.map((c) => c.heading)).toEqual(["Primitive types", "Collections"]);
+    expect(h1?.children.map((c) => c.heading)).toEqual(["Types", "Collections & Iterators"]);
 
-    const types = h1?.children[0];
-    expect(types?.children.map((c) => c.heading)).toEqual(["Number", "String", "Boolean"]);
-    expect(types?.children[0].children.map((c) => c.heading)).toEqual([
+    const types = h1?.children[0];          // h2 category
+    expect(types?.children.map((c) => c.heading)).toEqual(["Primitive types"]);
+
+    const prim = types?.children[0];        // h3 topic
+    expect(prim?.children.map((c) => c.heading)).toEqual(["Number", "Boolean"]);
+
+    expect(prim?.children[0].children.map((c) => c.heading)).toEqual([
       "integer",
       "float",
       "arithmetic",
@@ -61,7 +65,8 @@ describe("parseSections", () => {
 
   it("captures topic-level intro content", () => {
     const tree = parseSections(KT_LANG_MD);
-    const collections = tree.children[0]?.children[1];
+    const collIter = tree.children[0]?.children[1];   // h2 category
+    const collections = collIter?.children[0];        // h3 topic
     expect(collections?.heading).toBe("Collections");
     expect(collections?.content).toContain("immutable");
   });
@@ -127,6 +132,13 @@ describe("renderMD", () => {
     const html = renderMD("`list`, `dict`, and `set` are built-in");
     expect(html).toBe("<p><code>list</code>, <code>dict</code>, and <code>set</code> are built-in</p>");
   });
+
+  it("renders markdown links to http(s) URLs", () => {
+    const html = renderMD("See [Type system](https://en.wikipedia.org/wiki/Type_system).");
+    expect(html).toContain(
+      '<a href="https://en.wikipedia.org/wiki/Type_system" target="_blank" rel="noopener noreferrer">Type system</a>'
+    );
+  });
 });
 
 // -- normalize --
@@ -160,17 +172,20 @@ describe("validateLanguage", () => {
     expect(() => validateLanguage(parseSections(KT_LANG_MD), meta, "kotlin")).not.toThrow();
   });
 
-  it("throws when a topic is missing from meta.md", () => {
+  it("throws when a category is missing from meta.md", () => {
     const meta = parseSections(META_MD);
-    const md = PY_LANG_MD.replace("## Collections", "## Collections\n\n## Other\n\n### Dictionary");
+    const md = PY_LANG_MD.replace(
+      "## Collections & Iterators",
+      "## Collections & Iterators\n\n## Other\n\n### Something"
+    );
     expect(() => validateLanguage(parseSections(md), meta, "python")).toThrow(
-      /topic "Other" not found/
+      /section "Other"/
     );
   });
 
   it("throws when a group is missing from meta.md", () => {
     const meta = parseSections(META_MD);
-    const md = PY_LANG_MD.replace("### List", "### Tuple\n\n### List");
+    const md = PY_LANG_MD.replace("#### List", "#### Tuple\n\n#### List");
     expect(() => validateLanguage(parseSections(md), meta, "python")).toThrow(
       /section "Tuple"/
     );
@@ -179,8 +194,8 @@ describe("validateLanguage", () => {
   it("throws when a leaf is missing from meta.md", () => {
     const meta = parseSections(META_MD);
     const md = PY_LANG_MD.replace(
-      "#### lookup",
-      "#### extra\n\n```python\nx\n```\n\n#### lookup"
+      "##### lookup",
+      "##### extra\n\n```python\nx\n```\n\n##### lookup"
     );
     expect(() => validateLanguage(parseSections(md), meta, "python")).toThrow(
       /section "extra"/
@@ -195,30 +210,34 @@ describe("renderComparison", () => {
   const py = parseSections(PY_LANG_MD);
   const kt = parseSections(KT_LANG_MD);
 
-  it("renders topics, groups, and tables in template order", () => {
+  it("renders categories, topics, groups, and tables in template order", () => {
     const blocks = renderComparison(meta, py, kt);
     expect(blocks.map((b) => b.type)).toEqual([
-      "h2", "h3", "table", "h3", "table", "h3", "table",
-      "h2", "intro", "h3", "table", "h3", "table", "h3", "table",
+      "h2", "h3", "intro", "h4", "table", "h4", "table",
+      "h2", "h3", "intro", "h4", "table", "h4", "table", "h4", "table",
     ]);
-    expect(blocks[0]).toEqual({ type: "h2", heading: "Primitive types" });
-    expect(blocks[7]).toEqual({ type: "h2", heading: "Collections" });
+    expect(blocks[0]).toEqual({ type: "h2", heading: "Types" });
+    expect(blocks[1]).toEqual({ type: "h3", heading: "Primitive types" });
+    expect(blocks[3]).toEqual({ type: "h4", heading: "Number" });
+    expect(blocks[7]).toEqual({ type: "h2", heading: "Collections & Iterators" });
   });
 
-  it("emits an intro block only for topics that have a paragraph", () => {
+  it("emits an intro block for topics that have a paragraph", () => {
     const blocks = renderComparison(meta, py, kt);
-    // Primitive types has no topic-level paragraph
-    expect(blocks[1].type).toBe("h3");
-    // Collections has one
-    const intro = blocks[8].intro!;
-    expect(intro.meta).toContain("store multiple values");
-    expect(intro.lang1).toContain("mutable");
-    expect(intro.lang2).toContain("immutable");
+    const primIntro = blocks[2].intro!;
+    expect(primIntro.meta).toContain("Meta overview of primitive types");
+    expect(primIntro.lang1).toContain("Python primitive types");
+    expect(primIntro.lang2).toContain("Kotlin primitive types");
+
+    const collIntro = blocks[9].intro!;
+    expect(collIntro.meta).toContain("Meta overview of collections");
+    expect(collIntro.lang1).toContain("mutable");
+    expect(collIntro.lang2).toContain("immutable");
   });
 
   it("fills both language contents for leaves matched through the meta template", () => {
     const blocks = renderComparison(meta, py, kt);
-    const number = blocks[2].items!;
+    const number = blocks[4].items!;
     expect(number.map((i) => i.label)).toEqual(["integer", "float", "arithmetic"]);
 
     const integer = number.find((i) => i.label === "integer")!;
@@ -228,10 +247,10 @@ describe("renderComparison", () => {
 
   it("renders in reverse with sides swapped", () => {
     const blocks = renderComparison(meta, kt, py);
-    expect(blocks[8].intro!.lang1).toContain("immutable");
-    expect(blocks[8].intro!.lang2).toContain("mutable");
+    expect(blocks[2].intro!.lang1).toContain("Kotlin primitive types");
+    expect(blocks[2].intro!.lang2).toContain("Python primitive types");
 
-    const list = blocks[10].items!;
+    const list = blocks[11].items!;
     const size = list.find((i) => i.label === "size")!;
     expect(size.content1).toContain("a.size");
     expect(size.content2).toContain("len(a)");

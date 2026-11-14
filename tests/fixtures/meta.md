@@ -1,55 +1,53 @@
 # Language
 
-## Primitive types
+## Types
 
-### Number
+### Primitive types
 
-#### integer
+Meta overview of primitive types.
 
-#### float
+#### Number
 
-#### arithmetic
+##### integer
 
-### String
+##### float
 
-#### literal
+##### arithmetic
 
-#### length
+#### Boolean
 
-#### access
+##### literal
 
-### Boolean
+##### negation
 
-#### literal
+##### logical and
 
-#### negation
+## Collections & Iterators
 
-#### logical and
+### Collections
 
-## Collections
+Meta overview of collections.
 
-Collections store multiple values and provide operations to add, look up, and iterate over them.
+#### List
 
-### List
+##### literal
 
-#### literal
+##### size
 
-#### size
+##### lookup
 
-#### lookup
+#### Dictionary
 
-### Dictionary
+##### literal
 
-#### literal
+##### size
 
-#### size
+##### lookup
 
-#### lookup
+#### Set
 
-### Set
+##### literal
 
-#### literal
+##### size
 
-#### size
-
-#### add
+##### add
