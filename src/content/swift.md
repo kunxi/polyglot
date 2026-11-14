@@ -5,7 +5,7 @@ Swift uses Automatic Reference Counting instead of a garbage collector and favor
 ## Types
 ### Primitive types
 
-Swift's fixed-width integers (`Int8` through `Int64`, `UInt8` through `UInt64`) map to hardware with signed/unsigned variants; `Int` is 64-bit on 64-bit platforms. Padding/alignment follows the platform ABI.
+Swift's fixed-width integers (`Int8` through `Int64`, `UInt8` through `UInt64`) map to hardware with signed/unsigned variants; `Int` is 64-bit on 64-bit platforms. Padding/alignment follows the platform ABI. Docs: [Swift basic types](https://docs.swift.org/swift-book/LanguageGuide/TheBasics.html).
 #### Number
 
 ##### integer
@@ -170,6 +170,13 @@ true && false   // false
 true || false   // true
 ```
 
+##### xor
+
+```swift
+// No ^ for Bool — use !=
+true != false   // true
+```
+
 ##### truthy and falsy values
 
 ```swift
@@ -187,7 +194,7 @@ String(true)       // "true"
 Bool("true")       // true?
 ```
 
-#### None / null
+#### Nullability
 
 Swift has no null; absence is modeled with `Optional<T>` and `nil`.
 
@@ -460,8 +467,7 @@ func f(_ x: any Named & Aged) {}
 ```
 ### Memory model
 
-Swift uses Automatic Reference Counting (ARC) for class instances. Structs and enums are value types that copy on assignment; classes are reference types shared through ARC. Arrays and dictionaries are value types with copy-on-write storage.
-
+Swift uses Automatic Reference Counting (ARC) for class instances. Structs and enums are value types that copy on assignment; classes are reference types shared through ARC. Arrays and dictionaries are value types with copy-on-write storage. Docs: [Swift ARC](https://docs.swift.org/swift-book/LanguageGuide/AutomaticReferenceCounting.html).
 #### Memory
 
 ##### value vs reference
@@ -1596,5 +1602,6 @@ struct Box<T> { let value: T }
 ```swift
 func f<T: Numeric>(_ x: T) -> T { x }
 ```
+
 
 

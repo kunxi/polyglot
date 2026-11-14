@@ -5,7 +5,7 @@ Java runs on the JVM with automatic garbage collection. It supports OS threads, 
 ## Types
 ### Primitive types
 
-Java's `byte`(8), `short`(16), `int`(32), `long`(64) and `float`/`double` are fixed hardware primitives (signed only); wrapper classes (`Integer`, `Long`) box them, and alignment is JVM-managed.
+Java's `byte`(8), `short`(16), `int`(32), `long`(64) and `float`/`double` are fixed hardware primitives (signed only); wrapper classes (`Integer`, `Long`) box them, and alignment is JVM-managed. Docs: [Java primitive types](https://docs.oracle.com/javase/tutorial/java/nutsandbolts/datatypes.html).
 #### Number
 
 ##### integer
@@ -166,6 +166,12 @@ true && false   // false
 true || false   // true
 ```
 
+##### xor
+
+```java
+true ^ false   // true
+```
+
 ##### truthy and falsy values
 
 ```java
@@ -183,7 +189,7 @@ Boolean.toString(true)     // "true"
 Boolean.parseBoolean("true") // true
 ```
 
-#### None / null
+#### Nullability
 
 Java reference types can be null; `Optional<T>` models absence.
 
@@ -445,8 +451,7 @@ record C(String s) implements A {}
 ```
 ### Memory model
 
-Java stores primitives by value and objects on the heap, accessed through references. There are no raw pointers, and the JVM garbage collector reclaims unreachable objects.
-
+Java stores primitives by value and objects on the heap, accessed through references. There are no raw pointers, and the JVM garbage collector reclaims unreachable objects. Docs: [Java memory model](https://docs.oracle.com/javase/specs/jls/se21/html/jls-17.html).
 #### Memory
 
 ##### value vs reference
@@ -1561,5 +1566,6 @@ class Box<T> { T value; }
 ```java
 <T extends Number> T f(T x) { return x; }
 ```
+
 
 

@@ -5,7 +5,7 @@ Lua is a lightweight, embeddable language with a tracing garbage collector. It i
 ## Types
 ### Primitive types
 
-Lua numbers are a single `number` type: 64-bit integers (5.3+) or doubles, with no fixed-width signed/unsigned types and no explicit alignment control.
+Lua numbers are a single `number` type: 64-bit integers (5.3+) or doubles, with no fixed-width signed/unsigned types and no explicit alignment control. Docs: [Lua 5.4 values](https://www.lua.org/manual/5.4/manual.html#2.1).
 #### Number
 
 ##### integer
@@ -165,6 +165,14 @@ true and false  -- false
 true or false   -- true
 ```
 
+##### xor
+
+```lua
+-- No xor operator — compare with ~=
+true ~= false   -- true
+true ~= true    -- false
+```
+
 ##### truthy and falsy values
 
 ```lua
@@ -182,7 +190,7 @@ tostring(true)      -- "true"
 tonumber("1") ~= 0  -- to Boolean
 ```
 
-#### None / null
+#### Nullability
 
 Lua uses `nil` for absence.
 
@@ -433,8 +441,7 @@ local v = {1.0, 2.0}
 ```
 ### Memory model
 
-Lua uses a single dynamic value type. Tables are the only reference type — numbers, strings, and booleans are values. There are no pointers, and the garbage collector reclaims unreferenced tables.
-
+Lua uses a single dynamic value type. Tables are the only reference type — numbers, strings, and booleans are values. There are no pointers, and the garbage collector reclaims unreferenced tables. Docs: [Lua 5.4 tables](https://www.lua.org/manual/5.4/manual.html#2.5.4).
 #### Memory
 
 ##### value vs reference
@@ -1574,5 +1581,6 @@ coroutine.resume(co)
 ```lua
 -- No constraints — duck typing
 ```
+
 
 

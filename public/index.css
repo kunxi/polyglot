@@ -214,9 +214,9 @@ th:first-child { width: 16%; }
 .col-label {
   font-family: ui-monospace, SFMono-Regular, Menlo, Consolas, 'Liberation Mono', monospace;
   font-weight: 500;
-  white-space: nowrap;
   font-size: 0.8rem;
   color: #b0b0b0;
+  overflow-wrap: break-word;
 }
 .col-label:empty { background: #0d120d; }
 td pre {

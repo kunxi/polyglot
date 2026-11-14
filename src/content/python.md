@@ -5,7 +5,7 @@ Python is an interpreted language whose garbage collector combines reference cou
 ## Types
 ### Primitive types
 
-Python's `int` and `float` map to C primitives underneath but are exposed as arbitrary-precision `int` and IEEE-754 `float` objects; there are no fixed-width signed/unsigned types, and padding/alignment is handled by the interpreter.
+Python's `int` and `float` map to C primitives underneath but are exposed as arbitrary-precision `int` and IEEE-754 `float` objects; there are no fixed-width signed/unsigned types, and padding/alignment is handled by the interpreter. Docs: [Python built-in types](https://docs.python.org/3/library/stdtypes.html).
 #### Number
 
 ##### integer
@@ -160,6 +160,12 @@ True and False  # False
 True or False   # True
 ```
 
+##### xor
+
+```python
+True ^ False   # True
+```
+
 ##### truthy and falsy values
 
 ```python
@@ -179,7 +185,7 @@ int(True)       # 1
 str(True)       # 'True'
 ```
 
-#### None / null
+#### Nullability
 
 `None` is a singleton; all uninitialized variables in Python may hold any type or `None` at any time — no compile-time null safety.
 
@@ -452,8 +458,7 @@ c: Color = "red"
 ```
 ### Memory model
 
-Python stores everything — including integers — as objects on the heap, and names bind to those objects. Assignment copies the reference, not the object; `int`, `str`, and `tuple` are immutable, while `list` and `dict` are shared by reference. There are no pointers.
-
+Python stores everything — including integers — as objects on the heap, and names bind to those objects. Assignment copies the reference, not the object; `int`, `str`, and `tuple` are immutable, while `list` and `dict` are shared by reference. There are no pointers. Docs: [Python data model](https://docs.python.org/3/reference/datamodel.html).
 #### Memory
 
 ##### value vs reference
@@ -1614,5 +1619,6 @@ T = TypeVar("T", bound=Number)
 # 3.12+ (PEP 695)
 def f[T: Number](x: T): ...
 ```
+
 
 

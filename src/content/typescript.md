@@ -5,7 +5,7 @@ TypeScript is a typed superset of JavaScript running on a garbage-collected engi
 ## Types
 ### Primitive types
 
-TypeScript's `number` is an IEEE-754 double (no separate `int`/`long`); `bigint` gives arbitrary precision. There are no fixed-width signed/unsigned types, and alignment is handled by the JS engine.
+TypeScript's `number` is an IEEE-754 double (no separate `int`/`long`); `bigint` gives arbitrary precision. There are no fixed-width signed/unsigned types, and alignment is handled by the JS engine. Docs: [TS basic types](https://www.typescriptlang.org/docs/handbook/basic-types.html).
 #### Number
 
 ##### integer
@@ -162,6 +162,12 @@ true && false   // false
 true || false   // true
 ```
 
+##### xor
+
+```typescript
+true !== false   // true (no logical xor operator)
+```
+
 ##### truthy and falsy values
 
 ```typescript
@@ -179,7 +185,7 @@ String(true)     // "true"
 !!1              // true
 ```
 
-#### None / null
+#### Nullability
 
 TypeScript has both `null` and `undefined`; use `?` for optional access.
 
@@ -439,8 +445,7 @@ const c: Color = "red";
 ```
 ### Memory model
 
-TypeScript (JavaScript) stores primitives by value and objects — arrays, objects, functions — by reference on the heap. There are no pointers, and the garbage collector frees unreachable objects.
-
+TypeScript (JavaScript) stores primitives by value and objects — arrays, objects, functions — by reference on the heap. There are no pointers, and the garbage collector frees unreachable objects. Docs: [JS memory management](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Memory_management).
 #### Memory
 
 ##### value vs reference
@@ -1538,5 +1543,6 @@ class Box<T> { constructor(public value: T) {} }
 ```typescript
 function f<T extends number>(x: T): T { return x; }
 ```
+
 
 

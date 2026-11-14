@@ -5,7 +5,7 @@ C++ gives direct control over memory, typically managed with RAII and smart poin
 ## Types
 ### Primitive types
 
-C++ primitive widths are implementation-defined: `short`>=16, `int`>=16, `long`>=32, `long long`>=64 bits, signed/unsigned by keyword; use `alignof`/`alignas` for layout and `<cstdint>` (`int32_t`, `uint64_t`) for fixed widths.
+C++ primitive widths are implementation-defined: `short`>=16, `int`>=16, `long`>=32, `long long`>=64 bits, signed/unsigned by keyword; use `alignof`/`alignas` for layout and `<cstdint>` (`int32_t`, `uint64_t`) for fixed widths. Docs: [C++ fundamental types](https://en.cppreference.com/w/cpp/language/types).
 #### Number
 
 ##### integer
@@ -166,6 +166,12 @@ true && false   // false
 true || false   // true
 ```
 
+##### xor
+
+```cpp
+true ^ false   // true
+```
+
 ##### truthy and falsy values
 
 ```cpp
@@ -182,7 +188,7 @@ true || false   // true
 std::to_string(true) // "1"  (use "true"/"false" via stream)
 ```
 
-#### None / null
+#### Nullability
 
 C++ uses `nullptr` and `std::optional<T>`.
 
@@ -452,8 +458,7 @@ void f(T t);
 ```
 ### Memory model
 
-C++ gives explicit control over storage. Values live on the stack or heap; use pointers (`T*`) or references (`T&`) for indirection, and smart pointers (`std::unique_ptr`, `std::shared_ptr`) for ownership. Expressions have lvalue/rvalue categories, and move semantics transfer resources.
-
+C++ gives explicit control over storage. Values live on the stack or heap; use pointers (`T*`) or references (`T&`) for indirection, and smart pointers (`std::unique_ptr`, `std::shared_ptr`) for ownership. Expressions have lvalue/rvalue categories, and move semantics transfer resources. Docs: [C++ memory model](https://en.cppreference.com/w/cpp/language/memory_model).
 #### Memory
 
 ##### value vs reference
@@ -1589,5 +1594,6 @@ template <typename T> struct Box { T value; };
 ```cpp
 template <std::integral T> T f(T x) { return x; }   // C++20 concept
 ```
+
 
 

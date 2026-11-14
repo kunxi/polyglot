@@ -5,7 +5,7 @@ Kotlin runs on the Java Virtual Machine, where memory is reclaimed automatically
 ## Types
 ### Primitive types
 
-Kotlin's `Byte`, `Short`, `Int`, `Long` (plus unsigned `UByte` through `ULong`) and `Float`/`Double` map directly to JVM hardware primitives; `Int` and `Long` are 32/64-bit signed, and padding/alignment is handled by the JVM.
+Kotlin's `Byte`, `Short`, `Int`, `Long` (plus unsigned `UByte` through `ULong`) and `Float`/`Double` map directly to JVM hardware primitives; `Int` and `Long` are 32/64-bit signed, and padding/alignment is handled by the JVM. Docs: [Kotlin basic types](https://kotlinlang.org/docs/basic-types.html).
 #### Number
 
 ##### integer
@@ -162,6 +162,12 @@ true && false   // false
 true || false   // true
 ```
 
+##### xor
+
+```kotlin
+true xor false   // true
+```
+
 ##### truthy and falsy values
 
 ```kotlin
@@ -179,7 +185,7 @@ listOf<Int>().isEmpty()     // explicit check for list
 true.toString()     // "true"
 ```
 
-#### None / null
+#### Nullability
 
 Kotlin enforces null safety at compile time: `String` and `String?`
 are different types.
@@ -441,8 +447,7 @@ fun <T> pick(x: T) where T : CharSequence, T : Comparable<T> = x
 ```
 ### Memory model
 
-Kotlin runs on the JVM: `Int`, `Double`, and `Boolean` compile to JVM primitives (`int`, `double`, `boolean`) and are passed by value; objects live on the heap behind references. The compiler auto-boxes primitives to wrappers (`Int` → `Integer`) when an object is required, e.g. for nullable `Int?` or generic `List<Int>`. There are no raw pointers, and memory is reclaimed by the garbage collector.
-
+Kotlin runs on the JVM: `Int`, `Double`, and `Boolean` compile to JVM primitives (`int`, `double`, `boolean`) and are passed by value; objects live on the heap behind references. The compiler auto-boxes primitives to wrappers (`Int` → `Integer`) when an object is required, e.g. for nullable `Int?` or generic `List<Int>`. There are no raw pointers, and memory is reclaimed by the garbage collector. Docs: [Kotlin basic types](https://kotlinlang.org/docs/basic-types.html).
 #### Memory
 
 ##### value vs reference
@@ -1595,5 +1600,6 @@ class Box<T>(val value: T)
 ```kotlin
 fun <T : Number> f(x: T) {}   // upper bound
 ```
+
 
 

@@ -5,7 +5,7 @@ Rust has no garbage collector; an ownership and borrow-checking system enforces 
 ## Types
 ### Primitive types
 
-Rust's fixed-width types (`i8`/`u8` through `i128`/`u128`, plus `isize`/`usize`) map to hardware with an explicit signed/unsigned choice; `repr(C)` controls padding/alignment, and `size_of`/`align_of` inspect layout.
+Rust's fixed-width types (`i8`/`u8` through `i128`/`u128`, plus `isize`/`usize`) map to hardware with an explicit signed/unsigned choice; `repr(C)` controls padding/alignment, and `size_of`/`align_of` inspect layout. Docs: [Rust data types](https://doc.rust-lang.org/book/ch03-02-data-types.html).
 #### Number
 
 ##### integer
@@ -165,6 +165,12 @@ true && false   // false
 true || false   // true
 ```
 
+##### xor
+
+```rust
+true ^ false   // true
+```
+
 ##### truthy and falsy values
 
 ```rust
@@ -182,7 +188,7 @@ true.to_string()          // "true"
 "true".parse::<bool>()    // Ok(true)
 ```
 
-#### None / null
+#### Nullability
 
 Rust has no null; absence is modeled with `Option<T>`.
 
@@ -453,8 +459,7 @@ fn f<T: Clone + Default>(x: T) -> T { x.clone() }
 ```
 ### Memory model
 
-Rust has no garbage collector. Values are owned and moved by default; `&T` and `&mut T` borrow without taking ownership, and the borrow checker enforces lifetimes. `Copy` types duplicate their bits, while other types move.
-
+Rust has no garbage collector. Values are owned and moved by default; `&T` and `&mut T` borrow without taking ownership, and the borrow checker enforces lifetimes. `Copy` types duplicate their bits, while other types move. Docs: [Rust ownership](https://doc.rust-lang.org/book/ch04-00-understanding-ownership.html).
 #### Memory
 
 ##### value vs reference
@@ -1649,5 +1654,6 @@ struct Box<T> { value: T }
 ```rust
 fn f<T: Clone + Default>(x: T) -> T { x.clone() }
 ```
+
 
 

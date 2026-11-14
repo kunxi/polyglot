@@ -5,7 +5,7 @@ Ruby is a dynamically typed language with a generational garbage collector. It o
 ## Types
 ### Primitive types
 
-Ruby's `Integer` is arbitrary precision (no fixed-width types) and `Float` is an IEEE-754 double; there are no signed/unsigned keywords, and padding/alignment is handled by the VM.
+Ruby's `Integer` is arbitrary precision (no fixed-width types) and `Float` is an IEEE-754 double; there are no signed/unsigned keywords, and padding/alignment is handled by the VM. Docs: [Ruby literals](https://docs.ruby-lang.org/en/master/syntax/literals_rdoc.html).
 #### Number
 
 ##### integer
@@ -160,6 +160,12 @@ true && false   # false
 true || false   # true
 ```
 
+##### xor
+
+```ruby
+true ^ false   # true
+```
+
 ##### truthy and falsy values
 
 ```ruby
@@ -177,7 +183,7 @@ true.to_s      # "true"
 !!1            # true
 ```
 
-#### None / null
+#### Nullability
 
 Ruby uses `nil` for absence.
 
@@ -434,8 +440,7 @@ v = [1.0, 2.0]
 ```
 ### Memory model
 
-Ruby stores everything as an object; names are references to objects. Immediate values like integers and symbols are immutable, while arrays and hashes are shared by reference. There are no pointers, and memory is garbage collected.
-
+Ruby stores everything as an object; names are references to objects. Immediate values like integers and symbols are immutable, while arrays and hashes are shared by reference. There are no pointers, and memory is garbage collected. Docs: [Ruby assignment](https://docs.ruby-lang.org/en/master/syntax/assignment_rdoc.html).
 #### Memory
 
 ##### value vs reference
@@ -1525,5 +1530,6 @@ m.synchronize { ... }
 ```ruby
 # No constraints — duck typing
 ```
+
 
 
